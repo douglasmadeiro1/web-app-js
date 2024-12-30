@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagina inicial</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="assets/css/styleIndex.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-box login">
+            <form action="">
+                <h1>Entrar</h1>
+                <div class="input-box">
+                    <input type="text" placeholder="Nome de usuário" required>
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box">
+                    <input placeholder="Digite a senha" required>
+                    <i class='bx bxs-lock-alt'></i>
+                </div>
+                <div class="forgot-link">
+                    <a href="#">Recuperar senha</a>
+                </div>
+                <button type="submit" class="btn button">Entrar</button>
+                <p>Entrar com:</p>
+                <div class="social-login">
+                    <a href="#"><img src="assets/image/google-logo.png" alt="Google" class="social-icon" /></a>
+                    <a href="#"><img src="assets/image/facebook-logo.png" alt="Google" class="social-icon" /></a>
+                    <a href="#"><img src="assets/image/linkedin-logo.png" alt="Google" class="social-icon" /></a>
+                    <a href="#"><img src="assets/image/github-logo.png" alt="Google" class="social-icon" /></a>
+                </div>
+            </form>
+        </div>
+
+        <div class="form-box register">
+            <form action="">
+                <h1>Criar conta</h1>
+                <div class="input-box">
+                    <input type="text" name="username" id="username" oninput="onChangeEmail()"
+                        placeholder="Digite seu nome de usuário" required>
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box">
+                    <input type="email" name="email" id="email" oninput="onChangeEmail()" placeholder="Digite o email"
+                        required>
+                    <i class='bx bxs-envelope'></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" name="password" id="password" onchange="onChangeaPassword()"
+                        placeholder="Digite a senha" required>
+                    <i class='bx bxs-lock-alt'></i>
+                </div>
+                <div class="forgot-link">
+                    <a href="#">Recuperar senha</a>
+                </div>
+                <button type="button" class="btn button">Criar conta</button>
+                <p>Ou registre-se com:</p>
+                <div class="social-login">
+                    <a href="#"><img src="assets/image/google-logo.png" alt="Google" class="social-icon" /></a>
+                    <a href="#"><img src="assets/image/facebook-logo.png" alt="Google" class="social-icon" /></a>
+                    <a href="#"><img src="assets/image/linkedin-logo.png" alt="Google" class="social-icon" /></a>
+                    <a href="#"><img src="assets/image/github-logo.png" alt="Google" class="social-icon" /></a>
+                </div>
+            </form>
+        </div>
+
+        <div class="toggle-box">
+            <div class="toggle-panel toggle-left">
+                <h1>Bem vindo de volta!</h1>
+                <p>Não possui uma conta?</p>
+                <div class="create-account-btn">
+                    <button class="btn register-btn">Criar conta</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="toggle-box">
+            <div class="toggle-panel toggle-right">
+                <h1>Olá, seja bem vindo!</h1>
+                <p>já possui uma conta?</p>
+                <div class="create-account-btn">
+                    <button class="btn login-btn">Entrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/js/scriptIndex.js"></script>
+    <script src="assets/js/validations.js"></script>
+</body>
+
+</html>
