@@ -9,14 +9,19 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-    <link rel="stylesheet" href="../css/styleDashboard.css">
+    <link rel="stylesheet" href="dashboard.css">
 </head>
 
 <body>
     <div class="spinner" id="spinner"></div>
     <header>
         <div class="header">
-            <h1>Estatísticas de Ocorrências</h1>
+            <div>
+                <h1>Estatísticas de Ocorrências</h1>
+            </div>
+            <div>
+                <button type="button" onclick='logout()' class="btn">Sair</button>
+            </div>
         </div>
     </header>
     <main>
@@ -33,7 +38,12 @@
             <p style="text-align: center; color: #666;">Desenvolvido por Douglas Madeiro</p>
         </div>
     </footer>
-    <script src="../js/scriptDashboard.js"></script>
 </body>
+
+<script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-auth-compat.js"></script>
+<script src="../../firebase-init.js"></script>
+<script src="../../auth-guard.js"></script>
+<script src="dashboard.js"></script>
 
 </html>
