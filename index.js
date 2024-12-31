@@ -12,7 +12,7 @@ loginBtn.addEventListener('click', () => {
 
 firebase.auth().onAuthStateChanged(user => {
     if (user) {
-        window.location.href = "pages/dashboard.html";
+        window.location.href = "pages/dashboard/dashboard.html";
     }
 })
 
@@ -33,7 +33,7 @@ function register() {
     const email = form.emailRegister().value;
     const password = form.passwordRegister().value;
     firebase.auth().createUserWithEmailAndPassword(email, password).then(() => {
-        window.location.href = "pages/dashboard.html";
+        window.location.href = "pages/dashboard/dashboard.html";
     }).catch(error => {
         console.log(getErrorMessage(error));
         });
