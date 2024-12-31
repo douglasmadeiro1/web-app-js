@@ -1,6 +1,6 @@
 {
-    "name": "Sistema",
-    "short_name": "Sistema",
+    "name": "PWA",
+    "short_name": "PWA",
     "start_url": "/",
     "display": "standalone",
     "theme_color": "#359de0",
