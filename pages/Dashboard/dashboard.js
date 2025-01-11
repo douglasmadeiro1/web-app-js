@@ -128,6 +128,7 @@ function gerarEstatisticas(planilha) {
             "Apoio Samu / Apoio Conselho Tutelar",
             "Apoio a Orgãos  de  Saúde , Santa Casa  - PS - UBS - UPA - CAPS / Apoio a defesa civil",
             "Atendimento de Saúde",
+            "Surto psicótico - atendimento/encaminhamento / Averiguação Atitude Suspeita",
         ],
         Apoio_conselho_tutelar: [
             "Apoio Conselho Tutelar",
@@ -174,6 +175,8 @@ function gerarEstatisticas(planilha) {
             "Embriaguez",
             "Abordagem a veículo / Averiguação Atitude Suspeita",
             "Averiguação / Outros / Abordagem a pessoas em atitude suspeita",
+            "Averiguação Atitude Suspeita / Abordagem a pessoas em atitude suspeita",
+            "Abordagem a pessoas em atitude suspeita / Averiguação de Veiculo / Localização de arma de fogo",
         ],
         Desordem: [
             "Apoio / Desordem",
@@ -277,6 +280,7 @@ function gerarEstatisticas(planilha) {
             "Averiguação de Uso de Drogas / Porte de drogas para consumo pessoal",
             "Corrupção de menores / Associação criminosa / Tráfico de drogas",
             "Localização de drogas / Tráfico de drogas",
+            "Tráfico de drogas / Fiscalização de Posturas / Averiguação / Outros",
         ],
         Invasão: [
             "Comunicação de invasão",
@@ -376,6 +380,7 @@ function gerarEstatisticas(planilha) {
             "Denúncia / Infração de trânsito / Fiscalização e policiamento - tráfego",
             "Embriaguez / Averiguação / Outros",
             "Fiscalização e policiamento - tráfego",
+            "Fiscalização e policiamento - tráfego / Apoio a Militar/Policial Militar/Bombeiro",
             "Fiscalização e policiamento - tráfego / Infração de trânsito / Denúncia",
             "Infração de trânsito / Denúncia",
             "Infração de trânsito / Denúncia / Porte de drogas para consumo pessoal",
@@ -410,6 +415,7 @@ function gerarEstatisticas(planilha) {
             "Controle de tráfego / Ordem de Serviço",
             "Acidente de trânsito com vítima / Averiguação de Veiculo",
             "Acidente sem Lesão Corporal",
+            "Atropelamento por automóvel / Acidente de trânsito com vítima",
         ],
         Incendio: [
             "Incêndio / Controle de tráfego",
@@ -489,6 +495,7 @@ function gerarEstatisticas(planilha) {
         ],
         Desobediência: [
             "Desobediência",
+            "Resistência / Desordem / Desobediência"
         ],
         Operação: [
             "Operações Integradas",
@@ -505,6 +512,9 @@ function gerarEstatisticas(planilha) {
             "Teste Sistema",
             "Teste Sistema / Furto",
         ],
+        Acidentes_naturais: [
+            "Acidentes naturais",
+        ]
     };
 
     const contagem = {};
