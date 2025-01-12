@@ -9,13 +9,12 @@ registerBtn.addEventListener('click', () => {
 loginBtn.addEventListener('click', () => {
     container.classList.remove('active');
 });
-/*
+
 firebase.auth().onAuthStateChanged(user => {
     if (user) {
         window.location.href = "pages/dashboard/dashboard.html";
     }
 })
-    */
 
 function login() {
     const email = form.emailLogin().value;
