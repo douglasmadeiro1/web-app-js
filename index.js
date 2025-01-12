@@ -12,7 +12,7 @@ loginBtn.addEventListener('click', () => {
 
 firebase.auth().onAuthStateChanged(user => {
     if (user) {
-        window.location.href = "pages/dashboard/dashboard.html";
+        window.location.href = "pages/Dashboard/dashboard.html";
     }
 })
 
