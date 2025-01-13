@@ -1,49 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estatísticas de Ocorrências</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <link rel="stylesheet" href="dashboard.css">
+    <title>Document</title>
 </head>
-
 <body>
-    <div class="spinner" id="spinner"></div>
-    <header>
-        <div class="header">
-            <div>
-                <h1>Estatísticas de Ocorrências</h1>
-            </div>
-            <div>
-                <button type="button" onclick='logout()' class="btn">Sair</button>
-            </div>
-        </div>
-    </header>
-    <main>
-        <div class="container">
-            <p>Selecione o arquivo</p>
-            <input type="file" id="fileInput" accept=".csv, .xlsx, .xls" />
-            <button class="btn" id="processFile">Processar Arquivo</button>
-            <canvas id="naturezaChart"></canvas>
-            <table id="resultTable"></table> <!-- Tabela dos resultados -->
-        </div>
-    </main>
-    <footer>
-        <div class="botton">
-            <p style="text-align: center; color: #666;">Desenvolvido por Douglas Madeiro</p>
-        </div>
-    </footer>
+    <div class="header">
+        <button class="btn" onclick="stats()"> Estatistica de ocorrências </button>
+        <button class="btn" onclick="contacts()"> Agenda telefonica </button>
+        <button class="btn" onclick="places()"> Patrimonios públicos </button>
+        <button class="btn" onclick="logout()"> Sair </button>
 </body>
-
+<script src="dashboard.js"></script>
 <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-auth-compat.js"></script>
 <script src="../../firebase-init.js"></script>
 <script src="../../auth-guard.js"></script>
-<script src="dashboard.js"></script>
-
 </html>
