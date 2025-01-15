@@ -1,200 +1,58 @@
-/* Arquivo: assets/css/styles.css */
 body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #86b9fc;
-    color: #333;
-}
-
-h1 {
-    text-align: center;
-    color: #0077cc;
-}
-
-.container {
-    width: 85%;
-    margin: 20px auto;
-    padding: 20px;
-    border-radius: 10px;
-    background: #ffffff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
 }
 
 .header {
-    width: 85%;
-    margin: 20px auto;
-    padding: 20px;
-    border-radius: 10px;
-    background: #ffffff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.botton {
-    width: 85%;
-    margin: 20px auto;
-    padding: 20px;
-    border-radius: 10px;
-    background: #ffffff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-input[type="file"] {
-    display: inline-block;
-    margin: 10px 0;
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    cursor: pointer;
-}
-
-.btn {
-    position: relative;
-    display: inline-block;
-    padding: 15px 40px;
-    font-size: 18px;
-    font-weight: bold;
+    background-color: #4CAF50;
     color: white;
-    text-transform: uppercase;
-    text-decoration: none;
-    border: 2px solid transparent;
-    background: linear-gradient(90deg, #00c6ff, #0072ff);
-    background-size: 200%;
-    border-radius: 50px;
-    overflow: hidden;
-    transition: background-position 0.5s ease, color 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
 }
 
-.btn:hover {
-    background-position: right;
-    color: #fff;
-    box-shadow: 0 10px 20px rgba(0, 123, 255, 0.5);
-}
-
-.btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
-    z-index: 1;
-    opacity: 0;
-    transform: scaleX(0);
-    transition: transform 0.5s ease, opacity 0.3s ease;
-}
-
-.btn:hover::before {
-    opacity: 1;
-    transform: scaleX(1);
-}
-
-.btn::after {
-    content: '';
-    position: absolute;
-    inset: -5px;
-    border-radius: 50px;
-    background: linear-gradient(90deg, rgba(0, 198, 255, 0.5), rgba(0, 114, 255, 0.5));
-    z-index: -1;
-    filter: blur(10px);
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
-.btn:hover::after {
-    opacity: 1;
-}
-
-canvas {
-    height: 720px;
-    display: block;
-    margin: 20px auto;
-    max-height: 100% ;
-    max-width: 100%;
-    font-weight: bolder;
-}
-
-.spinner {
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid #0077cc;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    animation: spin 1s linear infinite;
-    margin: 20px auto;
-    display: none;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-#naturezaChart {
-    width: 100% !important;
-    height: auto !important;
-}
-
-/* Estilos para a tabela */
-.tabela-container {
-    margin-top: 20px;
+.container {
     padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.tabela {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.tabela th,
-.tabela td {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #ddd;
-}
-
-.tabela th {
-    background-color: #0077cc;
-    color: #fff;
-    font-weight: bold;
-}
-
-.tabela tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-.tabela tr:hover {
-    background-color: #f1f1f1;
 }
 
 .input-box {
-    position: relative;
-    margin: 30px 0;
-    padding: 2px;
-    font-weight: bolder;
+    margin-bottom: 20px;
 }
 
-.input-box input {
-    width: 12%;
-    padding: 14px 50px 14px 20px;
-    background: rgb(218, 218, 218);
-    border-radius: 8px;
+input {
+    display: block;
+    margin: 10px 0;
+    padding: 10px;
+    width: 100%;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
     border: none;
-    outline: none;
-    font-size: 16px;
-    font-weight: 500;
+    cursor: pointer;
 }
 
-.input-box i {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 20px;
-    color: rgb(65, 60, 88);
+button:hover {
+    background-color: #45a049;
+}
+
+#contacts-list {
+    margin-top: 20px;
+}
+
+.contact {
+    background-color: #f9f9f9;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+.contact button {
+    margin: 5px;
+}
+
+.contacts {
+    display: flex;
+    align-content: space-between;
+    padding: 20px;
 }

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="contacts.css">
-    <title>Agenda telefonica</title>
+    <title>Agenda telefônica</title>
 </head>
 <body>
     <div class="header">
@@ -12,20 +12,34 @@
     </div>
     <div class="container">
         <div class="input-box">
-            <form id="contact-list">
+            <form id="contact-form">
+                <!-- Campos do formulário de contato -->
                 <input type="text" placeholder="Nome" id="name">
                 <input type="text" placeholder="Telefone" id="phone-number-1">
                 <input type="text" placeholder="Telefone" id="phone-number-2">
                 <input type="text" placeholder="Telefone" id="phone-number-3">
                 <input type="text" placeholder="Telefone" id="phone-number-4">
                 <input type="text" placeholder="Endereço" id="address">
+                
+                <!-- Campo oculto para armazenar o ID do contato ao editar -->
+                <input type="hidden" id="hiddenId">
+                
+                <button type="submit">Adicionar</button>
             </form>
         </div>
+        <div>
+            <h1>Contatos</h1>
+            <div class="contacts">
+                <ul id="contacts"></ul>
+            </div>
+        </div>
     </div>
+
+    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-auth-compat.js"></script>
+    <script src="../../firebase-init.js"></script>
+    <script src="../../auth-guard.js"></script>
+    <script src="contacts.js"></script>
 </body>
-<script src="contacts.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-auth-compat.js"></script>
-<script src="../../firebase-init.js"></script>
-<script src="../../auth-guard.js"></script>
 </html>
