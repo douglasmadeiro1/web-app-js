@@ -4,31 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="contacts.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <title>Agenda telefônica</title>
 </head>
 <body>
     <div class="header">
         <button class="btn" onclick="back()">Voltar</button>
     </div>
+
     <div class="container">
         <div class="input-box">
             <form id="contact-form">
-                <!-- Campos do formulário de contato -->
-                <input type="text" placeholder="Nome" id="name">
-                <input type="text" placeholder="Telefone" id="phone-number-1">
+                <input type="text" placeholder="Nome" id="name" required>
+                <input type="text" placeholder="Telefone" id="phone-number-1" required>
                 <input type="text" placeholder="Telefone" id="phone-number-2">
                 <input type="text" placeholder="Telefone" id="phone-number-3">
                 <input type="text" placeholder="Telefone" id="phone-number-4">
                 <input type="text" placeholder="Endereço" id="address">
-                
-                <!-- Campo oculto para armazenar o ID do contato ao editar -->
                 <input type="hidden" id="hiddenId">
-                
-                <button type="submit">Adicionar</button>
+                <button type="submit" class="btn">Adicionar</button>
             </form>
         </div>
+
         <div>
             <h1>Contatos</h1>
+
+            <!-- Cabeçalho fixo das colunas -->
+            <div class="contacts-header">
+                <span>Nome</span>
+                <span>Telefone 1</span>
+                <span>Telefone 2</span>
+                <span>Telefone 3</span>
+                <span>Telefone 4</span>
+                <span>Endereço</span>
+                <span>Ações</span>
+            </div>
+
             <div class="contacts">
                 <ul id="contacts"></ul>
             </div>
@@ -36,7 +48,7 @@
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-auth-compat.js"></script>
     <script src="../../firebase-init.js"></script>
     <script src="../../auth-guard.js"></script>

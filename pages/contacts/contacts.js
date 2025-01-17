@@ -2,8 +2,9 @@ function back() {
     window.location.href = "../dashboard/dashboard.html";
 }
 
-var db = firebase.database();
-var contactsRef = db.ref("/contacts");
+var db = firebase.firestore(); // Inicializa o Firestore
+var contactsRef = db.collection("contacts"); // Referência para a coleção "contacts"
+
 
 var contactForm = document.getElementById('contact-form');
 var contacts = document.getElementById('contacts');
@@ -17,65 +18,68 @@ contactForm.addEventListener("submit", e => {
     var phone3 = document.getElementById('phone-number-3');
     var phone4 = document.getElementById('phone-number-4');
     var address = document.getElementById('address');
-    var hiddenId = document.getElementById('hiddenId');  // Referência ao campo oculto
+    var hiddenId = document.getElementById('hiddenId');
 
-    // Verificar se o hiddenId está vazio, indicando que é um novo contato
-    var id = hiddenId && hiddenId.value ? hiddenId.value : contactsRef.push().key;
 
-    // Salvar o contato no Firebase com o ID apropriado
-    contactsRef.child(id).set({
+    var id = hiddenId && hiddenId.value ? hiddenId.value : contactsRef.doc().id;
+
+
+    contactsRef.doc(id).set({
         name: name.value,
         phone1: phone1.value,
         phone2: phone2.value,
         phone3: phone3.value,
         phone4: phone4.value,
         address: address.value
+    }).then(() => {
+        name.value = '';
+        phone1.value = '';
+        phone2.value = '';
+        phone3.value = '';
+        phone4.value = '';
+        address.value = '';
+
+        hiddenId.value = ''; // Limpar o hiddenId após o envio
+        loadContacts(); // Atualizar a lista de contatos
+    }).catch((error) => {
+        console.error("Erro ao salvar o contato: ", error);
     });
-
-    // Limpar os campos do formulário
-    name.value = '';
-    phone1.value = '';
-    phone2.value = '';
-    phone3.value = '';
-    phone4.value = '';
-    address.value = '';
-
-    // Limpar o hiddenId após o envio (caso seja uma edição)
-    hiddenId.value = '';
-
-    // Atualizar a lista de contatos
-    loadContacts();
 });
 
-// Função para carregar os contatos
 function loadContacts() {
-    contacts.innerHTML = ''; // Limpa a lista
-    contactsRef.once("value", function(snapshot) {
-        snapshot.forEach(function(childSnapshot) {
-            var contact = childSnapshot.val();
-            var id = childSnapshot.key;
-            
-            // Criar um item de lista para cada contato
-            var li = document.createElement('li');
-            li.textContent = `${contact.name} - ${contact.phone1}`;
+    contacts.innerHTML = '';
+    contactsRef.get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+            var contact = doc.data();
+            var id = doc.id;
 
-            // Adicionar os botões de Editar e Excluir
-            var editButton = document.createElement('button');
-            editButton.textContent = 'Editar';
-            editButton.onclick = function() {
+            var li = document.createElement('li');
+
+            li.innerHTML = `
+                <span>${contact.name}</span>
+                <span>${contact.phone1}</span>
+                <span>${contact.phone2}</span>
+                <span>${contact.phone3}</span>
+                <span>${contact.phone4}</span>
+                <span>${contact.address}</span>
+                <div>
+                    <button class="edit"><i class="fas fa-edit"></i></button>
+                    <button class="delete"><i class="fas fa-trash"></i></button>
+                </div>
+            `;
+
+            // Adiciona os botões de ação
+            li.querySelector('.edit').onclick = function() {
                 editContact(id, contact);
             };
-            li.appendChild(editButton);
-
-            var deleteButton = document.createElement('button');
-            deleteButton.textContent = 'Excluir';
-            deleteButton.onclick = function() {
+            li.querySelector('.delete').onclick = function() {
                 deleteContact(id);
             };
-            li.appendChild(deleteButton);
 
             contacts.appendChild(li);
         });
+    }).catch(function(error) {
+        console.error("Erro ao carregar os contatos: ", error);
     });
 }
 
@@ -107,13 +111,11 @@ function editContact(id, contact) {
 
 // Função para excluir um contato
 function deleteContact(id) {
-    contactsRef.child(id).remove()
-        .then(function() {
-            loadContacts(); // Atualizar lista após a exclusão
-        })
-        .catch(function(error) {
-            console.error('Erro ao excluir contato:', error);
-        });
+    contactsRef.doc(id).delete().then(function() {
+        loadContacts(); // Atualizar lista após a exclusão
+    }).catch(function(error) {
+        console.error('Erro ao excluir contato:', error);
+    });
 }
 
 // Carregar contatos ao iniciar

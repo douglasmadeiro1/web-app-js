@@ -4,33 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="places.css">
-    <title>Patrimonios públicos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Patrimônios Públicos</title>
 </head>
 <body>
     <div class="header">
         <button class="btn" onclick="back()">Voltar</button>
-    </div>    
+    </div>
+
     <div class="container">
         <div class="input-box">
-            <form id="places-lint">
-                <input type="number" placeholder="Número do patrimônio" id="number">
-                <input type="text" placeholder="Nome do patrimônio" id="name">
-                <input type="text" placeholder="Responsavel" id="adm-1">
+            <form id="places-form">
+                <input type="number" placeholder="Número do patrimônio" id="number" required>
+                <input type="text" placeholder="Nome do patrimônio" id="name" required>
+                <input type="text" placeholder="Responsável" id="adm-1">
                 <input type="text" placeholder="Telefone" id="phone-adm-1-main">
                 <input type="text" placeholder="Telefone" id="phone-adm-1-secondary">
-                <input type="text" placeholder="Responsavel" id="adm-2">
+                <input type="text" placeholder="Responsável" id="adm-2">
                 <input type="text" placeholder="Telefone" id="phone-adm-2-main">
                 <input type="text" placeholder="Telefone" id="phone-adm-2-secondary">
                 <input type="text" placeholder="Senha do alarme" id="security-password">
                 <input type="text" placeholder="Endereço" id="address">
                 <input type="text" placeholder="Observação" id="obs">
+                <input type="hidden" id="hiddenId">
+                <button type="submit" id="submit-button" class="btn">Adicionar</button>
             </form>
         </div>
+
+        <div>
+            <h1>Patrimônios Públicos</h1>
+            <div class="places-header">
+                <span>Número</span>
+                <span>Nome</span>
+                <span>Responsável 1</span>
+                <span>Telefone</span>
+                <span>Telefone</span>
+                <span>Responsável 2</span>
+                <span>Telefone</span>
+                <span>Telefone</span>
+                <span>Senha Alarme</span>
+                <span>Endereço</span>
+                <span>Observação</span>
+                <span>Ações</span>
+            </div>
+            <div class="places">
+                <ul id="places-list"></ul>
+            </div>
+        </div>
     </div>
+
+    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore-compat.js"></script>
+    <script src="../../firebase-init.js"></script>
+    <script src="../../auth-guard.js"></script>
+    <script src="places.js"></script>
 </body>
-<script src="places.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-auth-compat.js"></script>
-<script src="../../firebase-init.js"></script>
-<script src="../../auth-guard.js"></script>
 </html>
