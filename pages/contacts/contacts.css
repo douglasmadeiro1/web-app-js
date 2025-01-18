@@ -5,7 +5,8 @@
     background-color: #2c3e50;
     color: white;
     display: flex;
-    justify-content: flex-start;  /* Alinha à esquerda */
+    justify-content: flex-start;
+    /* Alinha à esquerda */
     align-items: center;
     box-sizing: border-box;
 }
@@ -23,7 +24,8 @@
 
 .header .btn:hover {
     background-color: #2980b9;
-    transform: translateY(-4px); /* Levantar o botão */
+    transform: translateY(-4px);
+    /* Levantar o botão */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -169,7 +171,8 @@ body {
 }
 
 .contacts li button i {
-    font-size: 18px;  /* Tamanho dos ícones */
+    font-size: 18px;
+    /* Tamanho dos ícones */
 }
 
 /* Responsividade */
@@ -179,7 +182,8 @@ body {
         width: 90%;
     }
 
-    .contacts-header, .contacts li {
+    .contacts-header,
+    .contacts li {
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
     }
 
@@ -196,3 +200,16 @@ body {
     }
 }
 
+.search-bar {
+    margin: 10px 0;
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+    height: 50px;
+}
+
+.search-bar input {
+    flex: 1;
+    padding: 8px;
+    font-size: 25px;
+}

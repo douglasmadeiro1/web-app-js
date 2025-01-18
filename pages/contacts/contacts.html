@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
 
     <title>Agenda telefônica</title>
 </head>
+
 <body>
     <div class="header">
         <button class="btn" onclick="back()">Voltar</button>
@@ -29,6 +31,9 @@
 
         <div>
             <h1>Contatos</h1>
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Pesquisar contato">
+            </div>
 
             <!-- Cabeçalho fixo das colunas -->
             <div class="contacts-header">
@@ -54,4 +59,5 @@
     <script src="../../auth-guard.js"></script>
     <script src="contacts.js"></script>
 </body>
+
 </html>
