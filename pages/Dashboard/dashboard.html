@@ -4,18 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="dashboard.css">
-    <title>Document</title>
+    <title>Dashboard</title>
 </head>
 <body>
-    <div class="header">
-        <button class="btn" onclick="stats()"> Estatistica de ocorrências </button>
-        <button class="btn" onclick="contacts()"> Agenda telefonica </button>
-        <button class="btn" onclick="places()"> Patrimonios públicos </button>
-        <button class="btn" onclick="logout()"> Sair </button>
+    <!-- Menu Lateral -->
+    <div class="sidebar">
+        <button class="btn" onclick="stats()">Estatística de Ocorrências</button>
+        <button class="btn" onclick="contacts()">Agenda Telefônica</button>
+        <button class="btn" onclick="places()">Patrimônios Públicos</button>
+        <button class="btn" onclick="logout()">Sair</button>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div class="main-content">
+        <div class="header">
+            <h1>Bem-vindo à Dashboard</h1>
+        </div>
+        <div class="container">
+            <!-- Aqui você pode adicionar mais conteúdo para a dashboard -->
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-auth-compat.js"></script>
+    <script src="../../firebase-init.js"></script>
+    <script src="../../auth-guard.js"></script>
 </body>
-<script src="dashboard.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-auth-compat.js"></script>
-<script src="../../firebase-init.js"></script>
-<script src="../../auth-guard.js"></script>
 </html>
