@@ -46,44 +46,61 @@ contactForm.addEventListener("submit", e => {
     });
 });
 
-function loadContacts() {
-    contacts.innerHTML = '';
-    contactsRef.get().then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
+function loadContacts(filter = "") {
+    contacts.innerHTML = ''; // Limpa a lista antes de recarregar
+
+    contactsRef.get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
             var contact = doc.data();
             var id = doc.id;
 
-            var li = document.createElement('li');
+            // Verifica se o contato corresponde ao filtro
+            if (
+                contact.name.toLowerCase().includes(filter.toLowerCase()) ||
+                contact.phone1.toLowerCase().includes(filter.toLowerCase()) ||
+                (contact.phone2 && contact.phone2.toLowerCase().includes(filter.toLowerCase())) ||
+                (contact.phone3 && contact.phone3.toLowerCase().includes(filter.toLowerCase())) ||
+                (contact.phone4 && contact.phone4.toLowerCase().includes(filter.toLowerCase()))
+            ) {
+                var li = document.createElement('li');
 
-            li.innerHTML = `
-                <span>${contact.name}</span>
-                <span>${contact.phone1}</span>
-                <span>${contact.phone2}</span>
-                <span>${contact.phone3}</span>
-                <span>${contact.phone4}</span>
-                <span>${contact.address}</span>
-                <div>
-                    <button class="edit"><i class="fas fa-edit"></i></button>
-                    <button class="delete"><i class="fas fa-trash"></i></button>
-                </div>
-            `;
+                li.innerHTML = `
+                    <span>${contact.name}</span>
+                    <span>${contact.phone1}</span>
+                    <span>${contact.phone2 || ""}</span>
+                    <span>${contact.phone3 || ""}</span>
+                    <span>${contact.phone4 || ""}</span>
+                    <span>${contact.address || ""}</span>
+                    <div>
+                        <button class="edit"><i class="fas fa-edit"></i></button>
+                        <button class="delete"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
 
-            // Adiciona os botões de ação
-            li.querySelector('.edit').onclick = function() {
-                editContact(id, contact);
-            };
-            li.querySelector('.delete').onclick = function() {
-                deleteContact(id);
-            };
+                // Adiciona os botões de ação
+                li.querySelector('.edit').onclick = function () {
+                    editContact(id, contact);
+                };
+                li.querySelector('.delete').onclick = function () {
+                    deleteContact(id);
+                };
 
-            contacts.appendChild(li);
+                contacts.appendChild(li);
+            }
         });
-    }).catch(function(error) {
+    }).catch(function (error) {
         console.error("Erro ao carregar os contatos: ", error);
     });
 }
 
-// Função para editar um contato
+var searchInput = document.getElementById('search-input');
+
+
+searchInput.addEventListener("input", (e) => {
+    const filter = e.target.value.trim();
+    loadContacts(filter);
+});
+
 function editContact(id, contact) {
     var name = document.getElementById('name');
     var phone1 = document.getElementById('phone-number-1');
@@ -111,9 +128,9 @@ function editContact(id, contact) {
 
 // Função para excluir um contato
 function deleteContact(id) {
-    contactsRef.doc(id).delete().then(function() {
+    contactsRef.doc(id).delete().then(function () {
         loadContacts(); // Atualizar lista após a exclusão
-    }).catch(function(error) {
+    }).catch(function (error) {
         console.error('Erro ao excluir contato:', error);
     });
 }

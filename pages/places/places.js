@@ -2,14 +2,13 @@ function back() {
     window.location.href = "../dashboard/dashboard.html";
 }
 
-var db = firebase.firestore(); // Inicializa o Firestore
-var placesRef = db.collection("places"); // Referência para a coleção "places"
+var db = firebase.firestore();
+var placesRef = db.collection("places");
 
 var placesForm = document.getElementById('places-form');
 var placesList = document.getElementById('places-list');
 var hiddenId = document.getElementById('hiddenId');
 
-// Adicionar ou editar patrimônio
 placesForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
@@ -34,26 +33,28 @@ placesForm.addEventListener("submit", (e) => {
         .set(data)
         .then(() => {
             placesForm.reset();
-            hiddenId.value = ""; // Limpar o hiddenId após o envio
+            hiddenId.value = "";
             const submitButton = document.getElementById("submit-button");
             if (submitButton) {
                 submitButton.textContent = "Adicionar";
             }
-            loadPlaces(); // Atualizar a lista de patrimônios
+            loadPlaces();
         })
         .catch((error) => console.error("Erro ao salvar o patrimônio: ", error));
 });
 
-// Carregar patrimônios
-function loadPlaces() {
+var searchInput = document.getElementById('search-input');
+function loadPlaces(filter = "") {
     placesList.innerHTML = '';
+
     placesRef
         .get()
         .then((snapshot) => {
             snapshot.forEach((doc) => {
                 const place = doc.data();
-                const id = doc.id;
+                const id = doc.id; // Obter o ID do documento
 
+<<<<<<< HEAD
                 const li = document.createElement("li");
                 li.innerHTML = `
                     <span>${place.number}</span>
@@ -73,9 +74,39 @@ function loadPlaces() {
                     </div>
                 `;
                 placesList.appendChild(li);
+=======
+                if (
+                    place.name.toLowerCase().includes(filter.toLowerCase()) ||
+                    place.number.toString().includes(filter)
+                ) {
+                    const li = document.createElement("li");
+                    li.innerHTML = `
+                        <span>${place.number}</span>
+                        <span>${place.name}</span>
+                        <span>${place.adm1}</span>
+                        <span>${place.phoneAdm1Main}</span>
+                        <span>${place.phoneAdm1Secondary}</span>
+                        <span>${place.adm2}</span>
+                        <span>${place.phoneAdm2Main}</span>
+                        <span>${place.phoneAdm2Secondary}</span>
+                        <span>${place.securityPassword}</span>
+                        <span>${place.address}</span>
+                        <span>${place.obs}</span>
+                        <div>
+                            <button class="edit" data-id="${id}" data-place='${JSON.stringify(place)}'>
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="delete" data-id="${id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    placesList.appendChild(li);
+                }
+>>>>>>> 5c3f69abfebb5ccff126b032f948b6b3bdc7a132
             });
 
-            // Adicionar evento de clique nos botões "Editar"
+            // Adicionar eventos nos botões "Editar"
             document.querySelectorAll(".edit").forEach((button) => {
                 button.addEventListener("click", (event) => {
                     const id = button.getAttribute("data-id");
@@ -84,7 +115,11 @@ function loadPlaces() {
                 });
             });
 
+<<<<<<< HEAD
             // Adicionar evento de clique nos botões "Excluir"
+=======
+            // Adicionar eventos nos botões "Excluir"
+>>>>>>> 5c3f69abfebb5ccff126b032f948b6b3bdc7a132
             document.querySelectorAll(".delete").forEach((button) => {
                 button.addEventListener("click", (event) => {
                     const id = button.getAttribute("data-id");
@@ -95,7 +130,11 @@ function loadPlaces() {
         .catch((error) => console.error("Erro ao carregar os patrimônios: ", error));
 }
 
-// Editar patrimônio
+searchInput.addEventListener("input", (e) => {
+    const filter = e.target.value.trim();
+    loadPlaces(filter);
+});
+
 function editPlace(id, place) {
     document.getElementById("number").value = place.number || "";
     document.getElementById("name").value = place.name || "";
@@ -116,7 +155,7 @@ function editPlace(id, place) {
     }
 }
 
-// Excluir patrimônio
+
 function deletePlace(id) {
     placesRef
         .doc(id)
@@ -125,6 +164,7 @@ function deletePlace(id) {
         .catch((error) => console.error("Erro ao excluir patrimônio:", error));
 }
 
+<<<<<<< HEAD
 function filterPlaces() {
     const searchTerm = document.getElementById('search-input').value.toLowerCase();
     
@@ -178,4 +218,6 @@ function filterPlaces() {
         .catch((error) => console.error("Erro ao carregar os patrimônios: ", error));
 }
 // Carregar na inicialização
+=======
+>>>>>>> 5c3f69abfebb5ccff126b032f948b6b3bdc7a132
 loadPlaces();

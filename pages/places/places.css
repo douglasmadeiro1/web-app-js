@@ -1,11 +1,10 @@
-/* Cabeçalho */
 .header {
     width: 100%;
     padding: 15px 30px;
     background-color: #2c3e50;
     color: white;
     display: flex;
-    justify-content: flex-start;  /* Alinha à esquerda */
+    justify-content: flex-start;
     align-items: center;
     box-sizing: border-box;
 }
@@ -23,11 +22,9 @@
 
 .header .btn:hover {
     background-color: #2980b9;
-    transform: translateY(-4px); /* Levantar o botão */
+    transform: translateY(-4px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
-
-/* Restante do layout */
 
 .input-box {
     display: flex;
@@ -67,7 +64,6 @@
     transform: translateY(-4px);
 }
 
-/* Estilos principais */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f8f9fa;
@@ -91,7 +87,6 @@ body {
     margin-top: 20px;
 }
 
-/* Cabeçalho fixo da lista de contatos */
 .places-header {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
@@ -106,7 +101,6 @@ body {
     padding: 5px;
 }
 
-/* Lista de contatos */
 .places ul {
     list-style-type: none;
     padding: 0;
@@ -135,7 +129,6 @@ body {
     text-align: center;
 }
 
-/* Botões de Ação (Editar/Excluir) */
 .places li div {
     display: flex;
     justify-content: flex-start;
@@ -169,7 +162,7 @@ body {
 }
 
 .places li button i {
-    font-size: 18px;  /* Tamanho dos ícones */
+    font-size: 18px;
 }
 
 /* Responsividade */
@@ -179,7 +172,8 @@ body {
         width: 90%;
     }
 
-    .places-header, .contacts li {
+    .places-header,
+    .contacts li {
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
     }
 
@@ -196,3 +190,16 @@ body {
     }
 }
 
+.search-bar {
+    margin: 10px 0;
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+    height: 50px;
+}
+
+.search-bar input {
+    flex: 1;
+    padding: 8px;
+    font-size: 25px;
+}
