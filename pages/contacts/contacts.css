@@ -172,6 +172,7 @@ body {
 .contacts li button {
     padding: 8px 12px;
     background-color: #2ecc71;
+    height: 40px;
     color: white;
     border: none;
     cursor: pointer;
