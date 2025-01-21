@@ -2,8 +2,8 @@ function back() {
     window.location.href = "../dashboard/dashboard.html";
 }
 
-var db = firebase.firestore(); // Inicializa o Firestore
-var contactsRef = db.collection("contacts"); // Referência para a coleção "contacts"
+var db = firebase.firestore();
+var contactsRef = db.collection("contacts");
 
 
 var contactForm = document.getElementById('contact-form');
@@ -39,22 +39,21 @@ contactForm.addEventListener("submit", e => {
         phone4.value = '';
         address.value = '';
 
-        hiddenId.value = ''; // Limpar o hiddenId após o envio
-        loadContacts(); // Atualizar a lista de contatos
+        hiddenId.value = '';
+        loadContacts();
     }).catch((error) => {
         console.error("Erro ao salvar o contato: ", error);
     });
 });
 
 function loadContacts(filter = "") {
-    contacts.innerHTML = ''; // Limpa a lista antes de recarregar
+    contacts.innerHTML = '';
 
     contactsRef.get().then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
             var contact = doc.data();
             var id = doc.id;
 
-            // Verifica se o contato corresponde ao filtro
             if (
                 contact.name.toLowerCase().includes(filter.toLowerCase()) ||
                 contact.phone1.toLowerCase().includes(filter.toLowerCase()) ||
@@ -77,7 +76,6 @@ function loadContacts(filter = "") {
                     </div>
                 `;
 
-                // Adiciona os botões de ação
                 li.querySelector('.edit').onclick = function () {
                     editContact(id, contact);
                 };
@@ -111,7 +109,6 @@ function editContact(id, contact) {
     var hiddenId = document.getElementById('hiddenId');
     var submitButton = document.querySelector('button[type="submit"]');
 
-    // Preencher o formulário com os dados do contato
     name.value = contact.name;
     phone1.value = contact.phone1;
     phone2.value = contact.phone2;
@@ -119,21 +116,17 @@ function editContact(id, contact) {
     phone4.value = contact.phone4;
     address.value = contact.address;
 
-    // Definir o hiddenId com o id do contato
     hiddenId.value = id;
 
-    // Alterar o texto do botão para "Salvar" durante a edição
     submitButton.textContent = 'Salvar';
 }
 
-// Função para excluir um contato
 function deleteContact(id) {
     contactsRef.doc(id).delete().then(function () {
-        loadContacts(); // Atualizar lista após a exclusão
+        loadContacts(); 
     }).catch(function (error) {
         console.error('Erro ao excluir contato:', error);
     });
 }
 
-// Carregar contatos ao iniciar
 loadContacts();

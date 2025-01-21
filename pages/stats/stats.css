@@ -1,4 +1,3 @@
-/* Arquivo: assets/css/styles.css */
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
@@ -63,7 +62,6 @@ input[type="file"] {
 .btn:hover {
     background-color: #2980b9;
     transform: translateY(-4px);
-    /* Levantar o botão */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -97,7 +95,6 @@ canvas {
     height: auto !important;
 }
 
-/* Estilos para a tabela */
 .tabela-container {
     margin-top: 20px;
     padding: 20px;
