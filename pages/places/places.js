@@ -38,23 +38,49 @@ placesForm.addEventListener("submit", (e) => {
             if (submitButton) {
                 submitButton.textContent = "Adicionar";
             }
-            loadPlaces();
+            loadPlaces();  // Atualiza a lista
         })
         .catch((error) => console.error("Erro ao salvar o patrimônio: ", error));
 });
 
 var searchInput = document.getElementById('search-input');
+
+// Função para carregar os patrimônios com filtro
 function loadPlaces(filter = "") {
+    // Limpar a lista antes de adicionar novos itens
     placesList.innerHTML = '';
 
+    // Consultar os documentos no Firestore
     placesRef
         .get()
         .then((snapshot) => {
+            // Criar um array para armazenar os dados dos patrimônios
+            let places = [];
+
             snapshot.forEach((doc) => {
                 const place = doc.data();
-                const id = doc.id; // Obter o ID do documento
+                const id = doc.id;
 
-<<<<<<< HEAD
+                // Verifica se o nome ou número do patrimônio contém o termo de pesquisa
+                if (
+                    place.name.toLowerCase().includes(filter.toLowerCase()) ||
+                    place.number.toString().includes(filter)
+                ) {
+                    // Adiciona o patrimônio no array
+                    places.push({
+                        id: id,
+                        ...place
+                    });
+                }
+            });
+
+            // Ordenar os patrimônios pelo número (campo `number`)
+            places.sort((a, b) => a.number - b.number); // Ordena de forma crescente pelo número
+
+            // Adicionar os patrimônios ordenados na lista
+            places.forEach((place) => {
+                const id = place.id;
+
                 const li = document.createElement("li");
                 li.innerHTML = `
                     <span>${place.number}</span>
@@ -69,44 +95,18 @@ function loadPlaces(filter = "") {
                     <span>${place.address}</span>
                     <span>${place.obs}</span>
                     <div>
-                        <button class="edit" data-id="${id}" data-place='${JSON.stringify(place)}'><i class="fas fa-edit"></i></button>
-                        <button class="delete" data-id="${id}"><i class="fas fa-trash"></i></button>
+                        <button class="edit" data-id="${id}" data-place='${JSON.stringify(place)}'>
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="delete" data-id="${id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     </div>
                 `;
                 placesList.appendChild(li);
-=======
-                if (
-                    place.name.toLowerCase().includes(filter.toLowerCase()) ||
-                    place.number.toString().includes(filter)
-                ) {
-                    const li = document.createElement("li");
-                    li.innerHTML = `
-                        <span>${place.number}</span>
-                        <span>${place.name}</span>
-                        <span>${place.adm1}</span>
-                        <span>${place.phoneAdm1Main}</span>
-                        <span>${place.phoneAdm1Secondary}</span>
-                        <span>${place.adm2}</span>
-                        <span>${place.phoneAdm2Main}</span>
-                        <span>${place.phoneAdm2Secondary}</span>
-                        <span>${place.securityPassword}</span>
-                        <span>${place.address}</span>
-                        <span>${place.obs}</span>
-                        <div>
-                            <button class="edit" data-id="${id}" data-place='${JSON.stringify(place)}'>
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="delete" data-id="${id}">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    `;
-                    placesList.appendChild(li);
-                }
->>>>>>> 5c3f69abfebb5ccff126b032f948b6b3bdc7a132
             });
 
-            // Adicionar eventos nos botões "Editar"
+            // Adicionar eventos de clique nos botões "Editar"
             document.querySelectorAll(".edit").forEach((button) => {
                 button.addEventListener("click", (event) => {
                     const id = button.getAttribute("data-id");
@@ -115,11 +115,7 @@ function loadPlaces(filter = "") {
                 });
             });
 
-<<<<<<< HEAD
-            // Adicionar evento de clique nos botões "Excluir"
-=======
-            // Adicionar eventos nos botões "Excluir"
->>>>>>> 5c3f69abfebb5ccff126b032f948b6b3bdc7a132
+            // Adicionar eventos de clique nos botões "Excluir"
             document.querySelectorAll(".delete").forEach((button) => {
                 button.addEventListener("click", (event) => {
                     const id = button.getAttribute("data-id");
@@ -130,10 +126,11 @@ function loadPlaces(filter = "") {
         .catch((error) => console.error("Erro ao carregar os patrimônios: ", error));
 }
 
-searchInput.addEventListener("input", (e) => {
-    const filter = e.target.value.trim();
-    loadPlaces(filter);
-});
+// Função para filtrar os patrimônios com base na pesquisa
+function filterPlaces() {
+    const searchTerm = document.getElementById('search-input').value.trim().toLowerCase();
+    loadPlaces(searchTerm); // Chama loadPlaces com o termo de pesquisa
+}
 
 function editPlace(id, place) {
     document.getElementById("number").value = place.number || "";
@@ -155,69 +152,13 @@ function editPlace(id, place) {
     }
 }
 
-
 function deletePlace(id) {
     placesRef
         .doc(id)
         .delete()
-        .then(() => loadPlaces())
+        .then(() => loadPlaces())  // Atualiza a lista após exclusão
         .catch((error) => console.error("Erro ao excluir patrimônio:", error));
 }
 
-<<<<<<< HEAD
-function filterPlaces() {
-    const searchTerm = document.getElementById('search-input').value.toLowerCase();
-    
-    // Limpar a lista atual
-    placesList.innerHTML = '';
-
-    // Realizar a consulta no Firestore com base no termo de pesquisa
-    placesRef
-        .get()
-        .then((snapshot) => {
-            snapshot.forEach((doc) => {
-                const place = doc.data();
-                const id = doc.id;
-
-                // Verifica se o termo de pesquisa está no nome ou no número do patrimônio
-                if (
-                    place.name.toLowerCase().includes(searchTerm) ||
-                    place.number.toString().includes(searchTerm)
-                ) {
-                    const li = document.createElement("li");
-                    li.innerHTML = `
-                        <span>${place.number}</span>
-                        <span>${place.name}</span>
-                        <span>${place.adm1}</span>
-                        <span>${place.phoneAdm1Main}</span>
-                        <span>${place.phoneAdm1Secondary}</span>
-                        <span>${place.adm2}</span>
-                        <span>${place.phoneAdm2Main}</span>
-                        <span>${place.phoneAdm2Secondary}</span>
-                        <span>${place.securityPassword}</span>
-                        <span>${place.address}</span>
-                        <span>${place.obs}</span>
-                        <div>
-                            <button class="edit"><i class="fas fa-edit"></i></button>
-                            <button class="delete"><i class="fas fa-trash"></i></button>
-                        </div>
-                    `;
-                    placesList.appendChild(li);
-                }
-            });
-
-            // Adicionar evento de clique nos botões "Editar"
-            document.querySelectorAll(".edit").forEach((button) => {
-                button.addEventListener("click", (event) => {
-                    const id = button.getAttribute("data-id");
-                    const place = JSON.parse(button.getAttribute("data-place"));
-                    editPlace(id, place);
-                });
-            });
-        })
-        .catch((error) => console.error("Erro ao carregar os patrimônios: ", error));
-}
-// Carregar na inicialização
-=======
->>>>>>> 5c3f69abfebb5ccff126b032f948b6b3bdc7a132
+// Inicializa a lista ao carregar a página
 loadPlaces();
