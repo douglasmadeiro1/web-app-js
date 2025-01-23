@@ -16,6 +16,7 @@ placesForm.addEventListener("submit", (e) => {
 
     var data = {
         number: document.getElementById("number").value,
+        area: document.getElementById("area").value,
         name: document.getElementById("name").value,
         adm1: document.getElementById("adm-1").value,
         phoneAdm1Main: document.getElementById("phone-adm-1-main").value,
@@ -46,6 +47,7 @@ placesForm.addEventListener("submit", (e) => {
 var searchInput = document.getElementById('search-input');
 
 // Função para carregar os patrimônios com filtro
+// Função para carregar os patrimônios com filtro
 function loadPlaces(filter = "") {
     // Limpar a lista antes de adicionar novos itens
     placesList.innerHTML = '';
@@ -54,7 +56,6 @@ function loadPlaces(filter = "") {
     placesRef
         .get()
         .then((snapshot) => {
-            // Criar um array para armazenar os dados dos patrimônios
             let places = [];
 
             snapshot.forEach((doc) => {
@@ -66,7 +67,6 @@ function loadPlaces(filter = "") {
                     place.name.toLowerCase().includes(filter.toLowerCase()) ||
                     place.number.toString().includes(filter)
                 ) {
-                    // Adiciona o patrimônio no array
                     places.push({
                         id: id,
                         ...place
@@ -75,15 +75,20 @@ function loadPlaces(filter = "") {
             });
 
             // Ordenar os patrimônios pelo número (campo `number`)
-            places.sort((a, b) => a.number - b.number); // Ordena de forma crescente pelo número
+            places.sort((a, b) => a.number - b.number);
 
             // Adicionar os patrimônios ordenados na lista
             places.forEach((place) => {
                 const id = place.id;
 
                 const li = document.createElement("li");
+                
+                // Criar o link para o Google Maps
+                const mapsLink = `https://www.google.com/maps?q=${encodeURIComponent(place.address)}`;
+
                 li.innerHTML = `
                     <span>${place.number}</span>
+                    <span>${place.area}</span>
                     <span>${place.name}</span>
                     <span>${place.adm1}</span>
                     <span>${place.phoneAdm1Main}</span>
@@ -92,7 +97,7 @@ function loadPlaces(filter = "") {
                     <span>${place.phoneAdm2Main}</span>
                     <span>${place.phoneAdm2Secondary}</span>
                     <span>${place.securityPassword}</span>
-                    <span>${place.address}</span>
+                    <span><a href="${mapsLink}" target="_blank">${place.address}</a></span>
                     <span>${place.obs}</span>
                     <div>
                         <button class="edit" data-id="${id}" data-place='${JSON.stringify(place)}'>
@@ -126,6 +131,7 @@ function loadPlaces(filter = "") {
         .catch((error) => console.error("Erro ao carregar os patrimônios: ", error));
 }
 
+
 // Função para filtrar os patrimônios com base na pesquisa
 function filterPlaces() {
     const searchTerm = document.getElementById('search-input').value.trim().toLowerCase();
@@ -134,6 +140,7 @@ function filterPlaces() {
 
 function editPlace(id, place) {
     document.getElementById("number").value = place.number || "";
+    document.getElementById("area").value = place.area || ""
     document.getElementById("name").value = place.name || "";
     document.getElementById("adm-1").value = place.adm1 || "";
     document.getElementById("phone-adm-1-main").value = place.phoneAdm1Main || "";

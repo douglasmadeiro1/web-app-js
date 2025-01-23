@@ -63,6 +63,9 @@ function processExcel(data, isXLS = false) {
 }
 function gerarEstatisticas(planilha) {
     const categorias = {
+        Parada_técnica: [
+            "Parada técnica",
+        ],
         Permanencia_área_central: [
             "Parada / Permanência  Preventiva - ÁREA CENTRAL",
             "Parada / Permanência  Preventiva - PRAÇA CENTRAL",
@@ -74,11 +77,13 @@ function gerarEstatisticas(planilha) {
         Permanencia_unidade_de_saúde: [
             "Parada / Permanência Preventiva - Unidade de Saúde",
             "Parada / Permanência Preventiva - Unidade de Saúde / Parada / Permanência  Preventiva ",
+            "Parada / PTA / Permanência Preventiva - Unidade de Saúde",
         ],
         Permanencia_Unidade_escolar: [
             "Parada / Permanência Preventiva - Unidade Escolar",
             "Parada / Permanência Preventiva - Unidade Escolar / Operação Saturação",
             "Operação Saturação / Parada / Permanência Preventiva - Unidade Escolar",
+            "Parada / PTA /  Permanência Preventiva - Unidade Escolar",
         ],
         Permanencia_feira: [
             "Parada / Permanência  Preventiva - FEIRA LIVRE",
@@ -129,10 +134,12 @@ function gerarEstatisticas(planilha) {
             "Apoio a Orgãos  de  Saúde , Santa Casa  - PS - UBS - UPA - CAPS / Apoio a defesa civil",
             "Atendimento de Saúde",
             "Surto psicótico - atendimento/encaminhamento / Averiguação Atitude Suspeita",
+            "Apoio a Orgãos  de  Saúde  Santa Casa  - PS - UBS - UPA – CAPS",
         ],
         Apoio_conselho_tutelar: [
             "Apoio Conselho Tutelar",
             "Apoio Conselho Tutelar / Apoio",
+            "Averiguação / Outros / Apoio Conselho Tutelar",
         ],
         Abandono_de_incapaz: [
             "Abandono de incapaz / Apoio Conselho Tutelar",
@@ -146,6 +153,7 @@ function gerarEstatisticas(planilha) {
             "Acompanhamento - Manifestação Religiosa - Procissão",
             "Acompanhamento - manifestação pública - passeata",
             "Acompanhamento - manifestação pública - carreata",
+            "Parada / Permanência  Preventiva  / Apoio/Monitoramento a eventos",
         ],
         Apoio_outros_orgãos: [
             "Apoio a outros órgãos",
@@ -177,6 +185,7 @@ function gerarEstatisticas(planilha) {
             "Averiguação / Outros / Abordagem a pessoas em atitude suspeita",
             "Averiguação Atitude Suspeita / Abordagem a pessoas em atitude suspeita",
             "Abordagem a pessoas em atitude suspeita / Averiguação de Veiculo / Localização de arma de fogo",
+            "Parada / Permanência  Preventiva  / Averiguação Atitude Suspeita",
         ],
         Desordem: [
             "Apoio / Desordem",
@@ -238,6 +247,7 @@ function gerarEstatisticas(planilha) {
             "Desinteligência / Desobediência",
             "Desinteligência / Perturbação da tranquilidade",
             "Desinteligência / Vias de fato", 
+            "Desinteligência / Parada / Permanência  Preventiva - Rodoviária ",
         ],
         Tentativa_de_homicidio: [
             "Tentativa de homicídio",
@@ -349,6 +359,7 @@ function gerarEstatisticas(planilha) {
             "Ameaça / Dano",
             "Ameaça a servidor / Infração de trânsito / Denúncia",
             "Ameaça a servidor",
+            "Ameaça / Desinteligência",
         ],
         Operação_saturação: [
             "Operação Saturação",
@@ -386,6 +397,7 @@ function gerarEstatisticas(planilha) {
             "Infração de trânsito / Denúncia / Porte de drogas para consumo pessoal",
             "Infração de trânsito / Embriaguez / Denúncia",
             "Remoção de veículo",
+            "Denúncia / Remoção de veículo",
             "Infração de trânsito / Fiscalização e policiamento - tráfego / Denúncia",
             "Averiguação de Veiculo / Embriaguez",
             "Direção perigosa de veículo em via pública",
