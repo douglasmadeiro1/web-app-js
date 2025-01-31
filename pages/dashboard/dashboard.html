@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="dashboard.css">
+    <title>Dashboard</title>
+</head>
+<body>
+    <div class="sidebar">
+        <div>
+            <button class="btn" onclick="stats()">Estatística de Ocorrências</button>
+            <button class="btn" onclick="contacts()">Agenda Telefônica</button>
+            <button class="btn" onclick="places()">Patrimônios Públicos</button>
+        </div>
+        <div>
+            <button class="btn" onclick="logout()">Sair</button>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Bem-vindo</h1>
+        </div>
+        <div class="dashboard-main">
+            <img src="../../assets/image/background-gcm.jpg" class="background-gcm">
+        </div>
+        <div class="container">
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-auth-compat.js"></script>
+    <script src="../../firebase-init.js"></script>
+    <script src="../../auth-guard.js"></script>
+</body>
+</html>
