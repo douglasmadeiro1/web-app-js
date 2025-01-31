@@ -12,7 +12,7 @@ loginBtn.addEventListener('click', () => {
 
 firebase.auth().onAuthStateChanged(user => {
     if (user) {
-        window.location.href = "pages/Dashboard/dashboard.html";
+        window.location.href = "pages/dashboard/dashboard.html";
     }
 })
 
@@ -22,7 +22,7 @@ function login() {
 
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then(response => {
-            window.location.href = "pages/Dashboard/dashboard.html";
+            window.location.href = "pages/dashboard/dashboard.html";
         }).catch(error => {
             console.log(getErrorMessage(error));
         });
@@ -33,7 +33,7 @@ function register() {
     const email = form.emailRegister().value;
     const password = form.passwordRegister().value;
     firebase.auth().createUserWithEmailAndPassword(email, password).then(() => {
-        window.location.href = "pages/Dashboard/dashboard.html";
+        window.location.href = "pages/dashboard/dashboard.html";
     }).catch(error => {
         console.log(getErrorMessage(error));
         });
