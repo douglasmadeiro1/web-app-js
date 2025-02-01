@@ -49,7 +49,7 @@ contactForm.addEventListener("submit", e => {
 function loadContacts(filter = "") {
     contacts.innerHTML = '';
 
-    contactsRef.get().then(function (querySnapshot) {
+    contactsRef.orderBy("name").get().then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
             var contact = doc.data();
             var id = doc.id;
