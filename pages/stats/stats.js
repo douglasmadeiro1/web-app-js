@@ -77,13 +77,17 @@ function gerarEstatisticas(planilha) {
         Permanencia_unidade_de_saúde: [
             "Parada / Permanência Preventiva - Unidade de Saúde",
             "Parada / Permanência Preventiva - Unidade de Saúde / Parada / Permanência  Preventiva ",
-            "Parada / PTA / Permanência Preventiva - Unidade de Saúde",
         ],
         Permanencia_Unidade_escolar: [
             "Parada / Permanência Preventiva - Unidade Escolar",
             "Parada / Permanência Preventiva - Unidade Escolar / Operação Saturação",
             "Operação Saturação / Parada / Permanência Preventiva - Unidade Escolar",
+        ],
+        Patrulhamento_unidade_escolar: [
             "Parada / PTA /  Permanência Preventiva - Unidade Escolar",
+        ],
+        Patrulhamento_unidade_de_saúde: [
+            "Parada / PTA / Permanência Preventiva - Unidade de Saúde",
         ],
         Permanencia_feira: [
             "Parada / Permanência  Preventiva - FEIRA LIVRE",
