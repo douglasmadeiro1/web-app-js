@@ -163,7 +163,8 @@ function gerarEstatisticas(planilha) {
             "Apoio a Casa abrigo / Apoio Samu",
             "Apoio a outros órgãos / Desinteligência / Apoio Órgãos Públicos",
             "Apoio a outros órgãos / Isolamento de Via",
-            "Apoio ou reforço"
+            "Apoio ou reforço",
+            "Apoio a Casa abrigo",
         ],
         Auxilio_ao_público: [
             "Auxílio ao público - Cidadão",
@@ -186,6 +187,7 @@ function gerarEstatisticas(planilha) {
             "Averiguação Atitude Suspeita / Abordagem a pessoas em atitude suspeita",
             "Abordagem a pessoas em atitude suspeita / Averiguação de Veiculo / Localização de arma de fogo",
             "Parada / Permanência  Preventiva  / Averiguação Atitude Suspeita",
+            "Averiguação Atitude Suspeita / Parada / Permanência  Preventiva - Rodoviária ",
         ],
         Desordem: [
             "Apoio / Desordem",
@@ -248,6 +250,8 @@ function gerarEstatisticas(planilha) {
             "Desinteligência / Perturbação da tranquilidade",
             "Desinteligência / Vias de fato", 
             "Desinteligência / Parada / Permanência  Preventiva - Rodoviária ",
+            "Desinteligência / Lesão corporal",
+            "Desinteligência / Agressão",
         ],
         Tentativa_de_homicidio: [
             "Tentativa de homicídio",
@@ -320,6 +324,7 @@ function gerarEstatisticas(planilha) {
             "Atendimento de Medida Protetiva",
             "Descumprimento de Ordem Judicial/Medida Protetiva",
             "Descumprimento de Ordem Judicial/Medida Protetiva / Violência Doméstica Contra a Mulher/Maria da Penha",
+            "Atendimento de Medida Protetiva / Descumprimento de Ordem Judicial/Medida Protetiva",
         ],
         Encontro_de_cadaver: [
             "Encontro de cadáver",
@@ -353,6 +358,7 @@ function gerarEstatisticas(planilha) {
             "Agressão",
             "Agressão / Desinteligência",
             "Perturbação da tranquilidade / Agressão",
+            "Apoio / Desinteligência / Agressão",
         ],
         Ameaça: [
             "Ameaça",
@@ -360,6 +366,9 @@ function gerarEstatisticas(planilha) {
             "Ameaça a servidor / Infração de trânsito / Denúncia",
             "Ameaça a servidor",
             "Ameaça / Desinteligência",
+        ],
+        Injuria: [
+            "Injúria / Ameaça",
         ],
         Operação_saturação: [
             "Operação Saturação",
@@ -380,6 +389,7 @@ function gerarEstatisticas(planilha) {
         ],
         Trânsito: [
             "Acidente / Acidente de trânsito com vítima",
+            "Acidente de trânsito sem vítima / Desinteligência",
             "Fio- cabo elétrico energizado na via",
             "Acidente de trânsito com vítima",
             "Acidente de trânsito com vítima / Acidente de trânsito sem vítima / Acidente com Lesão Corporal",
@@ -526,7 +536,10 @@ function gerarEstatisticas(planilha) {
         ],
         Acidentes_naturais: [
             "Acidentes naturais",
-        ]
+        ],
+        Cadastro_de_propriedade_rural: [
+            "CADASTRO PROPRIEDADE RURAL",
+        ],
     };
 
     const contagem = {};
