@@ -2,6 +2,10 @@ function stats() {
     window.location.href = "../stats/stats.html";
 }
 
+function completeStats() {
+    window.location.href = "../complete_stats/complete_stats.html"
+}
+
 function contacts() {
     window.location.href = "../contacts/contacts.html";
 }
