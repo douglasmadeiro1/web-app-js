@@ -95,6 +95,10 @@ canvas {
     height: auto !important;
 }
 
+.chart-title {
+    text-decoration: none;
+}
+
 .tabela-container {
     margin-top: 20px;
     padding: 20px;

@@ -1,9 +1,69 @@
+document.getElementById("generatePDF").addEventListener("click", async () => {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("p", "mm", "a4");
+
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(18);
+    pdf.text("Relatório de Ocorrências", 15, 20);
+    pdf.setFontSize(12);
+    pdf.setFont("helvetica", "normal");
+    pdf.text("Análise detalhada de ocorrências registradas", 15, 28);
+
+    const chartCanvas = document.getElementById("naturezaChart");
+    if (chartCanvas) {
+        const chartImage = await html2canvas(chartCanvas);
+        const chartData = chartImage.toDataURL("image/png");
+        pdf.addImage(chartData, "PNG", 15, 35, 180, 90);
+    }
+
+    const tabelaElement = document.querySelector(".tabela tbody");
+    if (tabelaElement) {
+        const rows = [];
+        const headers = ["Categoria", "Ocorrências"];
+        
+        tabelaElement.querySelectorAll("tr").forEach((tr) => {
+            const cells = tr.querySelectorAll("td");
+            const rowData = Array.from(cells).map(td => td.innerText);
+            rows.push(rowData);
+        });
+
+        pdf.autoTable({
+            startY: 130,
+            head: [headers],
+            body: rows,
+            theme: "striped",
+            styles: {
+                fontSize: 10,
+                cellPadding: 3,
+            },
+            headStyles: {
+                fillColor: [54, 162, 235],
+                textColor: 255,
+                fontStyle: "bold",
+            },
+            alternateRowStyles: {
+                fillColor: [240, 240, 240],
+            },
+            margin: { top: 20 },
+        });
+    }
+
+    const pageCount = pdf.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+        pdf.setPage(i);
+        pdf.setFontSize(10);
+        pdf.text(`Página ${i} de ${pageCount}`, 180, 290);
+    }
+
+    pdf.save(`relatorio_ocorrencias_${new Date().toLocaleDateString()}.pdf`);
+});
+
 document.getElementById("processFile").addEventListener("click", () => {
-    const fileInput = document.getElementById("fileInput");  // Aqui, pegamos o elemento input
-    const file = fileInput?.files[0];  // Aqui pegamos o arquivo selecionado (o primeiro arquivo, caso haja múltiplos)
+    const fileInput = document.getElementById("fileInput");
+    const file = fileInput?.files[0];
 
     const spinner = document.getElementById("spinner");
-    spinner.style.display = "block"; // Mostra o spinner
+    spinner.style.display = "block";
     setTimeout(() => spinner.style.display = "none", 1500);
 
     if (!file) {
@@ -17,9 +77,9 @@ document.getElementById("processFile").addEventListener("click", () => {
         const data = e.target.result;
     
         if (file.name.endsWith(".xlsx")) {
-            processExcel(data); // XLSX usa ArrayBuffer
+            processExcel(data);
         } else if (file.name.endsWith(".xls")) {
-            processExcel(data, true); // XLS usa BinaryString
+            processExcel(data, true);
         } else if (file.name.endsWith(".csv")) {
             processCSV(data);
         } else {
@@ -27,20 +87,18 @@ document.getElementById("processFile").addEventListener("click", () => {
         }
     };
     
-    // Use o método adequado para cada tipo de arquivo
     if (file.name.endsWith(".xls")) {
-        reader.readAsBinaryString(file); // XLS requer BinaryString
+        reader.readAsBinaryString(file);
     } else {
-        reader.readAsArrayBuffer(file); // Outros formatos podem usar ArrayBuffer
+        reader.readAsArrayBuffer(file);
     };
 
-    // Usando readAsArrayBuffer, que é a forma recomendada
-    reader.readAsArrayBuffer(file);  // Aqui passamos o arquivo como argumento
+    reader.readAsArrayBuffer(file);
 });
 
 function processCSV(data) {
     Papa.parse(data, {
-        header: false, // Ler como matriz
+        header: false,
         complete: (results) => {
             const planilha = results.data;
             console.log("Dados CSV processados:", planilha);
@@ -58,7 +116,7 @@ function processExcel(data, isXLS = false) {
     const sheetName = workbook.SheetNames[0];
     const worksheet = workbook.Sheets[sheetName];
 
-    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 }); // Obter os dados como uma matriz 2D
+    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
     gerarEstatisticas(jsonData);
 }
 function gerarEstatisticas(planilha) {
@@ -548,10 +606,9 @@ function gerarEstatisticas(planilha) {
 
     const contagem = {};
 
-    // Contagem das ocorrências por categoria
     for (const linha of planilha) {
         for (const celula of linha) {
-            if (!celula) continue; // Ignorar células vazias
+            if (!celula) continue;
 
             let categorizada = false;
             const textoNormalizado = celula.toString().toLowerCase().trim();
@@ -566,25 +623,20 @@ function gerarEstatisticas(planilha) {
         }
     }
 
-    // Ordenando as categorias em ordem decrescente
-    const dadosOrdenados = Object.entries(contagem).sort((a, b) => b[1] - a[1]); // Ordem decrescente
+    const dadosOrdenados = Object.entries(contagem).sort((a, b) => b[1] - a[1]);
 
     console.log("Contagem de Categorias:", contagem);
 
-    // Gerar gráfico
     exibirGrafico(dadosOrdenados);
 
-    // Gerar tabela
     exibirTabela(dadosOrdenados);
 }
 
-// Função para exibir o gráfico
 function exibirGrafico(dadosOrdenados) {
     const ctx = document.getElementById("naturezaChart").getContext("2d");
 
-    // Verificar se já existe um gráfico e destruí-lo antes de criar um novo
     if (window.chartInstance) {
-        window.chartInstance.destroy(); // Destrói o gráfico existente
+        window.chartInstance.destroy();
     }
 
     const labels = dadosOrdenados.map(([key]) => key);
@@ -610,15 +662,14 @@ function exibirGrafico(dadosOrdenados) {
         "rgba(255, 159, 64, 1)",
     ];
 
-    // Criar um novo gráfico
     window.chartInstance = new Chart(ctx, {
         type: "bar",
         data: {
-            labels: labels, // Definir as labels com as categorias
+            labels: labels,
             datasets: [
                 {
                     label: "Quantidade de Incidências", 
-                    data: valores, // Definir os valores das ocorrências
+                    data: valores,
                     backgroundColor: cores.slice(0, labels.length),
                     borderColor: coresBorda.slice(0, labels.length),
                     borderWidth: 1,
@@ -657,7 +708,7 @@ function exibirGrafico(dadosOrdenados) {
             scales: {
                 y: {
                     beginAtZero: true,
-                    max: Math.max(...valores) * 1.2, // Ajuste automático para o máximo dos valores
+                    max: Math.max(...valores) * 1.2,
                 },
             },
         },
@@ -665,7 +716,6 @@ function exibirGrafico(dadosOrdenados) {
     });
 }
 
-// Função para exibir a tabela com os resultados
 function exibirTabela(dadosOrdenados) {
     const tabelaContainer = document.createElement('div');
     tabelaContainer.classList.add('tabela-container');
@@ -673,7 +723,6 @@ function exibirTabela(dadosOrdenados) {
     const tabela = document.createElement('table');
     tabela.classList.add('tabela');
 
-    // Cabeçalho da tabela
     const thead = document.createElement('thead');
     const trHead = document.createElement('tr');
     const thCategoria = document.createElement('th');
