@@ -14,6 +14,10 @@ function places() {
     window.location.href = "../places/places.html";
 }
 
+function vehicle() {
+    window.location.href = "../vehicle/vehicle.html";
+}
+
 function logout() {
     firebase.auth().signOut().then(() => {
         window.location.href = "../../index.html";
