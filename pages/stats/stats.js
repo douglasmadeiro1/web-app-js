@@ -354,9 +354,6 @@ function gerarEstatisticas(planilha) {
             "Furto / Receptação",
             "Apoio / Desordem",
             "Desordem",
-        ],
-        
-        Atitude_suspeita: [
             "Abordagem a pessoas em atitude suspeita",
             "Averiguação / Outros",
             "Averiguação Atitude Suspeita",
@@ -427,7 +424,13 @@ function gerarEstatisticas(planilha) {
 
         Crimes_contra_a_vida: [
             "Tentativa de homicídio",
+        ],
+
+        Tentativa_de_suicídio: [
             "Tentativa de suicídio",
+        ],
+
+        Encontro_de_Cadaver: [
             "Encontro de cadáver",
         ],
 
