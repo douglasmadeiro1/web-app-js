@@ -144,6 +144,7 @@ function gerarEstatisticas(planilha) {
             "parada / permanência preventiva - outros órgãos públicos",
             "Parada / Permanência  Preventiva - COMPLEXO ESPORTIVO",
             "Patrulhamento preventivo",
+            "Parada / Permanência  Preventiva - PRAÇA CENTRAL / Parada / Permanência  Preventiva - ÁREA CENTRAL",
             "Parada / Permanência  Preventiva - OUTROS ORGÃOS PUBLICOS",
             "Parada / Permanência  Preventiva  / Apoio Órgãos Privados",
         ],
@@ -152,12 +153,14 @@ function gerarEstatisticas(planilha) {
         [
             "Apoio a Orgãos  de  Saúde , Santa Casa  - PS - UBS - UPA - CAPS",
             "Apoio Samu",
+            "Controle de tráfego / Queda de Árvore",
             "Apoio Samu / Averiguação Atitude Suspeita",
             "Apoio Samu / Surto psicótico - atendimento/encaminhamento",
             "Surto psicótico - atendimento/encaminhamento",
             "Surto psicótico - atendimento/encaminhamento / Apoio Samu",
             "Apoio Samu / Acidente de trânsito com vítima",
             "Apoio Samu / Apoio Conselho Tutelar",
+            "Orientação/Conselho Tutelar",
             "Apoio a Orgãos  de  Saúde , Santa Casa  - PS - UBS - UPA - CAPS / Apoio a defesa civil",
             "Atendimento de Saúde",
             "Surto psicótico - atendimento/encaminhamento / Averiguação Atitude Suspeita",
@@ -185,6 +188,7 @@ function gerarEstatisticas(planilha) {
             "Preservação local para perícia",
             "Apoio a Policia Civil / Averiguação de Furto",
             "APOIO AO DEPARTAMENTO DE TRÂNSITO ",
+            "Tentativa de furto / Averiguação Atitude Suspeita",
             "Isolamento de Via",
             "Isolamento de Via / Cabos e fios caidos",
             "Óleo na via",
@@ -203,6 +207,7 @@ function gerarEstatisticas(planilha) {
             "Incêndio / Controle de tráfego",
             "Incêndio em vegetação",
             "Incêndio",
+            "Introdução ou abandono de animais em propriedade alheia / Apoio a ONGs",
         ],
 
         Fiscalização_de_Trânsito: [
@@ -255,6 +260,7 @@ function gerarEstatisticas(planilha) {
             "Controle de tráfego / Ordem de Serviço",
             "Acidente de trânsito com vítima / Averiguação de Veiculo",
             "Acidente sem Lesão Corporal",
+            "Fiscalização e policiamento - tráfego / Averiguação / Outros",
             "Atropelamento por automóvel / Acidente de trânsito com vítima",
         ],
 
@@ -271,6 +277,7 @@ function gerarEstatisticas(planilha) {
             "Fiscalização de Posturas / Descarte irregular de resíduo",
             "Denúncia / Perturbação da tranquilidade",
             "Perturbação da tranquilidade / Desacato",
+            "Perturbação da tranquilidade / Infração de trânsito / Denúncia",
         ],
         Fiscalização_ambiental: [
             "Averiguação Ambiental",
@@ -285,6 +292,10 @@ function gerarEstatisticas(planilha) {
             "Comunicação - Orientação das partes",
             "Auxílio ao usuário",
             "Ocorrências diversas",
+            "Conduta Inadequada",
+            "Soltar balões",
+            "Denúncia / Desobediência / Infração de trânsito / Desinteligência",
+            "Averiguação Atitude Suspeita / Simulacro de arma de fogo",
             "Localização de pessoa perdida",
             "Desinteligência",
             "Desinteligência / Averiguação de Uso de Drogas",
@@ -297,9 +308,11 @@ function gerarEstatisticas(planilha) {
             "Desinteligência / Lesão corporal",
             "Desinteligência / Agressão",
             "Averiguação de Furto",
+            "Veículo em Pane na Via Pública / Auxílio ao público - Cidadão",
             "Produto de B-01/B-04 localizado",
             "Averiguação Atitude Suspeita / Localização de Veículo roubado/furtado/clonado",
             "Tentativa de furto",
+            "Furto / Infração Ambiental / Averiguação Ambiental",
             "Localização de Veículo roubado/furtado/clonado",
             "Averiguação / Outros / Apropriação indébita",
             "Furto",
@@ -310,6 +323,7 @@ function gerarEstatisticas(planilha) {
             "Localização de Veículo roubado/furtado/clonado / Apoio a Militar/Policial Militar/Bombeiro",
             "Averiguação de Furto / Arrombamento",
             "Averiguação de Furto / Estupro",
+            "Localização de Veículo roubado/furtado/clonado / Averiguação de Roubo",
             "Furto/Tentativa Patrimônio Público",
             "Escolta",
             "Averiguação / Outros / Agressão",
@@ -363,12 +377,15 @@ function gerarEstatisticas(planilha) {
             "Abordagem a pessoas em atitude suspeita / Porte de drogas para consumo pessoal / Desacato",
             "Averiguação Atitude Suspeita / Averiguação de Veiculo",
             "Embriaguez",
+            "Comunicação de desaparecimento de pessoa",
             "Abordagem a veículo / Averiguação Atitude Suspeita",
             "Averiguação / Outros / Abordagem a pessoas em atitude suspeita",
             "Averiguação Atitude Suspeita / Abordagem a pessoas em atitude suspeita",
             "Abordagem a pessoas em atitude suspeita / Averiguação de Veiculo / Localização de arma de fogo",
             "Parada / Permanência  Preventiva  / Averiguação Atitude Suspeita",
             "Averiguação Atitude Suspeita / Parada / Permanência  Preventiva - Rodoviária ",
+            "Ponto de Estacionamento Preventivo",
+            "Abordagem a veículo",
         ],
 
         Desacato_Desobediencia_Resistencia: [
@@ -388,6 +405,7 @@ function gerarEstatisticas(planilha) {
 
         Violência_doméstica: [
             "Violência doméstica",
+            "Apoio / Violência Doméstica Contra a Mulher/Maria da Penha",
             "Auxílio ao público - Cidadão / Violência Doméstica Contra a Mulher/Maria da Penha",
             "Violência Doméstica Contra a Mulher/Maria da Penha",
             "Ameaça Contra a Mulher",
@@ -464,6 +482,7 @@ function gerarEstatisticas(planilha) {
             "Corrupção de menores / Associação criminosa / Tráfico de drogas",
             "Localização de drogas / Tráfico de drogas",
             "Tráfico de drogas / Fiscalização de Posturas / Averiguação / Outros",
+            "Tráfico de drogas / Averiguação Atitude Suspeita",
         ],
 
         Estupro: [
@@ -494,6 +513,7 @@ function gerarEstatisticas(planilha) {
             "Averiguação / Outros / Disparo de arma de fogo",
             "Localização de arma de fogo / Localização de objetos diversos",
             "Localização de objetos diversos / Localização de arma de fogo",
+            "Localização de arma de fogo",
         ],
 
         Crime_eleitoral: [
