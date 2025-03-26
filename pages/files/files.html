@@ -3,23 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editor de Documento DOCX</title>
-    <script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <title>Galeria de Arquivos</title>
     <link rel="stylesheet" href="files.css">
 </head>
 <body>
 
     <div class="container">
-        <h1>Editor de Documento DOCX</h1>
-        <input type="file" id="fileInput" accept=".docx">
-        <div class="docx-preview" id="docxPreview"></div>
-        <button onclick="saveDocument()">Salvar Alterações</button>
-        <button onclick="printDocument()">Imprimir Documento</button>
+        <h1>Galeria de Arquivos</h1>
+        <input type="file" id="fileInput" accept=".docx, .pdf" multiple>
+        <div id="fileGallery" class="file-gallery"></div>
     </div>
 
     <script src="files.js"></script>
-
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>
 </body>
 </html>

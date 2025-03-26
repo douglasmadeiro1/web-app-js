@@ -1,74 +1,72 @@
-let originalDocx = ""; // Guarda o DOCX original para substituir os campos
+// Inicializar o Firebase Storage
+const storage = firebase.storage();
 
-// 🔹 Carregar e processar o DOCX
-document.getElementById('fileInput').addEventListener('change', async function(event) {
-    const file = event.target.files[0];
-    if (file && file.name.endsWith('.docx')) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const arrayBuffer = e.target.result;
-            
-            // Usando Mammoth para converter DOCX para HTML
-            mammoth.convertToHtml({ arrayBuffer: arrayBuffer })
-                .then(function(result) {
-                    originalDocx = result.value; // Mantém o DOCX original
-                    generatePreview(originalDocx);
-                })
-                .catch(function(err) {
-                    console.error("Erro ao processar o DOCX:", err);
+// Função para processar e fazer upload dos arquivos para o Firebase
+function handleFileUpload(event) {
+    const files = event.target.files;
+    
+    // Limpa a galeria antes de adicionar os novos arquivos
+    fileGallery.innerHTML = '';
+
+    Array.from(files).forEach(file => {
+        // Cria referência para o arquivo no Firebase Storage
+        const storageRef = storage.ref(`uploads/${file.name}`);
+        const uploadTask = storageRef.put(file);
+
+        uploadTask.on('state_changed', 
+            (snapshot) => {
+                // Acompanhe o progresso, se necessário
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log(`Progresso: ${progress}%`);
+            }, 
+            (error) => {
+                // Trata erros
+                console.error('Erro ao fazer upload', error);
+            }, 
+            () => {
+                // Quando o upload for concluído, obtenha a URL de download
+                uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                    const fileItem = document.createElement('div');
+                    fileItem.classList.add('file-item');
+
+                    const previewContainer = document.createElement('div');
+                    previewContainer.classList.add('file-preview');
+                    previewContainer.innerHTML = `
+                        <h3>${file.name}</h3>
+                        <button onclick="openFile('${downloadURL}', '${file.name}')">Abrir</button>
+                        <button onclick="downloadFile('${file.name}', '${downloadURL}')">Baixar</button>
+                        <button onclick="printFile('${downloadURL}')">Imprimir</button>
+                    `;
+                    fileItem.appendChild(previewContainer);
+                    fileGallery.appendChild(fileItem);
                 });
-        };
-        reader.readAsArrayBuffer(file);
-    }
-});
-
-// 🔹 Gerar o preview do documento mantendo a formatação original
-function generatePreview(htmlContent) {
-    const previewContainer = document.getElementById('docxPreview');
-    previewContainer.innerHTML = ''; // Limpa o conteúdo anterior
-
-    // Substitui campos "{campo}" por inputs editáveis
-    const updatedContent = htmlContent.replace(/{([^}]+)}/g, function(match, p1) {
-        return `<input type="text" class="editable" data-placeholder="${p1}" value="">`;
-    });
-
-    previewContainer.innerHTML = updatedContent;
-}
-
-// 🔹 Salvar as alterações mantendo a formatação
-function saveDocument() {
-    if (!originalDocx) {
-        alert('Carregue um arquivo .docx antes de salvar.');
-        return;
-    }
-
-    const inputs = document.querySelectorAll('.editable');
-    let updatedDocx = originalDocx;
-
-    // Substitui os placeholders pelos valores preenchidos
-    inputs.forEach(input => {
-        const placeholder = input.dataset.placeholder;
-        const newValue = input.value || `[${placeholder}]`; // Se vazio, mantém o placeholder
-        updatedDocx = updatedDocx.replace(`{${placeholder}}`, newValue);
-    });
-
-    // Criar um novo documento DOCX mantendo a formatação original
-    const zip = new JSZip();
-    zip.file("documento_editado.docx", updatedDocx);
-    zip.generateAsync({ type: "blob" }).then(function(blob) {
-        saveAs(blob, "documento_editado.docx");
+            }
+        );
     });
 }
 
-// 🔹 Imprimir o documento com formatação preservada
-function printDocument() {
-    const content = document.getElementById('docxPreview').innerHTML;
-    const printWindow = window.open('', '', 'height=800,width=800');
-    printWindow.document.write('<html><head><title>Imprimir Documento</title>');
-    printWindow.document.write('<style>body { font-family: Arial, sans-serif; padding: 20px; }</style>');
-    printWindow.document.write('</head><body>');
-    printWindow.document.write(content); // Conteúdo a ser impresso
-    printWindow.document.write('</body></html>');
-    printWindow.document.close();
+// Função para abrir o arquivo (PDF ou DOCX)
+function openFile(url, fileName) {
+    if (fileName.endsWith('.pdf')) {
+        const pdfWindow = window.open(url, '_blank');
+        pdfWindow.focus();
+    } else if (fileName.endsWith('.docx')) {
+        // Para o DOCX, o ideal é usar uma ferramenta para visualização online
+        window.open(url, '_blank');
+    }
+}
+
+// Função para baixar o arquivo
+function downloadFile(fileName, url) {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    link.click();
+}
+
+// Função para imprimir o arquivo
+function printFile(url) {
+    const printWindow = window.open(url, '_blank');
+    printWindow.focus();
     printWindow.print();
 }

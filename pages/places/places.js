@@ -39,20 +39,16 @@ placesForm.addEventListener("submit", (e) => {
             if (submitButton) {
                 submitButton.textContent = "Adicionar";
             }
-            loadPlaces();  // Atualiza a lista
+            loadPlaces();
         })
         .catch((error) => console.error("Erro ao salvar o patrimônio: ", error));
 });
 
 var searchInput = document.getElementById('search-input');
 
-// Função para carregar os patrimônios com filtro
-// Função para carregar os patrimônios com filtro
 function loadPlaces(filter = "") {
-    // Limpar a lista antes de adicionar novos itens
     placesList.innerHTML = '';
 
-    // Consultar os documentos no Firestore
     placesRef
         .get()
         .then((snapshot) => {
@@ -62,7 +58,6 @@ function loadPlaces(filter = "") {
                 const place = doc.data();
                 const id = doc.id;
 
-                // Verifica se o nome ou número do patrimônio contém o termo de pesquisa
                 if (
                     place.name.toLowerCase().includes(filter.toLowerCase()) ||
                     place.number.toString().includes(filter)
@@ -74,16 +69,13 @@ function loadPlaces(filter = "") {
                 }
             });
 
-            // Ordenar os patrimônios pelo número (campo `number`)
             places.sort((a, b) => a.number - b.number);
 
-            // Adicionar os patrimônios ordenados na lista
             places.forEach((place) => {
                 const id = place.id;
 
                 const li = document.createElement("li");
                 
-                // Criar o link para o Google Maps
                 const mapsLink = `https://www.google.com/maps?q=${encodeURIComponent(place.address)}`;
 
                 li.innerHTML = `
@@ -111,7 +103,6 @@ function loadPlaces(filter = "") {
                 placesList.appendChild(li);
             });
 
-            // Adicionar eventos de clique nos botões "Editar"
             document.querySelectorAll(".edit").forEach((button) => {
                 button.addEventListener("click", (event) => {
                     const id = button.getAttribute("data-id");
@@ -120,7 +111,6 @@ function loadPlaces(filter = "") {
                 });
             });
 
-            // Adicionar eventos de clique nos botões "Excluir"
             document.querySelectorAll(".delete").forEach((button) => {
                 button.addEventListener("click", (event) => {
                     const id = button.getAttribute("data-id");
@@ -132,10 +122,9 @@ function loadPlaces(filter = "") {
 }
 
 
-// Função para filtrar os patrimônios com base na pesquisa
 function filterPlaces() {
     const searchTerm = document.getElementById('search-input').value.trim().toLowerCase();
-    loadPlaces(searchTerm); // Chama loadPlaces com o termo de pesquisa
+    loadPlaces(searchTerm);
 }
 
 function editPlace(id, place) {
@@ -163,9 +152,8 @@ function deletePlace(id) {
     placesRef
         .doc(id)
         .delete()
-        .then(() => loadPlaces())  // Atualiza a lista após exclusão
+        .then(() => loadPlaces())
         .catch((error) => console.error("Erro ao excluir patrimônio:", error));
 }
 
-// Inicializa a lista ao carregar a página
 loadPlaces();

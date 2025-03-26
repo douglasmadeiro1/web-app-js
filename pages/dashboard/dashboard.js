@@ -14,8 +14,8 @@ function places() {
     window.location.href = "../places/places.html";
 }
 
-function vehicle() {
-    window.location.href = "../vehicle/vehicle.html";
+function files() {
+    window.location.href = "../files/files.html";
 }
 
 function logout() {
