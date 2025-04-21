@@ -1,41 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="dashboard.css">
-    <title>Dashboard</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Moderna</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="dashboard.css" />
 </head>
 <body>
-    <div class="sidebar">
-        <div>
-            <button class="btn" onclick="completeStats()">Estatística de Ocorrências - Completo</button>
-            <button class="btn" onclick="stats()">Estatística de  - Resumido</button>
-            <button class="btn" onclick="contacts()">Agenda Telefônica</button>
-            <button class="btn" onclick="places()">Patrimônios Públicos</button>
-            <button class="btn" onclick="files()">Arquivos
-            </button>
-        </div>
-        <div>
-            <button class="btn" onclick="logout()">Sair</button>
-        </div>
-    </div>
+    <div class="theme-toggle">
+        <label id="toggle-theme">
+          <i class="fas fa-moon"></i>
+        </label>
+      </div>
+  <main class="main-content">
+    <header>
+      <h1>Bem-vindo</h1>
+    </header>
 
-    <div class="main-content">
-        <div class="header">
-            <h1>Bem-vindo</h1>
-        </div>
-        <div class="dashboard-main">
-            <img src="../../assets/image/background-gcm.jpg" class="background-gcm">
-        </div>
-        <div class="container">
-        </div>
-    </div>
+    <section class="widgets">
+      <div class="card" onclick="completeStats()">
+        <i class="fas fa-list fa-2x"></i>
+        <h3>Ocorrências</h3>
+      </div>
+      <div class="card" onclick="stats()">
+        <i class="fas fa-chart-pie fa-2x"></i>
+        <h3>Resumo</h3>
+      </div>
+      <div class="card" onclick="contacts()">
+        <i class="fas fa-address-book fa-2x"></i>
+        <h3>Contatos</h3>
+      </div>
+      <div class="card" onclick="places()">
+        <i class="fas fa-map-marker-alt fa-2x"></i>
+        <h3>Patrimônios</h3>
+      </div>
+      <div class="card" onclick="files()">
+        <i class="fas fa-folder-open fa-2x"></i>
+        <h3>Arquivos</h3>
+      </div>
+      <div class="card" onclick="logout()">
+        <i class="fas fa-sign-out-alt fa-2x"></i>
+        <h3>Sair</h3>
+      </div>
+    </section>
 
-    <script src="dashboard.js"></script>
+    <section class="dashboard-main">
+      <img src="../../assets/image/background-gcm.jpg" class="background-gcm">
+    </section>
+  </main>
+    
     <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-auth-compat.js"></script>
     <script src="../../firebase-init.js"></script>
     <script src="../../auth-guard.js"></script>
+    <script src="dashboard.js"></script>
 </body>
 </html>

@@ -23,8 +23,5 @@ activityEvents.forEach(event => {
     document.addEventListener(event, resetTimer);
 });
 
-placesForm.addEventListener("submit", resetTimer);
-searchInput.addEventListener("input", resetTimer);
-document.getElementById("places-list").addEventListener("click", resetTimer);
 
 resetTimer();

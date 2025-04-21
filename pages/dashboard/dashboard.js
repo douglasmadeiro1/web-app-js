@@ -19,9 +19,29 @@ function files() {
 }
 
 function logout() {
-    firebase.auth().signOut().then(() => {
-        window.location.href = "../../index.html";
-    }).catch(() => {
-        alert("Erro ao sair")
-    })
-}
+    firebase.auth().signOut()
+      .then(() => {
+        console.log("Logout realizado com sucesso.");
+        window.location.href = "../../index.html";  // Redireciona após logout
+      })
+      .catch((error) => {
+        console.error("Erro ao sair:", error);
+        alert("Erro ao sair");
+      });
+  }
+
+  const toggleBtn = document.getElementById("toggle-theme");
+  const body = document.body;
+
+  // Checa se o modo escuro estava ativado anteriormente
+  if (localStorage.getItem("theme") === "dark") {
+    body.classList.add("dark");
+    toggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+  }
+
+  toggleBtn.addEventListener("click", () => {
+    body.classList.toggle("dark");
+    const isDark = body.classList.contains("dark");
+    toggleBtn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+  });
