@@ -18,6 +18,10 @@ function files() {
     window.location.href = "../files/files.html";
 }
 
+function teamStats() {
+  window.location.href = "../team_stats/team_stats.html";
+}
+
 function logout() {
     firebase.auth().signOut()
       .then(() => {
