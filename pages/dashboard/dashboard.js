@@ -14,8 +14,28 @@ function places() {
     window.location.href = "../places/places.html";
 }
 
-function files() {
-    window.location.href = "../files/files.html";
+function nightShift() {
+    window.location.href = "../night_shift/night_shift.html";
+}
+
+function dayShift() {
+    window.location.href = "../day_shift/day_shift.html";
+}
+
+function patrolReport() {
+    window.location.href = "../patrol_report/patrol_report.html";
+}
+
+function patrolReportRomo() {
+    window.location.href = "../patrol_report_romo/patrol_report_romo.html";
+}
+
+function reportOfManager() {
+    window.location.href = "../report_of_manager/report_of_manager.html";
+}
+
+function releaseTerm() {
+    window.location.href = "../release_term/release_term.html";
 }
 
 function teamStats() {

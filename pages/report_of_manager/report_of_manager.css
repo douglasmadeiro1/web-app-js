@@ -1,0 +1,57 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.formulario {
+  width: 794px;   /* A4 - 21cm */
+  margin: 0 auto;
+}
+
+.pagina {
+  position: relative;
+  width: 794px;
+  height: 1123px; /* A4 - 29.7cm */
+  page-break-after: always;
+  font-family: sans-serif;
+}
+
+.form-background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+  object-fit: cover;
+}
+
+.input, .observacao {
+  position: absolute;
+  z-index: 2;
+  background: transparent;
+  border: none;
+  padding: 2px 4px;
+  font-size: 16px;
+  transition: font-size 0.2s ease;
+  resize: none;
+  overflow: hidden;
+}
+
+/* Exemplo de campos posicionados */
+.campo1 { top: 130px; left: 50px; width: 200px; }
+.campo2 { top: 180px; left: 50px; width: 200px; }
+.campo3 { top: 300px; left: 45px; width: 700px; height: 150px; line-height: 1.4; }
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .pagina {
+    page-break-after: always;
+  }
+
+  .form-background {
+    print-color-adjust: exact;
+  }
+}
