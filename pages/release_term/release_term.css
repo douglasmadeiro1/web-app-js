@@ -41,69 +41,22 @@
     padding: 2px 4px;
 }
 
-/* Campo de data */
+
 .campo-data {
   top: 135px;
   right: 50px;
   width: 80px;
 }
 
-/* VTRs */
-.vtr1 { top: 248px; left: 45px; width: 50px; }
-.vtr2 { top: 279px; left: 45px; width: 50px; }
-.vtr3 { top: 310px; left: 45px; width: 50px; }
-.vtr4 { top: 342px; left: 45px; width: 50px; }
-.vtrGoc { top: 374px; left: 45px; width: 50px; }
-.vtrGpar { top: 406px; left: 45px; width: 50px; }
-.vtrRomu { top: 437px; left: 45px; width: 50px; }
-.vtrRomo1 { top: 468px; left: 45px; width: 50px; }
 
-/* Guarnições */
-.guarnicao1 { top: 248px; left: 120px; width: 380px; }
-.guarnicao2 { top: 279px; left: 120px; width: 380px; }
-.guarnicao3 { top: 310px; left: 120px; width: 380px; }
-.guarnicao4 { top: 342px; left: 120px; width: 380px; }
-.guarnicao5 { top: 374px; left: 120px; width: 380px; }
-.guarnicao6 { top: 406px; left: 120px; width: 380px; }
-.guarnicao7 { top: 437px; left: 120px; width: 380px; }
-.guarnicao8 { top: 468px; left: 120px; width: 380px; }
-
-/* Áreas por horário (em grupos de 4 por linha) */
-.area1-18h { top: 248px; right: 227px; width: 40px; }
-.area1-21h { top: 248px; right: 168px; width: 40px; }
-.area1-00h { top: 248px; right: 109px; width: 40px; }
-.area1-03h { top: 248px; right: 50px; width: 40px; }
-
-.area2-18h { top: 279px; right: 227px; width: 40px; }
-.area2-21h { top: 279px; right: 168px; width: 40px; }
-.area2-00h { top: 279px; right: 109px; width: 40px; }
-.area2-03h { top: 279px; right: 50px; width: 40px; }
-
-.area3-18h { top: 310px; right: 227px; width: 40px; }
-.area3-21h { top: 310px; right: 168px; width: 40px; }
-.area3-00h { top: 310px; right: 109px; width: 40px; }
-.area3-03h { top: 310px; right: 50px; width: 40px; }
-
-.area4-18h { top: 340px; right: 227px; width: 40px; }
-.area4-21h { top: 340px; right: 168px; width: 40px; }
-.area4-00h { top: 340px; right: 109px; width: 40px; }
-.area4-03h { top: 340px; right: 50px; width: 40px; }
-
-/* Setor de Serviço */
-.cecom { top: 574px; right: 55px; width: 320px; }
-.paco { top: 604px; right: 55px; width: 320px; }
-.cem { top: 637px; right: 55px; width: 320px; }
-.medici { top: 667px; right: 55px; width: 320px; }
-.patio { top: 697px; right: 55px; width: 320px; }
-.creche-do-treviso { top: 729px; right: 55px; width: 320px; }
-.creche-do-treviso-campo { top: 729px; left: 55px; width: 320px; }
-.outro1 { top: 760px; right: 55px; width: 320px; }
-.outro1-campo { top: 760px; left: 55px; width: 320px; }
-.outro2 { top: 790px; right: 55px; width: 320px; }
-.outro2-campo { top: 790px; left: 55px; width: 320px; }
-.outro3 { top: 822px; right: 55px; width: 320px; }
-.outro3-campo { top: 822px; left: 55px; width: 320px; }
-
+.day { top: 135px; left: 185px; width: 20px; }
+.month { top: 135px; left: 250px; width: 80px; }
+.ofice { top: 165px; left: 265px; width: 20px; }
+.name { top: 288px; left: 185px; width: 350px; }
+.cpf { top: 288px; left: 580px; width: 100px; }
+.recolhimento { top: 380px; left: 230px; width: 150px; }
+.placa { top: 410px; left: 140px; width: 150px; }
+.chassi { top: 440px; left: 170px; width: 150px; }
 
 .observacao {
   position: absolute;

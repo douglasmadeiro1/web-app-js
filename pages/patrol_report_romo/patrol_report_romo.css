@@ -24,8 +24,9 @@ body {
   object-fit: cover;
 }
 
-.input, .observacao {
+.input{
   position: absolute;
+  text-align: center;
   z-index: 2;
   background: transparent;
   border: none;
@@ -34,12 +35,23 @@ body {
   transition: font-size 0.2s ease;
   resize: none;
   overflow: hidden;
+  font-weight: bolder;
 }
 
-/* Exemplo de campos posicionados */
-.campo1 { top: 130px; left: 50px; width: 200px; }
-.campo2 { top: 180px; left: 50px; width: 200px; }
-.campo3 { top: 300px; left: 45px; width: 700px; height: 150px; line-height: 1.4; }
+.vtr1 { top: 190px; left: 180px; width: 50px; }
+.km1 { top: 190px; left: 275px; width: 50px; }
+.vtr2 { top: 190px; left: 395px; width: 50px; }
+.km2 { top: 190px; left: 495px; width: 50px; }
+.vtr3 { top: 190px; left: 610px; width: 50px; }
+.km3 { top: 190px; left: 710px; width: 50px; }
+.data { top: 253px; left: 80px; width: 50px; }
+.turno1 { top: 253px; left: 240px; width: 50px; }
+.turno2 { top: 253px; left: 320px; width: 50px; }
+.equipe { top: 288px; left: 80px; width: 400px; }
+.ht { top: 285px; left: 560px; width: 180px; }
+.talao { top: 363px; left: 32px; width: 40px; }
+.km { top: 363px; left: 90px; width: 58px; }
+.areas { top: 363px; left: 460px; width: 300px; }
 
 @media print {
   body {
