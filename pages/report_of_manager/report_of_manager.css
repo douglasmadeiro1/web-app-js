@@ -37,6 +37,22 @@
   text-align: center;
 }
 
+@media print {
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: none;
+    border: none;
+    padding: 0;
+    pointer-events: none;
+  }
+
+  select::-ms-expand {
+    display: none;
+  }
+}
+
 .textarea {
     font-weight: bolder;
     font-size: 20;
@@ -87,25 +103,13 @@
 .guarnicao8 { top: 477px; left: 120px; width: 320px; }
 
 /* Áreas por horário (em grupos de 4 por linha) */
-.area1-18h { top: 262px; right: 266px; width: 40px; }
-.area1-21h { top: 262px; right: 195px; width: 40px; }
-.area1-00h { top: 262px; right: 127px; width: 40px; }
-.area1-03h { top: 262px; right: 58px; width: 40px; }
+.areas1 { top: 262px; right: 40px; width: 280px; }
 
-.area2-18h { top: 294px; right: 266px; width: 40px; }
-.area2-21h { top: 294px; right: 195px; width: 40px; }
-.area2-00h { top: 294px; right: 127px; width: 40px; }
-.area2-03h { top: 294px; right: 58px; width: 40px; }
+.areas2 { top: 294px; right: 40px; width: 280px; }
 
-.area3-18h { top: 324px; right: 266px; width: 40px; }
-.area3-21h { top: 324px; right: 195px; width: 40px; }
-.area3-00h { top: 324px; right: 127px; width: 40px; }
-.area3-03h { top: 324px; right: 58px; width: 40px; }
+.areas3 { top: 324px; right: 40px; width: 280px; }
 
-.area4-18h { top: 355px; right: 266px; width: 40px; }
-.area4-21h { top: 355px; right: 195px; width: 40px; }
-.area4-00h { top: 355px; right: 127px; width: 40px; }
-.area4-03h { top: 355px; right: 58px; width: 40px; }
+.areas4 { top: 355px; right: 40px; width: 280px; }
 
 /* Setor de Serviço */
 .cecom { top: 561px; right: 75px; width: 320px; }

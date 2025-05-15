@@ -30,10 +30,22 @@
     <input type="text" class="input guarnicao7" placeholder="" />
     <input type="text" class="input guarnicao8" placeholder="" />
 
-    <input type="text" class="input area1-18h" placeholder="" />
-    <input type="text" class="input area1-21h" placeholder="" />
-    <input type="text" class="input area1-00h" placeholder="" />
-    <input type="text" class="input area1-03h" placeholder="" />
+    @media print {
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: none;
+    border: none;
+    padding: 0;
+    pointer-events: none;
+  }
+
+  select::-ms-expand {
+    display: none;
+  }
+}
+
 
     <input type="text" class="input area2-18h" placeholder="" />
     <input type="text" class="input area2-21h" placeholder="" />

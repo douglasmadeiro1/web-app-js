@@ -32,10 +32,25 @@ body {
   border: none;
   padding: 2px 4px;
   font-size: 16px;
-  transition: font-size 0.2s ease;
   resize: none;
   overflow: hidden;
   font-weight: bolder;
+}
+
+@media print {
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: none;
+    border: none;
+    padding: 0;
+    pointer-events: none;
+  }
+
+  select::-ms-expand {
+    display: none;
+  }
 }
 
 .vtr { top: 157px; left: 80px; width: 50px; }
