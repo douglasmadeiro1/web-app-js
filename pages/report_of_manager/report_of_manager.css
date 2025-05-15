@@ -1,11 +1,10 @@
-body {
-  margin: 0;
-  padding: 0;
-}
-
-.formulario {
-  width: 794px;   /* A4 - 21cm */
+.form-container {
+  position: relative;
+  width: 794px; /* Largura A4 em px a 96dpi */
+  height: 1123px; /* Altura A4 */
   margin: 0 auto;
+  background-color: white;
+  font-family: sans-serif;
 }
 
 .pagina {
@@ -19,39 +18,127 @@ body {
 .form-background {
   width: 100%;
   height: 100%;
-  position: absolute;
-  z-index: 1;
   object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 
-.input, .observacao {
+.input {
   position: absolute;
+  font-weight: bolder;
   z-index: 2;
   background: transparent;
   border: none;
   padding: 2px 4px;
   font-size: 16px;
-  transition: font-size 0.2s ease;
-  resize: none;
-  overflow: hidden;
+  width: 80px;
+  text-align: center;
 }
 
-/* Exemplo de campos posicionados */
-.campo1 { top: 130px; left: 50px; width: 200px; }
-.campo2 { top: 180px; left: 50px; width: 200px; }
-.campo3 { top: 300px; left: 45px; width: 700px; height: 150px; line-height: 1.4; }
+.textarea {
+    font-weight: bolder;
+    font-size: 20;
+    text-align: start;
+    z-index: 2;
+    background: transparent;
+    border: solid;
+    border-bottom: none;
+    padding: 2px 4px;
+}
 
-@media print {
-  body {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
+.campo-encarregado {
+  top: 166px;
+  left: 340px;
+  width: 350px;
+}
+/* Campo de data */
+.campo-data {
+  top: 193px;
+  right: 60px;
+  width: 105px;
+}
 
-  .pagina {
-    page-break-after: always;
-  }
+.campo-hora {
+  top: 193px;
+  left: 200px;
+  width: 150px;
+}
 
-  .form-background {
-    print-color-adjust: exact;
-  }
+/* VTRs */
+.vtr1 { top: 262px; left: 50px; width: 45px; }
+.vtr2 { top: 294px; left: 50px; width: 45px; }
+.vtr3 { top: 324px; left: 50px; width: 45px; }
+.vtr4 { top: 355px; left: 50px; width: 45px; }
+.vtrGoc { top: 387px; left: 50px; width: 45px; }
+.vtrGpar { top: 417px; left: 50px; width: 45px; }
+.vtrRomu { top: 449px; left: 50px; width: 45px; }
+.vtrRomo1 { top: 479px; left: 50px; width: 45px; }
+
+/* Guarnições */
+.guarnicao1 { top: 262px; left: 120px; width: 320px; }
+.guarnicao2 { top: 294px; left: 120px; width: 320px; }
+.guarnicao3 { top: 324px; left: 120px; width: 320px; }
+.guarnicao4 { top: 355px; left: 120px; width: 320px; }
+.guarnicao5 { top: 385px; left: 120px; width: 320px; }
+.guarnicao6 { top: 415px; left: 120px; width: 320px; }
+.guarnicao7 { top: 447px; left: 120px; width: 320px; }
+.guarnicao8 { top: 477px; left: 120px; width: 320px; }
+
+/* Áreas por horário (em grupos de 4 por linha) */
+.area1-18h { top: 262px; right: 266px; width: 40px; }
+.area1-21h { top: 262px; right: 195px; width: 40px; }
+.area1-00h { top: 262px; right: 127px; width: 40px; }
+.area1-03h { top: 262px; right: 58px; width: 40px; }
+
+.area2-18h { top: 294px; right: 266px; width: 40px; }
+.area2-21h { top: 294px; right: 195px; width: 40px; }
+.area2-00h { top: 294px; right: 127px; width: 40px; }
+.area2-03h { top: 294px; right: 58px; width: 40px; }
+
+.area3-18h { top: 324px; right: 266px; width: 40px; }
+.area3-21h { top: 324px; right: 195px; width: 40px; }
+.area3-00h { top: 324px; right: 127px; width: 40px; }
+.area3-03h { top: 324px; right: 58px; width: 40px; }
+
+.area4-18h { top: 355px; right: 266px; width: 40px; }
+.area4-21h { top: 355px; right: 195px; width: 40px; }
+.area4-00h { top: 355px; right: 127px; width: 40px; }
+.area4-03h { top: 355px; right: 58px; width: 40px; }
+
+/* Setor de Serviço */
+.cecom { top: 561px; right: 75px; width: 320px; }
+.paco { top: 593px; right: 75px; width: 320px; }
+.cem { top: 624px; right: 75px; width: 320px; }
+.medici { top: 654px; right: 75px; width: 320px; }
+.patio { top: 685px; right: 75px; width: 320px; }
+.creche-do-treviso { top: 716px; right: 75px; width: 320px; }
+.outro1 { top: 748px; right: 75px; width: 320px; }
+.outro1-campo { top: 748px; left: 60px; width: 285px; }
+.outro2 { top: 778px; right: 75px; width: 320px; }
+.outro2-campo { top: 778px; left: 60px; width: 285px; }
+.outro3 { top: 809px; right: 75px; width: 320px; }
+.outro3-campo { top: 809px; left: 60px; width: 285px; }
+
+
+.observacao {
+  position: absolute;
+  bottom: 42px;
+  left: 52px;
+  width: 690px;
+  height: 170px;
+  border: none;
+  background: rgba(255, 255, 255, 0.7);
+  resize: vertical;
+  font-size: 16px;
+  line-height: 1.5;
+  padding: 4px;
+  box-sizing: border-box;
+
+  /* Quebra automática */
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  overflow: hidden; /* Para o ajuste automático de fonte */
 }
