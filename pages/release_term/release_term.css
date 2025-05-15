@@ -30,17 +30,6 @@
   text-align: center;
 }
 
-.textarea {
-    font-weight: bolder;
-    font-size: 20;
-    text-align: start;
-    z-index: 2;
-    background: transparent;
-    border: none;
-    border-bottom: none;
-    padding: 2px 4px;
-}
-
 
 .campo-data {
   top: 135px;
@@ -56,7 +45,7 @@
 .cpf { top: 288px; left: 580px; width: 100px; }
 .recolhimento { top: 380px; left: 230px; width: 150px; }
 .placa { top: 410px; left: 140px; width: 150px; }
-.chassi { top: 440px; left: 170px; width: 150px; }
+.chassi { top: 440px; left: 170px; width: 200px; }
 
 .observacao {
   position: absolute;
