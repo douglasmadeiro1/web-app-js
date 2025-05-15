@@ -1,7 +1,9 @@
 .form-container {
   position: relative;
-  width: 794px; /* Largura A4 em px a 96dpi */
-  height: 1123px; /* Altura A4 */
+  width: 794px;
+  /* Largura A4 em px a 96dpi */
+  height: 1123px;
+  /* Altura A4 */
   margin: 0 auto;
   background-color: white;
   font-family: sans-serif;
@@ -48,14 +50,14 @@
 }
 
 .textarea {
-    font-weight: bolder;
-    font-size: 20;
-    text-align: start;
-    z-index: 2;
-    background: transparent;
-    border: none;
-    border-bottom: none;
-    padding: 2px 4px;
+  font-weight: bolder;
+  font-size: 20;
+  text-align: start;
+  z-index: 2;
+  background: transparent;
+  border: none;
+  border-bottom: none;
+  padding: 2px 4px;
 }
 
 /* Campo de data */
@@ -66,48 +68,206 @@
 }
 
 /* VTRs */
-.vtr1 { top: 248px; left: 45px; width: 50px; }
-.vtr2 { top: 279px; left: 45px; width: 50px; }
-.vtr3 { top: 310px; left: 45px; width: 50px; }
-.vtr4 { top: 342px; left: 45px; width: 50px; }
-.vtrGoc { top: 374px; left: 45px; width: 50px; }
-.vtrGpar { top: 406px; left: 45px; width: 50px; }
-.vtrRomu { top: 437px; left: 45px; width: 50px; }
-.vtrRomo1 { top: 468px; left: 45px; width: 50px; }
+.vtr1 {
+  top: 248px;
+  left: 45px;
+  width: 50px;
+}
+
+.vtr2 {
+  top: 279px;
+  left: 45px;
+  width: 50px;
+}
+
+.vtr3 {
+  top: 310px;
+  left: 45px;
+  width: 50px;
+}
+
+.vtr4 {
+  top: 342px;
+  left: 45px;
+  width: 50px;
+}
+
+.vtrGoc {
+  top: 374px;
+  left: 45px;
+  width: 50px;
+}
+
+.vtrGpar {
+  top: 406px;
+  left: 45px;
+  width: 50px;
+}
+
+.vtrRomu {
+  top: 437px;
+  left: 45px;
+  width: 50px;
+}
+
+.vtrRomo1 {
+  top: 468px;
+  left: 45px;
+  width: 50px;
+}
 
 /* Guarnições */
-.guarnicao1 { top: 248px; left: 120px; width: 380px; }
-.guarnicao2 { top: 279px; left: 120px; width: 380px; }
-.guarnicao3 { top: 310px; left: 120px; width: 380px; }
-.guarnicao4 { top: 342px; left: 120px; width: 380px; }
-.guarnicao5 { top: 374px; left: 120px; width: 380px; }
-.guarnicao6 { top: 406px; left: 120px; width: 380px; }
-.guarnicao7 { top: 437px; left: 120px; width: 380px; }
-.guarnicao8 { top: 468px; left: 120px; width: 380px; }
+.guarnicao1 {
+  top: 248px;
+  left: 120px;
+  width: 380px;
+}
+
+.guarnicao2 {
+  top: 279px;
+  left: 120px;
+  width: 380px;
+}
+
+.guarnicao3 {
+  top: 310px;
+  left: 120px;
+  width: 380px;
+}
+
+.guarnicao4 {
+  top: 342px;
+  left: 120px;
+  width: 380px;
+}
+
+.guarnicao5 {
+  top: 374px;
+  left: 120px;
+  width: 380px;
+}
+
+.guarnicao6 {
+  top: 406px;
+  left: 120px;
+  width: 380px;
+}
+
+.guarnicao7 {
+  top: 437px;
+  left: 120px;
+  width: 380px;
+}
+
+.guarnicao8 {
+  top: 468px;
+  left: 120px;
+  width: 380px;
+}
 
 /* Áreas por horário (em grupos de 4 por linha) */
-.areas1 { top: 248px; right: 40px; width: 240px; }
+.areas1 {
+  top: 248px;
+  right: 40px;
+  width: 240px;
+}
 
-.areas2 { top: 279px; right: 40px; width: 240px; }
+.areas2 {
+  top: 279px;
+  right: 40px;
+  width: 240px;
+}
 
-.areas3 { top: 310px; right: 40px; width: 240px; }
+.areas3 {
+  top: 310px;
+  right: 40px;
+  width: 240px;
+}
 
-.areas4 { top: 340px; right: 40px; width: 240px; }
+.areas4 {
+  top: 340px;
+  right: 40px;
+  width: 240px;
+}
 
 /* Setor de Serviço */
-.cecom { top: 574px; right: 55px; width: 320px; }
-.paco { top: 604px; right: 55px; width: 320px; }
-.cem { top: 637px; right: 55px; width: 320px; }
-.medici { top: 667px; right: 55px; width: 320px; }
-.patio { top: 697px; right: 55px; width: 320px; }
-.creche-do-treviso { top: 729px; right: 55px; width: 320px; }
-.creche-do-treviso-campo { top: 729px; left: 55px; width: 320px; }
-.outro1 { top: 760px; right: 55px; width: 320px; }
-.outro1-campo { top: 760px; left: 55px; width: 320px; }
-.outro2 { top: 790px; right: 55px; width: 320px; }
-.outro2-campo { top: 790px; left: 55px; width: 320px; }
-.outro3 { top: 822px; right: 55px; width: 320px; }
-.outro3-campo { top: 822px; left: 55px; width: 320px; }
+.cecom {
+  top: 574px;
+  right: 55px;
+  width: 320px;
+}
+
+.paco {
+  top: 604px;
+  right: 55px;
+  width: 320px;
+}
+
+.cem {
+  top: 637px;
+  right: 55px;
+  width: 320px;
+}
+
+.medici {
+  top: 667px;
+  right: 55px;
+  width: 320px;
+}
+
+.patio {
+  top: 697px;
+  right: 55px;
+  width: 320px;
+}
+
+.creche-do-treviso {
+  top: 729px;
+  right: 55px;
+  width: 320px;
+}
+
+.creche-do-treviso-campo {
+  top: 729px;
+  left: 55px;
+  width: 320px;
+}
+
+.outro1 {
+  top: 760px;
+  right: 55px;
+  width: 320px;
+}
+
+.outro1-campo {
+  top: 760px;
+  left: 55px;
+  width: 320px;
+}
+
+.outro2 {
+  top: 790px;
+  right: 55px;
+  width: 320px;
+}
+
+.outro2-campo {
+  top: 790px;
+  left: 55px;
+  width: 320px;
+}
+
+.outro3 {
+  top: 822px;
+  right: 55px;
+  width: 320px;
+}
+
+.outro3-campo {
+  top: 822px;
+  left: 55px;
+  width: 320px;
+}
 
 
 .observacao {
@@ -128,5 +288,6 @@
   white-space: pre-wrap;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  overflow: hidden; /* Para o ajuste automático de fonte */
+  overflow: hidden;
+  /* Para o ajuste automático de fonte */
 }
