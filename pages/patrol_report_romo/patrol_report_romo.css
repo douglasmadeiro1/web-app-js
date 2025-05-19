@@ -32,7 +32,6 @@ body {
   border: none;
   padding: 2px 4px;
   font-size: 16px;
-  transition: font-size 0.2s ease;
   resize: none;
   overflow: hidden;
   font-weight: bolder;
@@ -60,7 +59,7 @@ body {
 .km2 { top: 190px; left: 495px; width: 50px; }
 .vtr3 { top: 190px; left: 610px; width: 50px; }
 .km3 { top: 190px; left: 710px; width: 50px; }
-.data { top: 253px; left: 80px; width: 50px; }
+.data { top: 253px; left: 76px; width: 70px; }
 .turno1 { top: 253px; left: 240px; width: 50px; }
 .turno2 { top: 253px; left: 320px; width: 50px; }
 .equipe { top: 288px; left: 80px; width: 400px; }

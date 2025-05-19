@@ -145,3 +145,9 @@ header h1 {
 .theme-toggle label:hover {
   background-color: var(--hover);
 }
+
+.card {
+  display: block; /* ou inline-block, se preferir */
+  text-decoration: none;
+  color: inherit;
+}
