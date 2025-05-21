@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Separador de Plantão</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h2>Separador de Plantão</h2>
+  <input type="file" id="fileInput" accept=".xlsx, .xls">
+<button id="processarBtn">Processar</button>
+<div id="status"></div>
+
+  <!-- 4 canvases invisíveis para gerar gráficos -->
+  <canvas id="graficoALFA" width="800" height="400" style="display: none;"></canvas>
+  <canvas id="graficoBRAVO" width="800" height="400" style="display: none;"></canvas>
+  <canvas id="graficoCHARLIE" width="800" height="400" style="display: none;"></canvas>
+  <canvas id="graficoDELTA" width="800" height="400" style="display: none;"></canvas>
+
+  <script src="stats_by_time.js"></script>
+</body>
+</html>

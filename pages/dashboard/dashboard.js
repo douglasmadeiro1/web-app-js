@@ -42,6 +42,10 @@ function teamStats() {
   window.location.href = "../team_stats/team_stats.html";
 }
 
+function statsByTime() {
+  window.location.href = "../stats_by_time/stats_by_time.html";
+}
+
 function logout() {
     firebase.auth().signOut()
       .then(() => {

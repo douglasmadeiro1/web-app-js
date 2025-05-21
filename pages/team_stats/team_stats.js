@@ -43,7 +43,11 @@ function isNightShift(hour) {
       // Adiciona campo de plantão
       json.forEach(row => {
         const dateStr = row["Data/Hora"];
-        const date = new Date(dateStr.replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$2/$1/$3'));
+        const date = new Date(dateStr);
+if (isNaN(date)) {
+  console.error('Data inválida:', dateStr);
+  return;
+}
         row["Plantão"] = classifyShift(date);
       });
 
