@@ -1,74 +1,86 @@
 function isNightShift(hour) {
-    return hour >= 18 || hour < 6;
-  }
-
-  function classifyShift(date) {
-    const day = date.getDate();
-    const hour = date.getHours();
-    const month = date.getMonth() + 1; // Janeiro = 1
-    const isEven = day % 2 === 0;
-    const isOdd = !isEven;
-    const isDay = hour >= 6 && hour < 18;
-    const isNight = isNightShift(hour);
-
-    // ALFA
-    if ((month === 1 && isEven && isDay) ||
-        ((month === 2 || month === 3) && isOdd && isDay)) return 'ALFA';
-
-    // BRAVO
-    if ((month === 1 && isEven && isNight) ||
-        ((month === 2 || month === 3) && isOdd && isNight)) return 'BRAVO';
-
-    // CHARLIE
-    if ((month === 1 && isOdd && isDay) ||
-        ((month === 2 || month === 3) && isEven && isDay)) return 'CHARLIE';
-
-    // DELTA
-    if ((month === 1 && isOdd && isNight) ||
-        ((month === 2 || month === 3) && isEven && isNight)) return 'DELTA';
-
-    return 'NÃO CLASSIFICADO';
-  }
-
-  document.getElementById('fileInput').addEventListener('change', async (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onload = function (evt) {
-      const data = new Uint8Array(evt.target.result);
-      const workbook = XLSX.read(data, { type: 'array' });
-
-      const sheet = workbook.Sheets[workbook.SheetNames[0]];
-      const json = XLSX.utils.sheet_to_json(sheet);
-
-      // Adiciona campo de plantão
-      json.forEach(row => {
-        const dateStr = row["Data/Hora"];
-        const date = new Date(dateStr);
-if (isNaN(date)) {
-  console.error('Data inválida:', dateStr);
-  return;
+  return hour >= 18 || hour < 6;
 }
-        row["Plantão"] = classifyShift(date);
-      });
 
-      // Separar por plantão
-      const grupos = { ALFA: [], BRAVO: [], CHARLIE: [], DELTA: [] };
-      json.forEach(row => {
-        const p = row["Plantão"];
-        if (grupos[p]) grupos[p].push(row);
-      });
+function getEquipeByDate(date) {
+  const refDate = new Date("2025-01-01T06:00:00");
+  const diff = date - refDate;
+  const shiftIndex = Math.floor(diff / (12 * 60 * 60 * 1000)) % 4;
+  const equipes = ["CHARLIE", "DELTA", "ALFA", "BRAVO"];
+  return equipes[(shiftIndex + 4) % 4]; // Corrige para evitar índices negativos
+}
 
-      // Gerar arquivos
-      for (const [nome, dados] of Object.entries(grupos)) {
-        if (dados.length > 0) {
-          const ws = XLSX.utils.json_to_sheet(dados);
-          const wb = XLSX.utils.book_new();
-          XLSX.utils.book_append_sheet(wb, ws, nome);
-          XLSX.writeFile(wb, `plantao_${nome}.xlsx`);
+function processaPlanilha(callback) {
+  const file = document.getElementById('fileInput').files[0];
+  if (!file) return alert("Selecione uma planilha primeiro!");
+
+  const reader = new FileReader();
+  reader.onload = function (evt) {
+    const data = new Uint8Array(evt.target.result);
+    const workbook = XLSX.read(data, { type: 'array' });
+
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    const json = XLSX.utils.sheet_to_json(sheet);
+
+    // Detectar a coluna que contém data
+    let dataColuna = null;
+    for (const key of Object.keys(json[0])) {
+      const value = json[0][key];
+      if (typeof value === 'string' || typeof value === 'number') {
+        const testDate = new Date(value.toString().replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$2/$1/$3'));
+        if (!isNaN(testDate)) {
+          dataColuna = key;
+          break;
         }
       }
+    }
 
-      document.getElementById('status').innerText = 'Arquivos gerados com sucesso!';
-    };
-    reader.readAsArrayBuffer(file);
+    if (!dataColuna) return alert("Não foi possível detectar automaticamente a coluna de data.");
+
+    json.forEach(row => {
+      const dateStr = row[dataColuna];
+      const date = new Date(dateStr.toString().replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$2/$1/$3'));
+      if (!isNaN(date)) {
+        row["Plantão"] = getEquipeByDate(date);
+      } else {
+        row["Plantão"] = "DESCONHECIDO";
+      }
+    });
+
+    const grupos = { CHARLIE: [], DELTA: [], ALFA: [], BRAVO: [], DESCONHECIDO: [] };
+    json.forEach(row => {
+      if (grupos[row["Plantão"]]) grupos[row["Plantão"]].push(row);
+    });
+
+    callback(grupos);
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+document.getElementById("gerarArquivos").addEventListener("click", () => {
+  processaPlanilha(grupos => {
+    for (const [nome, dados] of Object.entries(grupos)) {
+      if (dados.length > 0) {
+        const ws = XLSX.utils.json_to_sheet(dados);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, nome);
+        XLSX.writeFile(wb, `plantao_${nome}.xlsx`);
+      }
+    }
+    document.getElementById("status").innerText = "Arquivos separados gerados com sucesso!";
   });
+});
+
+document.getElementById("gerarAbas").addEventListener("click", () => {
+  processaPlanilha(grupos => {
+    const wb = XLSX.utils.book_new();
+    for (const [nome, dados] of Object.entries(grupos)) {
+      if (dados.length > 0) {
+        const ws = XLSX.utils.json_to_sheet(dados);
+        XLSX.utils.book_append_sheet(wb, ws, nome);
+      }
+    }
+    XLSX.writeFile(wb, "plantao_por_abas.xlsx");
+    document.getElementById("status").innerText = "Arquivo com abas gerado com sucesso!";
+  });
+});

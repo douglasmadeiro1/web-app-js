@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <title>Separar por Plantão</title>
-  <link rel="stylesheet" href="team_stats.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
   <h2>Separador de Plantão</h2>
-  <input type="file" id="fileInput" accept=".xlsx, .xls">
+  <input type="file" id="fileInput" accept=".xlsx, .xls"><br><br>
+  <button id="gerarAbas">Gerar Abas no Mesmo Arquivo</button>
+  <button id="gerarArquivos">Gerar Arquivos Separados</button>
   <div id="status"></div>
 
   <script src="team_stats.js"></script>

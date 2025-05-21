@@ -1,79 +1,143 @@
-let selectedFile = null;
-
-document.getElementById('fileInput').addEventListener('change', (e) => {
-  selectedFile = e.target.files[0];
-  document.getElementById("status").innerText = `Arquivo selecionado: ${selectedFile.name}`;
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('fileInput').addEventListener('change', handleFile);
+  document.getElementById('exportPDF').addEventListener('click', generatePDF);
 });
 
-document.getElementById('processarBtn').addEventListener('click', () => {
-  if (!selectedFile) {
-    document.getElementById("status").innerText = "Por favor, selecione um arquivo primeiro.";
-    return;
-  }
+let savedCanvases = [];
 
+function handleFile(e) {
+  const file = e.target.files[0];
   const reader = new FileReader();
 
   reader.onload = function (evt) {
     const data = new Uint8Array(evt.target.result);
     const workbook = XLSX.read(data, { type: 'array' });
 
-    const sheet = workbook.Sheets[workbook.SheetNames[0]];
-    const json = XLSX.utils.sheet_to_json(sheet);
+    const grupos = {};
 
-    if (json.length === 0) {
-      document.getElementById("status").innerText = "Nenhuma linha encontrada na planilha.";
-      return;
+    workbook.SheetNames.forEach(sheetName => {
+      const sheet = workbook.Sheets[sheetName];
+      const json = XLSX.utils.sheet_to_json(sheet);
+
+      const contagemPorHora = {};
+      for (let i = 0; i < 24; i++) contagemPorHora[i] = 0;
+
+      json.forEach(row => {
+        const dateStr = row["Data/Hora"];
+        if (!dateStr) return;
+
+        const date = new Date(dateStr.replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$2/$1/$3'));
+        const hora = date.getHours();
+        contagemPorHora[hora]++;
+      });
+
+      grupos[sheetName] = contagemPorHora;
+    });
+
+    renderCharts(grupos);
+  };
+
+  reader.readAsArrayBuffer(file);
+}
+
+function renderCharts(grupos) {
+  const container = document.getElementById('charts');
+  container.innerHTML = '';
+  savedCanvases = [];
+
+  ["ALFA", "BRAVO", "CHARLIE", "DELTA"].forEach(equipe => {
+    const data = grupos[equipe];
+    if (!data) return;
+
+    const canvas = document.createElement('canvas');
+    container.appendChild(canvas);
+    savedCanvases.push(canvas);
+
+    const horas = Object.keys(data);
+    const quantidades = Object.values(data);
+    const max = Math.max(...quantidades);
+
+    function interpolateColor(value, max) {
+      const ratio = value / max;
+      const r = Math.round(255 * ratio);
+      const g = Math.round(255 * (1 - Math.abs(ratio - 0.5) * 2));
+      const b = Math.round(255 * (1 - ratio));
+      return `rgba(${r}, ${g}, ${b}, 0.7)`;
     }
 
-    json.forEach((row, i) => {
-      const rawDate = row["Data/Hora"];
-      if (!rawDate) {
-        row["Plantão"] = "NÃO CLASSIFICADO";
-        return;
-      }
+    const backgroundColors = quantidades.map(val => interpolateColor(val, max));
 
-      const date = new Date(rawDate.replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$2/$1/$3'));
-      if (isNaN(date)) {
-        row["Plantão"] = "NÃO CLASSIFICADO";
-      } else {
-        row["Plantão"] = classifyShift(date);
-      }
-    });
-
-    const grupos = { ALFA: [], BRAVO: [], CHARLIE: [], DELTA: [] };
-    json.forEach(row => {
-      const p = row["Plantão"];
-      if (grupos[p]) grupos[p].push(row);
-    });
-
-    document.getElementById("status").innerText = "Gerando arquivos com gráficos...";
-
-    const plantaoNomes = ["ALFA", "BRAVO", "CHARLIE", "DELTA"];
-    let count = 0;
-
-    plantaoNomes.forEach(plantao => {
-      const dados = grupos[plantao];
-      if (dados.length > 0) {
-        const contagem = contarPorHora(dados);
-        const canvasId = "grafico" + plantao;
-        plotarGrafico(canvasId, contagem, plantao);
-
-        setTimeout(() => {
-          const canvas = document.getElementById(canvasId);
-          exportarGraficoEPlanilha(dados, canvas, `plantao_${plantao}_com_grafico.xlsx`);
-          count++;
-          if (count === plantaoNomes.length) {
-            document.getElementById("status").innerText = "Todos os arquivos foram gerados com sucesso!";
+    new Chart(canvas.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: horas.map(h => `${h}h`),
+        datasets: [{
+          label: `Ocorrências no plantão ${equipe}`,
+          data: quantidades,
+          backgroundColor: backgroundColors,
+          borderColor: backgroundColors.map(c => c.replace('0.7', '1')),
+          borderWidth: 1,
+          borderRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+  display: true,
+  text: `Distribuição Horária - Plantão ${equipe} (Total: ${quantidades.reduce((a, b) => a + b, 0)} ocorrências)`,
+  font: { size: 18 }
+},
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: context => ` ${context.parsed.y} ocorrência(s) às ${context.label}`
+            }
           }
-        }, 1000 + count * 500);
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: { display: true, text: 'Quantidade', font: { size: 14 } },
+            ticks: { font: { size: 13 } }
+          },
+          x: {
+            title: { display: true, text: 'Hora do Dia', font: { size: 14 } },
+            ticks: { font: { size: 13 } }
+          }
+        }
       }
     });
-  };
+  });
+}
 
-  reader.onerror = function (e) {
-    console.error("Erro ao ler o arquivo:", e);
-    document.getElementById("status").innerText = "Erro ao ler o arquivo.";
-  };
+async function generatePDF() {
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF('p', 'mm', 'a4');
 
-  reader.readAsArrayBuffer(selectedFile);
-});
+  const width = 180;
+  const height = 90; // metade da altura da página A4 (aproximadamente)
+
+  for (let i = 0; i < savedCanvases.length; i++) {
+    const canvas = savedCanvases[i];
+    const imgData = canvas.toDataURL('image/png');
+
+    const posY = (i % 2 === 0) ? 10 : 110; // 10mm para o primeiro gráfico, 110mm para o segundo
+
+    if (i > 0 && i % 2 === 0) {
+      pdf.addPage(); // nova página a cada 2 gráficos
+    }
+
+    pdf.addImage(imgData, 'PNG', 15, posY, width, height);
+  }
+
+  pdf.save('relatorio_turnos.pdf');
+}
+
+function interpolateColor(value, max) {
+  const ratio = value / max;
+  const r = Math.floor(240 - ratio * 120); // vai de 240 (azul claro) a 120 (vermelho quente)
+  const g = Math.floor(240 - ratio * 180); // esfria com mais intensidade
+  const b = 255 - Math.floor(ratio * 100); // diminui levemente
+  return `rgba(${r}, ${g}, ${b}, 0.8)`;
+}

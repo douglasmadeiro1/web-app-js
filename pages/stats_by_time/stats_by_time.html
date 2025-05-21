@@ -2,21 +2,19 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Separador de Plantão</title>
+  <title>Relatório por Turno</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+ 
 </head>
 <body>
-  <h2>Separador de Plantão</h2>
-  <input type="file" id="fileInput" accept=".xlsx, .xls">
-<button id="processarBtn">Processar</button>
-<div id="status"></div>
-
-  <!-- 4 canvases invisíveis para gerar gráficos -->
-  <canvas id="graficoALFA" width="800" height="400" style="display: none;"></canvas>
-  <canvas id="graficoBRAVO" width="800" height="400" style="display: none;"></canvas>
-  <canvas id="graficoCHARLIE" width="800" height="400" style="display: none;"></canvas>
-  <canvas id="graficoDELTA" width="800" height="400" style="display: none;"></canvas>
+  <div id="controls">
+    <input type="file" id="fileInput" accept=".xlsx, .xls">
+    <button id="exportPDF">Gerar PDF</button>
+  </div>
+  <h2>Relatório Gráfico por Horário</h2>
+<div id="charts"></div>
 
   <script src="stats_by_time.js"></script>
 </body>
