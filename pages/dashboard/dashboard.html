@@ -8,83 +8,55 @@
   <link rel="stylesheet" href="dashboard.css" />
 </head>
 <body>
-    <div class="theme-toggle">
-        <label id="toggle-theme">
-          <i class="fas fa-moon"></i>
-        </label>
-      </div>
+  
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div>
+      <h2 style="margin-bottom: 20px; font-size: 1.2rem; font-weight: 600;">📊 Sistema GCM</h2>
+      <nav>
+        <a href="../commercial/commercial.html"><i class="fas fa-list"></i> Estabelecimentos comerciais</a>
+        <a href="../complete_stats/complete_stats.html"><i class="fas fa-list"></i> Ocorrências</a>
+        <a href="../stats/stats.html"><i class="fas fa-chart-pie"></i> Resumo</a>
+        <a href="../team_stats/team_stats.html"><i class="fas fa-users"></i> Por plantão</a>
+        <a href="../stats_by_time/stats_by_time.html"><i class="fas fa-clock"></i> Ocorrências por turno</a>
+        <a href="../stats copy/stats.html"><i class="fas fa-folder-open"></i> PTA e Permanências</a>
+        <a href="../places/places.html"><i class="fas fa-map-marker-alt"></i> Patrimônios</a>
+        <a href="../contacts/contacts.html"><i class="fas fa-address-book"></i> Contatos</a>
+        <a href="../day_shift/day_shift.html"><i class="fas fa-sun"></i> Plantão diurno</a>
+        <a href="../night_shift/night_shift.html"><i class="fas fa-moon"></i> Plantão noturno</a>
+        <a href="../report_of_manager/report_of_manager.html"><i class="fas fa-file-signature"></i> Relatório encarregado</a>
+        <a href="../patrol_report/patrol_report.html"><i class="fas fa-car"></i> Relatório patrulhamento</a>
+        <a href="../patrol_report_romo/patrol_report_romo.html"><i class="fas fa-motorcycle"></i> Patrulhamento - Romo</a>
+        <a href="../release_term/release_term.html"><i class="fas fa-file-contract"></i> Termo de liberação</a>
+      </nav>
+    </div>
+    <div>
+      <a href="#" onclick="logout()" style="color: #f87171;"><i class="fas fa-sign-out-alt"></i> Sair</a>
+    </div>
+  </aside>
+
+  <!-- Conteúdo principal -->
   <main class="main-content">
-    <header>
-    </header>
-    <section class="widgets">
-      <a class="card" href="../complete_stats/complete_stats.html">
-       <i class="fas fa-list fa-2x"></i>
-        <h3>Ocorrências</h3>
-      </a>
-      <a class="card" href="../stats/stats.html">
-        <i class="fas fa-chart-pie fa-2x"></i>
-        <h3>Resumo</h3>
-      </a>
-      <a class="card" href="../team_stats/team_stats.html">
-        <i class="fas fa-chart-pie fa-2x"></i>
-        <h3>Por plantão</h3>
-      </a>
-      <a class="card" href="../stats_by_time/stats_by_time.html">
-        <i class="fas fa-chart-pie fa-2x"></i>
-        <h3>Ocorrencias por turno</h3>
-      </a>
-      <a class="card" href="../stats copy/stats.html">
-        <i class="fas fa-folder-open fa-2x"></i>
-        <h3>PTA e Permanências x Ocorrencias</h3>
-      </a>
-      <a class="card" href="../places/places.html">
-        <i class="fas fa-map-marker-alt fa-2x"></i>
-        <h3>Patrimônios</h3>
-      </a>
-      <a class="card" href="../contacts/contacts.html">
-        <i class="fas fa-address-book fa-2x"></i>
-        <h3>Contatos</h3>
-      </a>
-       <a class="card" href="../day_shift/day_shift.html">
-        <i class="fas fa-folder-open fa-2x"></i>
-        <h3>Plantão diurno</h3>
-       </a>
-      <a class="card" href="../night_shift/night_shift.html">
-        <i class="fas fa-folder-open fa-2x"></i>
-        <h3>Plantão noturno</h3>
-      </a>
-       <a class="card" href="../report_of_manager/report_of_manager.html">
-        <i class="fas fa-folder-open fa-2x"></i>
-        <h3>Relatório do encarregado</h3>
-       </a>
-      <a class="card" href="../patrol_report/patrol_report.html">
-        <i class="fas fa-folder-open fa-2x"></i>
-        <h3>Relatório de patrulhamento</h3>
-      </a>
-      <a class="card" href="../patrol_report_romo/patrol_report_romo.html">
-        <i class="fas fa-folder-open fa-2x"></i>
-        <h3>Relatório de patrulhamento - Romo</h3>
-      </a>
-      <a class="card" href="../release_term/release_term.html">
-        <i class="fas fa-folder-open fa-2x"></i>
-        <h3>Termo de liberação</h3>
-      </a>
-      <div class="card" onclick="logout()">
-        <i class="fas fa-sign-out-alt fa-2x"></i>
-        <h3>Sair</h3>
-      </div>
-      
+    
+    <!-- Botão de tema -->
+    <div class="theme-toggle">
+      <label id="toggle-theme">
+        <i class="fas fa-moon"></i>
+      </label>
+    </div>
+
+    <!-- Imagem -->
+    <section>
+      <img src="../../assets/image/background-gcm.jpg" class="background-gcm" alt="Imagem GCM">
     </section>
 
-    <section class="dashboard-main">
-      <img src="../../assets/image/background-gcm.jpg" class="background-gcm">
-    </section>
   </main>
-    
-    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-auth-compat.js"></script>
-    <script src="../../firebase-init.js"></script>
-    <script src="../../auth-guard.js"></script>
-    <script src="dashboard.js"></script>
+
+  <!-- Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-auth-compat.js"></script>
+  <script src="../../firebase-init.js"></script>
+  <script src="../../auth-guard.js"></script>
+  <script src="dashboard.js"></script>
 </body>
 </html>
