@@ -140,7 +140,7 @@ async function carregarEstabelecimentos() {
 
             // Ícones de pendência de armamento
             if (hasOverdueArmament) {
-                 pendenciasDiv.innerHTML += `<i class="fas fa-gun pendencia-icon" title="Guia de Tráfego Vencida"></i>`;
+                 pendenciasDiv.innerHTML += `<i class="fas fa-exclamation-circle pendencia-icon" title="Guia de Tráfego Vencida"></i>`;
             } else if (isNearDueArmament) {
                  pendenciasDiv.innerHTML += `<i class="fas fa-exclamation-triangle alerta-icon" title="Guia de Tráfego Próxima do Vencimento"></i>`;
             } else {
