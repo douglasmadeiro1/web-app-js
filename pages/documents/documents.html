@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GCM Pirassununga</title>
   <link rel="icon" type="image/x-icon" href="../assets/logo2.png">
-  <link rel="stylesheet" href="commercial.css" />
+  <link rel="stylesheet" href="documents.css" />
   <!-- Boxicons para ícones -->
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -35,8 +35,12 @@
       <nav>
         <ul>
           <li><a href="../dashboard/dashboard.html">Página inicial</a></li>
-          <li><a href="#" onclick="abrirDashboard()">Estabelecimentos</a></li>
-          <li><a href="#" onclick="abrirSecao('estabelecimentos')">Cadastrar</a></li>
+          <li><a href="../day_shift/day_shift.html"><i class="fas fa-sun"></i> Plantão diurno</a></li>
+          <li><a href="../night_shift/night_shift.html"><i class="fas fa-moon"></i> Plantão noturno</a></li>
+          <li><a href="../report_of_manager/report_of_manager.html"><i class="fas fa-file-signature"></i> Relatório encarregado</a></li>
+          <li><a href="../patrol_report/patrol_report.html"><i class="fas fa-car"></i> Relatório patrulhamento</a></li>
+          <li><a href="../patrol_report_romo/patrol_report_romo.html"><i class="fas fa-motorcycle"></i> Patrulhamento - Romo</a></li>
+          <li><a href="../release_term/release_term.html"><i class="fas fa-file-contract"></i> Termo de liberação</a></li>
         </ul>
       </nav>
 
@@ -184,7 +188,7 @@
   <script src="https://unpkg.com/pix-payload@latest/dist/pix-payload.umd.js"></script>
   <script src="../../firebase-init.js"></script>
   <script src="../../auth-guard.js"></script>
-  <script src="commercial.js"></script>
+  <script src="documents.js"></script>
 </body>
 
 </html>

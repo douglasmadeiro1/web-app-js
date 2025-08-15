@@ -117,13 +117,14 @@
 .cem { top: 624px; right: 75px; width: 320px; }
 .medici { top: 654px; right: 75px; width: 320px; }
 .patio { top: 685px; right: 75px; width: 320px; }
-.creche-do-treviso { top: 716px; right: 75px; width: 320px; }
+.outro0 { top: 720px; right: 75px; width: 320px; }
+.outro0-campo { top: 720px; left: 60px; width: 285px; }
 .outro1 { top: 748px; right: 75px; width: 320px; }
 .outro1-campo { top: 748px; left: 60px; width: 285px; }
-.outro2 { top: 778px; right: 75px; width: 320px; }
-.outro2-campo { top: 778px; left: 60px; width: 285px; }
-.outro3 { top: 809px; right: 75px; width: 320px; }
-.outro3-campo { top: 809px; left: 60px; width: 285px; }
+.outro2 { top: 780px; right: 75px; width: 320px; }
+.outro2-campo { top: 780px; left: 60px; width: 285px; }
+.outro3 { top: 811px; right: 75px; width: 320px; }
+.outro3-campo { top: 811px; left: 60px; width: 285px; }
 
 
 .observacao {

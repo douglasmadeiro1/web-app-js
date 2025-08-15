@@ -141,3 +141,7 @@ function interpolateColor(value, max) {
   const b = 255 - Math.floor(ratio * 100); // diminui levemente
   return `rgba(${r}, ${g}, ${b}, 0.8)`;
 }
+
+function back() {
+    window.location.href = "../releases/releases.html";
+}

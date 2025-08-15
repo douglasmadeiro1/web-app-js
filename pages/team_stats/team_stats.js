@@ -84,3 +84,8 @@ document.getElementById("gerarAbas").addEventListener("click", () => {
     document.getElementById("status").innerText = "Arquivo com abas gerado com sucesso!";
   });
 });
+
+
+function back() {
+    window.location.href = "../releases/releases.html";
+}

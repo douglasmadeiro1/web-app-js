@@ -654,5 +654,5 @@ function exibirTabela(dadosOrdenados) {
 
 
 function back() {
-    window.location.href = "../dashboard/dashboard.html";
+    window.location.href = "../releases/releases.html";
 }

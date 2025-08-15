@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GCM Pirassununga</title>
   <link rel="icon" type="image/x-icon" href="../assets/logo2.png">
-  <link rel="stylesheet" href="commercial.css" />
+  <link rel="stylesheet" href="releases.css" />
   <!-- Boxicons para ícones -->
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -35,8 +35,12 @@
       <nav>
         <ul>
           <li><a href="../dashboard/dashboard.html">Página inicial</a></li>
-          <li><a href="#" onclick="abrirDashboard()">Estabelecimentos</a></li>
-          <li><a href="#" onclick="abrirSecao('estabelecimentos')">Cadastrar</a></li>
+          <li><a href="../complete_stats/complete_stats.html"><i class="fas fa-list"></i> Ocorrências</a></li>
+          <li><a href="../stats/stats.html"><i class="fas fa-chart-pie"></i> Resumo</a></li>
+          <li><a href="../team_stats/team_stats.html"><i class="fas fa-users"></i> Por plantão</a></li>
+          <li><a href="../stats_by_time/stats_by_time.html"><i class="fas fa-clock"></i> Ocorrências por turno</a></li>
+          <li><a href="../stats copy/stats.html"><i class="fas fa-list"></i> PTA e Permanências</a></li>
+
         </ul>
       </nav>
 
@@ -184,7 +188,7 @@
   <script src="https://unpkg.com/pix-payload@latest/dist/pix-payload.umd.js"></script>
   <script src="../../firebase-init.js"></script>
   <script src="../../auth-guard.js"></script>
-  <script src="commercial.js"></script>
+  <script src="releases.js"></script>
 </body>
 
 </html>
