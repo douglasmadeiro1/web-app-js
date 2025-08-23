@@ -207,3 +207,7 @@ window.marcarCumprida = async (id) => {
 };
 
 carregarNotificacoes();
+
+function back() {
+    window.location.href = "../dashboard/dashboard.html";
+}

@@ -165,3 +165,7 @@ document.getElementById("filtroNatureza").addEventListener("change", carregarAut
 // ✅ Marcar cumprida
 
 carregarAutuacoes();
+
+function back() {
+    window.location.href = "../dashboard/dashboard.html";
+}

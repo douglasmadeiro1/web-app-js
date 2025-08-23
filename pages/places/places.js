@@ -1,159 +1,161 @@
+// Botão de voltar
 function back() {
     window.location.href = "../dashboard/dashboard.html";
 }
 
-var db = firebase.firestore();
-var placesRef = db.collection("places");
+// Referências do DOM
+const placesForm = document.getElementById('places-form');
+const placesList = document.getElementById('places-list');
+const searchInput = document.getElementById('place-search-input');
 
-var placesForm = document.getElementById('places-form');
-var placesList = document.getElementById('places-list');
-var hiddenId = document.getElementById('hiddenId');
+const numberInput = document.getElementById('place-number');
+const areaInput = document.getElementById('place-area');
+const nameInput = document.getElementById('place-name');
+const adm1Input = document.getElementById('place-adm1');
+const phoneAdm1MainInput = document.getElementById('place-phone-adm1-main');
+const phoneAdm1SecondaryInput = document.getElementById('place-phone-adm1-secondary');
+const adm2Input = document.getElementById('place-adm2');
+const phoneAdm2MainInput = document.getElementById('place-phone-adm2-main');
+const phoneAdm2SecondaryInput = document.getElementById('place-phone-adm2-secondary');
+const securityPasswordInput = document.getElementById('place-security-password');
+const addressInput = document.getElementById('place-address');
+const obsInput = document.getElementById('place-obs');
+const hiddenIdInput = document.getElementById('place-hiddenId');
+const submitButton = document.getElementById('place-submit-button');
 
-placesForm.addEventListener("submit", (e) => {
+const placesRef = db.collection("places");
+
+// Adicionar ou editar patrimônio
+placesForm.addEventListener("submit", e => {
     e.preventDefault();
 
-    const id = hiddenId.value || placesRef.doc().id;
+    const id = hiddenIdInput.value || placesRef.doc().id;
 
-    var data = {
-        number: document.getElementById("number").value,
-        area: document.getElementById("area").value,
-        name: document.getElementById("name").value,
-        adm1: document.getElementById("adm-1").value,
-        phoneAdm1Main: document.getElementById("phone-adm-1-main").value,
-        phoneAdm1Secondary: document.getElementById("phone-adm-1-secondary").value,
-        adm2: document.getElementById("adm-2").value,
-        phoneAdm2Main: document.getElementById("phone-adm-2-main").value,
-        phoneAdm2Secondary: document.getElementById("phone-adm-2-secondary").value,
-        securityPassword: document.getElementById("security-password").value,
-        address: document.getElementById("address").value,
-        obs: document.getElementById("obs").value,
+    const data = {
+        number: numberInput.value.trim(),
+        area: areaInput.value.trim(),
+        name: nameInput.value.trim(),
+        adm1: adm1Input.value.trim(),
+        phoneAdm1Main: phoneAdm1MainInput.value.trim(),
+        phoneAdm1Secondary: phoneAdm1SecondaryInput.value.trim(),
+        adm2: adm2Input.value.trim(),
+        phoneAdm2Main: phoneAdm2MainInput.value.trim(),
+        phoneAdm2Secondary: phoneAdm2SecondaryInput.value.trim(),
+        securityPassword: securityPasswordInput.value.trim(),
+        address: addressInput.value.trim(),
+        obs: obsInput.value.trim(),
     };
 
-    placesRef
-        .doc(id)
-        .set(data)
+    placesRef.doc(id).set(data)
         .then(() => {
-            placesForm.reset();
-            hiddenId.value = "";
-            const submitButton = document.getElementById("submit-button");
-            if (submitButton) {
-                submitButton.textContent = "Adicionar";
-            }
+            resetForm();
             loadPlaces();
         })
-        .catch((error) => console.error("Erro ao salvar o patrimônio: ", error));
+        .catch(err => console.error("Erro ao salvar patrimônio:", err));
 });
 
-var searchInput = document.getElementById('search-input');
-
+// Carregar patrimônios
 function loadPlaces(filter = "") {
     placesList.innerHTML = '';
 
-    placesRef
-        .get()
-        .then((snapshot) => {
-            let places = [];
+    placesRef.get()
+        .then(snapshot => {
+            const fragment = document.createDocumentFragment();
 
-            snapshot.forEach((doc) => {
+            snapshot.forEach(doc => {
                 const place = doc.data();
                 const id = doc.id;
 
-                if (
-                    place.name.toLowerCase().includes(filter.toLowerCase()) ||
+                const searchText = filter.toLowerCase();
+                if (place.name.toLowerCase().includes(searchText) ||
                     place.number.toString().includes(filter)
                 ) {
-                    places.push({
-                        id: id,
-                        ...place
-                    });
+                    const li = document.createElement("li");
+                    const mapsLink = `https://www.google.com/maps?q=${encodeURIComponent(place.address)}`;
+
+                    li.innerHTML = `
+                        <span>${place.number}</span>
+                        <span>${place.area}</span>
+                        <span>${place.name}</span>
+                        <span>${place.adm1}</span>
+                        <span>${place.phoneAdm1Main}</span>
+                        <span>${place.phoneAdm1Secondary}</span>
+                        <span>${place.adm2}</span>
+                        <span>${place.phoneAdm2Main}</span>
+                        <span>${place.phoneAdm2Secondary}</span>
+                        <span>${place.securityPassword}</span>
+                        <span><a href="${mapsLink}" target="_blank">${place.address}</a></span>
+                        <span>${place.obs}</span>
+                        <div>
+                            <button class="edit" data-id="${id}" data-place='${JSON.stringify(place)}'>
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="delete" data-id="${id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    fragment.appendChild(li);
                 }
             });
 
-            places.sort((a, b) => a.number - b.number);
+            placesList.appendChild(fragment);
 
-            places.forEach((place) => {
-                const id = place.id;
-
-                const li = document.createElement("li");
-                
-                const mapsLink = `https://www.google.com/maps?q=${encodeURIComponent(place.address)}`;
-
-                li.innerHTML = `
-                    <span>${place.number}</span>
-                    <span>${place.area}</span>
-                    <span>${place.name}</span>
-                    <span>${place.adm1}</span>
-                    <span>${place.phoneAdm1Main}</span>
-                    <span>${place.phoneAdm1Secondary}</span>
-                    <span>${place.adm2}</span>
-                    <span>${place.phoneAdm2Main}</span>
-                    <span>${place.phoneAdm2Secondary}</span>
-                    <span>${place.securityPassword}</span>
-                    <span><a href="${mapsLink}" target="_blank">${place.address}</a></span>
-                    <span>${place.obs}</span>
-                    <div>
-                        <button class="edit" data-id="${id}" data-place='${JSON.stringify(place)}'>
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="delete" data-id="${id}">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `;
-                placesList.appendChild(li);
-            });
-
-            document.querySelectorAll(".edit").forEach((button) => {
-                button.addEventListener("click", (event) => {
-                    const id = button.getAttribute("data-id");
-                    const place = JSON.parse(button.getAttribute("data-place"));
-                    editPlace(id, place);
+            // Adicionar eventos aos botões
+            fragment.querySelectorAll(".edit").forEach(button => {
+                button.addEventListener("click", () => {
+                    editPlace(button.dataset.id, JSON.parse(button.dataset.place));
                 });
             });
 
-            document.querySelectorAll(".delete").forEach((button) => {
-                button.addEventListener("click", (event) => {
-                    const id = button.getAttribute("data-id");
-                    deletePlace(id);
+            fragment.querySelectorAll(".delete").forEach(button => {
+                button.addEventListener("click", () => {
+                    deletePlace(button.dataset.id);
                 });
             });
         })
-        .catch((error) => console.error("Erro ao carregar os patrimônios: ", error));
+        .catch(err => console.error("Erro ao carregar patrimônios:", err));
 }
 
+// Pesquisar patrimônio
+searchInput.addEventListener("input", e => {
+    loadPlaces(e.target.value.trim());
+});
 
-function filterPlaces() {
-    const searchTerm = document.getElementById('search-input').value.trim().toLowerCase();
-    loadPlaces(searchTerm);
-}
-
+// Editar patrimônio
 function editPlace(id, place) {
-    document.getElementById("number").value = place.number || "";
-    document.getElementById("area").value = place.area || ""
-    document.getElementById("name").value = place.name || "";
-    document.getElementById("adm-1").value = place.adm1 || "";
-    document.getElementById("phone-adm-1-main").value = place.phoneAdm1Main || "";
-    document.getElementById("phone-adm-1-secondary").value = place.phoneAdm1Secondary || "";
-    document.getElementById("adm-2").value = place.adm2 || "";
-    document.getElementById("phone-adm-2-main").value = place.phoneAdm2Main || "";
-    document.getElementById("phone-adm-2-secondary").value = place.phoneAdm2Secondary || "";
-    document.getElementById("security-password").value = place.securityPassword || "";
-    document.getElementById("address").value = place.address || "";
-    document.getElementById("obs").value = place.obs || "";
-    hiddenId.value = id;
+    numberInput.value = place.number || "";
+    areaInput.value = place.area || "";
+    nameInput.value = place.name || "";
+    adm1Input.value = place.adm1 || "";
+    phoneAdm1MainInput.value = place.phoneAdm1Main || "";
+    phoneAdm1SecondaryInput.value = place.phoneAdm1Secondary || "";
+    adm2Input.value = place.adm2 || "";
+    phoneAdm2MainInput.value = place.phoneAdm2Main || "";
+    phoneAdm2SecondaryInput.value = place.phoneAdm2Secondary || "";
+    securityPasswordInput.value = place.securityPassword || "";
+    addressInput.value = place.address || "";
+    obsInput.value = place.obs || "";
+    hiddenIdInput.value = id;
 
-    const submitButton = document.getElementById("submit-button");
-    if (submitButton) {
-        submitButton.textContent = "Salvar";
+    submitButton.textContent = "Salvar";
+}
+
+// Excluir patrimônio
+function deletePlace(id) {
+    if (confirm("Deseja realmente excluir este patrimônio?")) {
+        placesRef.doc(id).delete()
+            .then(() => loadPlaces())
+            .catch(err => console.error("Erro ao excluir patrimônio:", err));
     }
 }
 
-function deletePlace(id) {
-    placesRef
-        .doc(id)
-        .delete()
-        .then(() => loadPlaces())
-        .catch((error) => console.error("Erro ao excluir patrimônio:", error));
+// Resetar formulário
+function resetForm() {
+    placesForm.reset();
+    hiddenIdInput.value = '';
+    submitButton.textContent = 'Adicionar';
 }
 
+// Carregar ao iniciar
 loadPlaces();

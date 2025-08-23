@@ -1,132 +1,121 @@
+// Botão de voltar
 function back() {
     window.location.href = "../dashboard/dashboard.html";
 }
 
-var db = firebase.firestore();
-var contactsRef = db.collection("contacts");
+// Referências do DOM
+const contactForm = document.getElementById('contact-form');
+const contactsList = document.getElementById('contacts');
+const searchInput = document.getElementById('search-input');
 
+const nameInput = document.getElementById('contact-name');
+const phone1Input = document.getElementById('contact-phone1');
+const phone2Input = document.getElementById('contact-phone2');
+const phone3Input = document.getElementById('contact-phone3');
+const phone4Input = document.getElementById('contact-phone4');
+const addressInput = document.getElementById('contact-address');
+const hiddenIdInput = document.getElementById('contact-hiddenId');
+const submitButton = contactForm.querySelector('button[type="submit"]');
 
-var contactForm = document.getElementById('contact-form');
-var contacts = document.getElementById('contacts');
+const contactsRef = db.collection("contacts");
 
+// Adicionar ou editar contato
 contactForm.addEventListener("submit", e => {
     e.preventDefault();
 
-    var name = document.getElementById('name');
-    var phone1 = document.getElementById('phone-number-1');
-    var phone2 = document.getElementById('phone-number-2');
-    var phone3 = document.getElementById('phone-number-3');
-    var phone4 = document.getElementById('phone-number-4');
-    var address = document.getElementById('address');
-    var hiddenId = document.getElementById('hiddenId');
-
-
-    var id = hiddenId && hiddenId.value ? hiddenId.value : contactsRef.doc().id;
-
+    const id = hiddenIdInput.value || contactsRef.doc().id;
 
     contactsRef.doc(id).set({
-        name: name.value,
-        phone1: phone1.value,
-        phone2: phone2.value,
-        phone3: phone3.value,
-        phone4: phone4.value,
-        address: address.value
+        name: nameInput.value.trim(),
+        phone1: phone1Input.value.trim(),
+        phone2: phone2Input.value.trim(),
+        phone3: phone3Input.value.trim(),
+        phone4: phone4Input.value.trim(),
+        address: addressInput.value.trim()
     }).then(() => {
-        name.value = '';
-        phone1.value = '';
-        phone2.value = '';
-        phone3.value = '';
-        phone4.value = '';
-        address.value = '';
-
-        hiddenId.value = '';
+        resetForm();
         loadContacts();
-    }).catch((error) => {
-        console.error("Erro ao salvar o contato: ", error);
-    });
+    }).catch(err => console.error("Erro ao salvar contato:", err));
 });
 
+// Carregar contatos do Firestore
 function loadContacts(filter = "") {
-    contacts.innerHTML = '';
+    contactsList.innerHTML = '';
+    contactsRef.orderBy("name").get()
+        .then(snapshot => {
+            const fragment = document.createDocumentFragment();
 
-    contactsRef.orderBy("name").get().then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-            var contact = doc.data();
-            var id = doc.id;
+            snapshot.forEach(doc => {
+                const contact = doc.data();
+                const id = doc.id;
 
-            if (
-                contact.name.toLowerCase().includes(filter.toLowerCase()) ||
-                contact.phone1.toLowerCase().includes(filter.toLowerCase()) ||
-                (contact.phone2 && contact.phone2.toLowerCase().includes(filter.toLowerCase())) ||
-                (contact.phone3 && contact.phone3.toLowerCase().includes(filter.toLowerCase())) ||
-                (contact.phone4 && contact.phone4.toLowerCase().includes(filter.toLowerCase()))
-            ) {
-                var li = document.createElement('li');
+                const searchText = filter.toLowerCase();
+                if (
+                    contact.name.toLowerCase().includes(searchText) ||
+                    contact.phone1.toLowerCase().includes(searchText) ||
+                    (contact.phone2 && contact.phone2.toLowerCase().includes(searchText)) ||
+                    (contact.phone3 && contact.phone3.toLowerCase().includes(searchText)) ||
+                    (contact.phone4 && contact.phone4.toLowerCase().includes(searchText))
+                ) {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <span>${contact.name}</span>
+                        <span>${contact.phone1}</span>
+                        <span>${contact.phone2 || ""}</span>
+                        <span>${contact.phone3 || ""}</span>
+                        <span>${contact.phone4 || ""}</span>
+                        <span>${contact.address || ""}</span>
+                        <div>
+                            <button class="edit"><i class="fas fa-edit"></i></button>
+                            <button class="delete"><i class="fas fa-trash"></i></button>
+                        </div>
+                    `;
 
-                li.innerHTML = `
-                    <span>${contact.name}</span>
-                    <span>${contact.phone1}</span>
-                    <span>${contact.phone2 || ""}</span>
-                    <span>${contact.phone3 || ""}</span>
-                    <span>${contact.phone4 || ""}</span>
-                    <span>${contact.address || ""}</span>
-                    <div>
-                        <button class="edit"><i class="fas fa-edit"></i></button>
-                        <button class="delete"><i class="fas fa-trash"></i></button>
-                    </div>
-                `;
+                    li.querySelector('.edit').addEventListener("click", () => editContact(id, contact));
+                    li.querySelector('.delete').addEventListener("click", () => deleteContact(id));
 
-                li.querySelector('.edit').onclick = function () {
-                    editContact(id, contact);
-                };
-                li.querySelector('.delete').onclick = function () {
-                    deleteContact(id);
-                };
+                    fragment.appendChild(li);
+                }
+            });
 
-                contacts.appendChild(li);
-            }
-        });
-    }).catch(function (error) {
-        console.error("Erro ao carregar os contatos: ", error);
-    });
+            contactsList.appendChild(fragment);
+        })
+        .catch(err => console.error("Erro ao carregar contatos:", err));
 }
 
-var searchInput = document.getElementById('search-input');
-
-
-searchInput.addEventListener("input", (e) => {
-    const filter = e.target.value.trim();
-    loadContacts(filter);
-});
-
+// Editar contato
 function editContact(id, contact) {
-    var name = document.getElementById('name');
-    var phone1 = document.getElementById('phone-number-1');
-    var phone2 = document.getElementById('phone-number-2');
-    var phone3 = document.getElementById('phone-number-3');
-    var phone4 = document.getElementById('phone-number-4');
-    var address = document.getElementById('address');
-    var hiddenId = document.getElementById('hiddenId');
-    var submitButton = document.querySelector('button[type="submit"]');
+    nameInput.value = contact.name;
+    phone1Input.value = contact.phone1;
+    phone2Input.value = contact.phone2 || '';
+    phone3Input.value = contact.phone3 || '';
+    phone4Input.value = contact.phone4 || '';
+    addressInput.value = contact.address || '';
 
-    name.value = contact.name;
-    phone1.value = contact.phone1;
-    phone2.value = contact.phone2;
-    phone3.value = contact.phone3;
-    phone4.value = contact.phone4;
-    address.value = contact.address;
-
-    hiddenId.value = id;
-
+    hiddenIdInput.value = id;
     submitButton.textContent = 'Salvar';
 }
 
+// Excluir contato
 function deleteContact(id) {
-    contactsRef.doc(id).delete().then(function () {
-        loadContacts(); 
-    }).catch(function (error) {
-        console.error('Erro ao excluir contato:', error);
-    });
+    if (confirm("Deseja realmente excluir este contato?")) {
+        contactsRef.doc(id).delete()
+            .then(() => loadContacts())
+            .catch(err => console.error("Erro ao excluir contato:", err));
+    }
 }
 
+// Resetar formulário
+function resetForm() {
+    contactForm.reset();
+    hiddenIdInput.value = '';
+    submitButton.textContent = 'Adicionar';
+}
+
+// Pesquisar contatos
+searchInput.addEventListener("input", e => {
+    loadContacts(e.target.value.trim());
+});
+
+// Carregar contatos ao iniciar
 loadContacts();

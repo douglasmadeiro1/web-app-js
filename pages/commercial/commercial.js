@@ -1,6 +1,4 @@
-// Código JavaScript completo e atualizado para a página 'commercial.html'
 
-const db = firebase.firestore();
 let estabelecimentoIdEmEdicao = null;
 let armamentoIdEmEdicao = null;
 let notifications = [];
