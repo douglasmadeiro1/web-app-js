@@ -494,16 +494,19 @@ async function carregarResumoRegularidade() {
 
     // Renderiza os cartões de resumo
     container.innerHTML = `
-      <div class="resumo-card regular" onclick="abrirListaPorSituacao('regular')">
-        <h3>Regulares (${resumo.regular.length})</h3>
-      </div>
-      <div class="resumo-card prox-vencer" onclick="abrirListaPorSituacao('proximoVenc')">
-        <h3>Próx. do Vencimento (${resumo.proximoVenc.length})</h3>
-      </div>
-      <div class="resumo-card irregular" onclick="abrirListaPorSituacao('irregular')">
-        <h3>Irregulares (${resumo.irregular.length})</h3>
+      <div id="resumo-container">
+        <div class="resumo-card regular" onclick="abrirListaPorSituacao('regular')">
+          <h3>Regulares (${resumo.regular.length})</h3>
+        </div>
+        <div class="resumo-card prox-vencer" onclick="abrirListaPorSituacao('proximoVenc')">
+          <h3>Próx. do Vencimento (${resumo.proximoVenc.length})</h3>
+        </div>
+        <div class="resumo-card irregular" onclick="abrirListaPorSituacao('irregular')">
+          <h3>Irregulares (${resumo.irregular.length})</h3>
+        </div>
       </div>
     `;
+
 
   } catch (err) {
     container.innerHTML = `<p>Erro ao carregar resumo: ${err.message}</p>`;
@@ -536,22 +539,51 @@ function abrirListaPorSituacao(situacao) {
   const dados = window.listaResumo[situacao];
 
   if (!dados || dados.length === 0) {
-    lista.innerHTML = "<li>Nenhum estabelecimento encontrado</li>";
+    lista.innerHTML = "<p style='text-align:center; font-weight:bold;'>Nenhum estabelecimento encontrado</p>";
   } else {
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+
     dados.forEach(est => {
-      const li = document.createElement("li");
-      li.textContent = est.nomeEstabelecimento;
-      li.style.cursor = "pointer";
-      li.onclick = () => {
-        fecharModalLista();
+      let statusTexto = "";
+      let statusClasse = "badge-regular";
+
+      if (est.validadeAlvara) {
+        const dataValidade = new Date(est.validadeAlvara + "T00:00:00");
+        const diffDays = Math.ceil((dataValidade - hoje) / (1000 * 60 * 60 * 24));
+
+        if (diffDays < 0) {
+          statusTexto = `Vencido há ${Math.abs(diffDays)} dia${Math.abs(diffDays) > 1 ? "s" : ""}`;
+          statusClasse = "badge-irregular";
+        } else if (diffDays <= 30) {
+          statusTexto = `Faltam ${diffDays} dia${diffDays > 1 ? "s" : ""}`;
+          statusClasse = "badge-proximo";
+        } else {
+          statusTexto = `Válido (${diffDays} dias restantes)`;
+          statusClasse = "badge-regular";
+        }
+      }
+
+      // Criar card estilizado
+      const card = document.createElement("div");
+      card.className = "estab-card";
+      card.innerHTML = `
+        <h4>${est.nomeEstabelecimento}</h4>
+        <p><strong>Alvará:</strong> ${est.validadeAlvara || "Sem data"}</p>
+        <span class="status ${statusClasse}">${statusTexto}</span>
+      `;
+      card.onclick = () => {
         abrirModalEdicaoEstabelecimento(est.id, est);
       };
-      lista.appendChild(li);
+
+      lista.appendChild(card);
     });
   }
+
   modal.classList.remove("hidden");
 }
 
 function fecharModalLista() {
   document.getElementById("modal-lista-estabelecimentos").classList.add("hidden");
 }
+

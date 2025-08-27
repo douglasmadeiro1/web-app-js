@@ -411,9 +411,6 @@ select:focus {
     outline: none;
 }
 
-/* ========================================
-   MODAIS
-======================================== */
 .modal {
     position: fixed;
     top: 0;
@@ -458,36 +455,6 @@ select:focus {
 
 .hidden {
     display: none;
-}
-
-/* ========================================
-   PAGAMENTO
-======================================== */
-.forma-pagamento {
-    height: 35%;
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    padding: 10px;
-    background: #f9f9f9;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
-
-.forma-pagamento p {
-    margin-bottom: 10px;
-    font-size: 18px;
-}
-
-.pagamento-botoes {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    /* 2 colunas */
-    grid-template-rows: repeat(2, auto);
-    /* 2 linhas */
-    gap: 10px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    justify-items: center;
 }
 
 .theme-toggle-sidebar {
@@ -538,9 +505,7 @@ select:focus {
     box-shadow: 0 0 8px rgba(0, 123, 255, 0.7);
 }
 
-/* ========================================
-   FILTRO POR CLASSE
-======================================== */
+
 #filtro-classe-container {
     display: flex;
     justify-content: center;
@@ -1463,3 +1428,180 @@ body.dark .comanda-relatorio {
 .resumo-card.regular { background-color: #28a745; }
 .resumo-card.prox-vencer { background-color: #ffc107; color: black; }
 .resumo-card.irregular { background-color: #dc3545; }
+
+
+#lista-estabelecimentos-modal {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  padding: 10px;
+}
+
+/* Tablet */
+@media (min-width: 600px) {
+  #lista-estabelecimentos-modal {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Desktop */
+@media (min-width: 992px) {
+  #lista-estabelecimentos-modal {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.estab-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 12px 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.estab-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.estab-card h4 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.estab-card p {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: #444;
+}
+
+.status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.badge-regular {
+  background-color: #28a745;
+}
+
+.badge-proximo {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.badge-irregular {
+  background-color: #dc3545;
+}
+
+#resumo-situacao {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  padding: 10px;
+}
+
+/* Tablet: 2 cards por linha */
+@media (min-width: 600px) {
+  #resumo-situacao {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Desktop: 3 cards por linha */
+@media (min-width: 992px) {
+  #resumo-situacao {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.resumo-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.resumo-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+/* Cores */
+.resumo-card.regular {
+  background: #28a745;
+  color: #fff;
+}
+
+.resumo-card.proximo {
+  background: #ffc107;
+  color: #000;
+}
+
+.resumo-card.irregular {
+  background: #dc3545;
+  color: #fff;
+}
+
+#resumo-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  padding: 10px;
+}
+
+/* Tablet: 2 cards por linha */
+@media (min-width: 600px) {
+  #resumo-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Desktop: 3 cards por linha */
+@media (min-width: 992px) {
+  #resumo-container {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.resumo-card {
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.resumo-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+/* Cores */
+.resumo-card.regular {
+  background: #28a745;
+  color: #fff;
+}
+
+.resumo-card.prox-vencer {
+  background: #ffc107;
+  color: #000;
+}
+
+.resumo-card.irregular {
+  background: #dc3545;
+  color: #fff;
+}
