@@ -36,7 +36,7 @@
         <ul>
           <li><a href="../dashboard/dashboard.html">Página inicial</a></li>
           <li><a href="#" onclick="abrirDashboard()">Estabelecimentos</a></li>
-          <li><a href="#" onclick="abrirSecao('estabelecimentos')">Cadastrar</a></li>
+          <li><a href="#" onclick="abrirSecao('estabelecimentos'), fecharModalLista()">Cadastrar</a></li>
         </ul>
       </nav>
 
@@ -106,10 +106,10 @@
         <label for="edit-tipo-estabelecimento">Tipo de local:</label>
         <select id="edit-tipo-estabelecimento">
             <option value=""></option>
-          <option value="bar">Bar</option>
-          <option value="restaurante">Restaurante</option>
-          <option value="comercioRoupas">Comércio de roupas</option>
-          <option value="comercioRoupas">Outros</option>
+            <option value="bar">Bar</option>
+            <option value="restaurante">Restaurante</option>
+            <option value="comercioRoupas">Comércio de roupas</option>
+            <option value="outros">Outros</option>
         </select>
 
       </div>

@@ -19,7 +19,7 @@ function abrirDashboard() {
     return;
   }
 
-  titulo.innerText = "Dashboard";
+  titulo.innerText = "";
   conteudo.innerHTML = `<div id="resumo-regularidade" class="widgets"><p>Carregando resumo...</p></div>`;
   carregarResumoRegularidade();
 }
@@ -61,6 +61,7 @@ function abrirSecao(secao, estabelecimentoIdParaModal = null) {
       </form>
       <div id="lista-estabelecimentos" class="widgets"></div>
     `;
+    fecharModalLista();
     carregarEstabelecimentos();
 
     if (estabelecimentoIdParaModal) {
