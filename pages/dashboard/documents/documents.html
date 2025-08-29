@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GCM Pirassununga</title>
+  <link rel="icon" type="image/x-icon" href="../assets/logo2.png">
+  <link rel="stylesheet" href="documents.css" />
+  <!-- Boxicons para ícones -->
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+
+  <div class="top-bar">
+    <button id="menu-toggle" class="menu-toggle">☰</button>
+    <h1 class="top-bar-title">Estabelecimentos comerciais</h1>
+    <!-- Ícone de notificação -->
+    <div class="notification-icon" id="notification-icon-container">
+      <i class='bx bxs-bell'></i>
+      <span class="notification-count" id="notification-count">0</span>
+      <div class="notification-dropdown" id="notification-dropdown">
+        <!-- Notificações serão carregadas aqui -->
+        <p class="no-notifications" id="no-notifications">Nenhuma notificação</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+  <div class="container">
+    <aside class="sidebar">
+      <nav>
+        <ul>
+          <li><a href="../../dashboard/dashboard.html">Página inicial</a></li>
+          <li><a href="day_shift/day_shift.html"><i class="fas fa-sun"></i> Plantão diurno</a></li>
+          <li><a href="night_shift/night_shift.html"><i class="fas fa-moon"></i> Plantão noturno</a></li>
+          <li><a href="report_of_manager/report_of_manager.html"><i class="fas fa-file-signature"></i> Relatório encarregado</a></li>
+          <li><a href="patrol_report/patrol_report.html"><i class="fas fa-car"></i> Relatório patrulhamento</a></li>
+          <li><a href="patrol_report_romo/patrol_report_romo.html"><i class="fas fa-motorcycle"></i> Patrulhamento - Romo</a></li>
+          <li><a href="release_term/release_term.html"><i class="fas fa-file-contract"></i> Termo de liberação</a></li>
+        </ul>
+      </nav>
+
+      <!-- Botão de tema fixado no fundo da sidebar -->
+      <div class="theme-toggle-sidebar">
+        <input type="checkbox" id="toggleThemeSidebar" />
+        <label for="toggleThemeSidebar">🌓</label>
+      </div>
+    </aside>
+    <main class="main-content">
+      <header>
+        <h1 id="titulo-secao">Dashboard</h1>
+      </header>
+      <section id="secao-conteudo">
+        <p>Bem-vindo! Selecione uma opção no menu para começar.</p>
+      </section>
+      
+      <div id="modal-lista-estabelecimentos" class="modal-overlay hidden">
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="titulo-lista-estabelecimentos">Lista de Estabelecimentos</h2>
+        </div>
+        <ul id="lista-estabelecimentos-modal" class="modal-list">
+          </ul>
+        <div class="modal-actions">
+          <button class="btn-cancel" onclick="fecharModalLista()">Fechar</button>
+        </div>
+      </div>
+</div>
+
+    </main>
+  </div>
+
+  <div id="modal-confirmacao" class="modal hidden">
+    <div class="modal-content">
+      <p id="modal-msg">Tem certeza?</p>
+      <div class="modal-actions">
+        <button onclick="resolverConfirmacao(true)">Sim</button>
+        <button onclick="resolverConfirmacao(false)">Não</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-edicao-estabelecimento" class="modal hidden">
+    <div class="modal-content">
+      <h2>Ficha do Estabelecimento</h2>
+      <div id="dados-estabelecimento-edicao">
+        <label for="edit-nome-estabelecimento">Nome do estabelecimento:</label>
+        <input type="text" id="edit-nome-estabelecimento" placeholder="Nome ou razão social do estabelecimento" />
+
+        <label for="edit-endereco-estabelecimento">Endereço do estabelecimento:</label>
+        <input type="text" id="edit-endereco-estabelecimento" placeholder="endereco do estabelecimento" />
+
+        <label for="edit-nome-responsavel">Nome do responsável:</label>
+        <input type="text" id="edit-nome-responsavel" placeholder="Nome do responsavel" />
+
+        <label for="edit-endereco-responsavel">Endereço do responsável:</label>
+        <input type="text" id="edit-endereco-responsavel" placeholder="endereco do responsavel" />
+
+        <label for="edit-telefone">Telefone:</label>
+        <input type="tel" id="edit-telefone" placeholder="Telefone" />
+
+        <label for="edit-data-validade-alvara">Validade do alvará de funcionamento:</label>
+        <input type="date" id="edit-data-validade-alvara" />
+
+        <label for="edit-tipo-estabelecimento">Tipo de local:</label>
+        <select id="edit-tipo-estabelecimento">
+            <option value=""></option>
+          <option value="bar">Bar</option>
+          <option value="restaurante">Restaurante</option>
+          <option value="comercioRoupas">Comércio de roupas</option>
+          <option value="comercioRoupas">Outros</option>
+        </select>
+
+      </div>
+
+      <hr style="margin: 20px 0;" />
+
+      <h3>Notificação / Autuação</h3>
+      <div id="lista-armamentos"></div>
+      <button onclick="mostrarFormularioArma()" class="btn-green" style="margin-top:10px;">➕ Inserir Notificação/Autuação</button>
+
+      <div id="form-armamento" style="display:none; margin-top: 10px;">
+        <input type="text" id="fabricante" placeholder="Fabricante" />
+        <input type="text" id="modelo" placeholder="Modelo" />
+        <input type="text" id="calibre" placeholder="Calibre" />
+        <input type="text" id="numeroCraf" placeholder="Número do CRAF" />
+        <label for="dataGuia">Validade da Guia de Tráfego:</label>
+        <input type="date" id="dataGuia" />
+        
+        <button onclick="salvarArmamento()" class="btn-green">💾 Salvar Armamento</button>
+        <button onclick="cancelarFormularioArma()" class="btn-red">❌ Cancelar</button>
+        <label for="edit-vencimento-mensalidade-estabelecimento">Vencimento Mensalidade:</label>
+        <input type="date" id="edit-vencimento-mensalidade-estabelecimento" />
+        
+      </div>
+
+      <div class="modal-actions">
+        <button onclick="salvarEdicaoEstabelecimento()" class="btn-green">Salvar Edição</button>
+        <button onclick="excluirEstabelecimento()" class="btn-red">Excluir Estabelecimento</button>
+        <button onclick="fecharModalEdicaoEstabelecimento()">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Novo Modal de Edição de Armamento -->
+  <div id="modal-edicao-armamento" class="modal hidden">
+    <div class="modal-content">
+      <h2>Editar Armamento</h2>
+      <input type="hidden" id="edit-armamento-id" />
+      <input type="hidden" id="edit-armamento-estabelecimento-id" />
+
+      <label for="edit-fabricante">Fabricante:</label>
+      <input type="text" id="edit-fabricante" placeholder="Fabricante" />
+
+      <label for="edit-modelo">Modelo:</label>
+      <input type="text" id="edit-modelo" placeholder="Modelo" />
+
+      <label for="edit-calibre">Calibre:</label>
+      <input type="text" id="edit-calibre" placeholder="Calibre" />
+
+      <label for="edit-numeroCraf">Número do CRAF:</label>
+      <input type="text" id="edit-numeroCraf" placeholder="Número do CRAF" />
+
+      <label for="edit-dataGuia">Validade da Guia de Tráfego:</label>
+      <input type="date" id="edit-dataGuia" />
+
+      <div class="modal-actions">
+        <button onclick="salvarEdicaoArmamento()" class="btn-green">💾 Salvar</button>
+        <button onclick="excluirArmamentoConfirmado()" class="btn-red">🗑️ Excluir</button>
+        <button onclick="fecharModalEdicaoArmamento()">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+
+  <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore-compat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+  <script src="https://unpkg.com/pix-payload@latest/dist/pix-payload.umd.js"></script>
+  <script src="../../firebase-init.js"></script>
+  <script src="../../auth-guard.js"></script>
+  <script src="documents.js"></script>
+</body>
+
+</html>
