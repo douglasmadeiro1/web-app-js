@@ -8,49 +8,74 @@
   <link rel="stylesheet" href="dashboard.css" />
 </head>
 <body>
-  
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div>
-      <h2 style="margin-bottom: 20px; font-size: 1.2rem; font-weight: 600;"> Sistema GCM</h2>
-      <nav>
-        <a href="tools/abandoned_vehicles/abandoned_vehicles.html"> Veículos em estado de abandono</a>
-        
-        <a href="tools/commercial/commercial.html"> 🏪 Estabelecimentos comerciais</a>
-
-        <a href="tools/notification/notification.html"> Notificações de postura</a>
-
-        <a href="tools/infringement/infringement.html"> Autuações de postura</a>
-
-        <a href="releases/releases.html"> 📊 Relatórios</a>
-
-        <a href="documents/documents.html"> 📄 Documentos</a>
-        
-        <a href="places/places.html"><i class="fa fa-map-marker" ></i>  Patrimônios</a>
-
-        <a href="contacts/contacts.html"><i class="fa fa-address-book" aria-hidden="true"></i> Contatos</a>
-      </nav>
-    </div>
-    <div>
-      <a href="#" onclick="logout()" style="color: #f87171;"><i class="fas fa-sign-out-alt"></i> Sair</a>
-    </div>
-  </aside>
-
   <!-- Conteúdo principal -->
   <main class="main-content">
-    
-    <!-- Botão de tema -->
-    <div class="theme-toggle">
-      <label id="toggle-theme">
-        <i class="fas fa-moon"></i>
-      </label>
-    </div>
 
-    <!-- Imagem -->
-    <section>
-      <img src="../../assets/image/background-gcm.jpg" class="background-gcm" alt="Imagem GCM">
+    <!-- Topbar -->
+    <header class="topbar">
+      <h2>Sistema GCM</h2>
+      <div class="topbar-actions">
+        <button id="toggle-theme" class="icon-btn">
+          <i class="fas fa-moon"></i>
+        </button>
+        <button onclick="logout()" class="icon-btn logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Sair
+        </button>
+      </div>
+    </header>
+
+    <!-- Grid de Cards -->
+    <section class="cards-grid">
+
+      <div class="card" onclick="window.location.href='documents/documents.html'">
+        <img src="../../assets/image/documentos.png" alt="Documentos">
+        <h3>Documentos</h3>
+        <p>Documentos utilizados no dia a dia dos plantões</p>
+      </div>
+
+      <div class="card" onclick="window.location.href='places/places.html'">
+        <img src="../../assets/image/patrimonios.png" alt="Patrimônios">
+        <h3>Patrimônios</h3>
+        <p>Cadastro e visualização de informações de patrimônios públicos do município</p>
+      </div>
+
+      <div class="card" onclick="window.location.href='contacts/contacts.html'">
+        <img src="../../assets/image/contacts.png" alt="Contatos">
+        <h3>Contatos</h3>
+        <p>Agenda telefônica com os principais contatos utilizados</p>
+      </div>
+      
+      <div class="card" onclick="window.location.href='releases/releases.html'">
+        <img src="../../assets/image/relatorios.png" alt="Relatórios">
+        <h3>Relatórios</h3>
+        <p>Criação de gráficos de estatística de ocorrências com base nos talões abertos para atendimento</p>
+      </div>
+      
+      <div class="card" onclick="window.location.href='tools/abandoned_vehicles/abandoned_vehicles.html'">
+        <img src="../../assets/image/veiculo2.png" alt="Veículos">
+        <h3>Veículos em Abandono</h3>
+        <p>Cadastro das notificações de veículos em estado de abandono para acompanhamento e consulta da situação (removido / pendente)</p>
+      </div>
+
+      <div class="card" onclick="window.location.href='tools/commercial/commercial.html'">
+        <img src="../../assets/image/comercio.png" alt="Comércios">
+        <h3>Estabelecimentos</h3>
+        <p>Cadastro de informações sobre estabelecimentos comerciais localizados na cidade, consulta de situação e validade de alvarás</p>
+      </div>
+
+      <div class="card" onclick="window.location.href='tools/notification/notification.html'">
+        <img src="../../assets/image/notificacao.png" alt="Notificações">
+        <h3>Notificações</h3>
+        <p>Gerenciamento das notificações de postura aplicadas pelas equipes e visualização da situação e prazo fornecido pelo agente para regularização</p>
+      </div>
+
+      <div class="card" onclick="window.location.href='tools/infringement/infringement.html'">
+        <img src="../../assets/image/autuacao.png" alt="Autuações">
+        <h3>Autuações</h3>
+        <p>Gerenciamento dos autos de infração aplicados pelas equipes</p>
+      </div>
+
     </section>
-
   </main>
 
   <!-- Scripts -->
