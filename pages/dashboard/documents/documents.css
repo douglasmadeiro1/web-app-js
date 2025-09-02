@@ -92,6 +92,8 @@ body {
   display: grid;
   grid-template-columns: 1fr;
   gap: 20px;
+  max-width: 80%;
+  margin: auto;
 }
 
 @media (min-width: 768px) {
