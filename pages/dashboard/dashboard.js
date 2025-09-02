@@ -34,3 +34,7 @@ toggleBtn.addEventListener("click", () => {
 
   localStorage.setItem("theme", isDark ? "dark" : "light");
 });
+
+if (localStorage.getItem("darkMode") === "true") {
+  document.body.classList.add("dark");
+}

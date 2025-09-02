@@ -10,11 +10,6 @@ if (localStorage.getItem("darkMode") === "true") {
   document.body.classList.add("dark");
 }
 
-// Abrir documento (exemplo)
-function abrirDocumento(file) {
-  window.open(file, "_blank");
-}
-
 // Logout
 function logout() {
   firebase.auth().signOut()
