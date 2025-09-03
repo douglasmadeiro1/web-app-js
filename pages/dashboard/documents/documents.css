@@ -30,9 +30,10 @@ body {
   background: var(--card);
   display: flex;
   align-items: center;
-  justify-content: space-between; /* distribui elementos */
+  justify-content: space-between;
+  /* distribui elementos */
   padding: 0 1rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   z-index: 1000;
 }
 
@@ -42,7 +43,8 @@ body {
   color: var(--text);
   margin: 0;
   text-align: center;
-  flex: 1; /* ocupa espaço central */
+  flex: 1;
+  /* ocupa espaço central */
 }
 
 .back-btn {
@@ -68,7 +70,7 @@ body {
   padding: 8px 14px;
   border-radius: 6px;
   color: var(--text);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   transition: background 0.2s ease;
 }
 
@@ -80,6 +82,7 @@ body {
   background: #fef2f2;
   color: #dc2626;
 }
+
 .logout-btn:hover {
   background: #fee2e2;
 }
@@ -113,7 +116,7 @@ body {
   color: var(--text);
   padding: 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   text-align: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
@@ -121,7 +124,7 @@ body {
 
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 .card img {
