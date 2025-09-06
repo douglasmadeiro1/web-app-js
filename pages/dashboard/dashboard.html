@@ -8,13 +8,57 @@
   <link rel="stylesheet" href="dashboard.css" />
 </head>
 <body>
-  <!-- Conteúdo principal -->
   <main class="main-content">
 
-    <!-- Topbar -->
     <header class="topbar">
       <h2>Sistema GCM</h2>
       <div class="topbar-actions">
+        <div class="notifications">
+          <div class="notification-container" id="container-notif-postura">
+            <button class="icon-btn" title="Notificações de postura">
+              <i class="fas fa-bell"></i>
+              <span class="badge" id="notif-postura">0</span>
+            </button>
+            <div class="notifications-dropdown" id="dropdown-postura">
+              <h4>Notificações de Postura</h4>
+              <div class="notification-list"></div>
+            </div>
+          </div>
+          
+          <div class="notification-container" id="container-notif-veiculos">
+            <button class="icon-btn" title="Veículos em abandono">
+              <i class="fas fa-car-crash"></i>
+              <span class="badge" id="notif-veiculos">0</span>
+            </button>
+            <div class="notifications-dropdown" id="dropdown-veiculos">
+              <h4>Veículos em Abandono</h4>
+              <div class="notification-list"></div>
+            </div>
+          </div>
+
+          <div class="notification-container" id="container-notif-agentes">
+            <button class="icon-btn" title="Agentes GCM">
+              <i class="fas fa-user-shield"></i>
+              <span class="badge" id="notif-agentes">0</span>
+            </button>
+            <div class="notifications-dropdown" id="dropdown-agentes">
+              <h4>Notificações de Agentes</h4>
+              <div class="notification-list"></div>
+            </div>
+          </div>
+
+          <div class="notification-container" id="container-notif-estab">
+            <button class="icon-btn" title="Estabelecimentos">
+              <i class="fas fa-store"></i>
+              <span class="badge" id="notif-estab">0</span>
+            </button>
+            <div class="notifications-dropdown" id="dropdown-estab">
+              <h4>Notificações de Estabelecimentos</h4>
+              <div class="notification-list"></div>
+            </div>
+          </div>
+        </div>
+
         <button id="toggle-theme" class="icon-btn">
           <i class="fas fa-moon"></i>
         </button>
@@ -24,67 +68,56 @@
       </div>
     </header>
 
-    <!-- Grid de Cards -->
-    <section class="cards-grid">
-
+    <section class="cards-grid" id="dashboardContent">
       <a href='documents/documents.html' class="card">
         <img src="../../assets/image/documentos.png" alt="Documentos">
         <h3>Documentos</h3>
         <p>Documentos utilizados no dia a dia dos plantões</p>
       </a>
-
       <a href='places/places.html' class="card">
         <img src="../../assets/image/patrimonios.png" alt="Patrimônios">
         <h3>Patrimônios</h3>
         <p>Cadastro e visualização de informações de patrimônios públicos do município</p>
       </a>
-
       <a href='contacts/contacts.html' class="card">
         <img src="../../assets/image/contacts.png" alt="Contatos">
         <h3>Contatos</h3>
         <p>Agenda telefônica com os principais contatos utilizados</p>
       </a>
-      
       <a href='releases/releases.html' class="card">
         <img src="../../assets/image/relatorios.png" alt="Relatórios">
         <h3>Relatórios</h3>
         <p>Criação de gráficos de estatística de ocorrências com base nos talões abertos para atendimento</p>
       </a>
-      
-      <a href='tools/abandoned_vehicles/abandoned_vehicles.html' class="card">
+      <a href='tools/abandoned_vehicles/vehicles.html' class="card">
         <img src="../../assets/image/veiculo2.png" alt="Veículos">
         <h3>Veículos em Abandono</h3>
         <p>Cadastro das notificações de veículos em estado de abandono para acompanhamento e consulta da situação (removido / pendente)</p>
       </a>
-
       <a href='tools/commercial/commercial.html' class="card">
         <img src="../../assets/image/comercio.png" alt="Comércios">
         <h3>Estabelecimentos</h3>
         <p>Cadastro de informações sobre estabelecimentos comerciais localizados na cidade, consulta de situação e validade de alvarás</p>
       </a>
-
       <a href='tools/notification/notification.html' class="card">
         <img src="../../assets/image/notificacao.png" alt="Notificações">
         <h3>Notificações</h3>
         <p>Gerenciamento das notificações de postura aplicadas pelas equipes e visualização da situação e prazo fornecido pelo agente para regularização</p>
       </a>
-
       <a href='tools/infringement/infringement.html' class="card">
         <img src="../../assets/image/autuacao.png" alt="Autuações">
         <h3>Autuações</h3>
         <p>Gerenciamento dos autos de infração aplicados pelas equipes</p>
       </a>
-
-      <a href='tools/abandoned_vehicles/abandoned_vehicles.html' class="card">
-        <img src="../../assets/image/equipe.png" alt="Autuações">
+      <a href='tools//agents/agents.html' class="card">
+        <img src="../../assets/image/equipe.png" alt="Agentes">
         <h3>Gerenciamento da equipe</h3>
         <p>Gerenciamento das informações e registro de dados referentes aos agentes da Gurda Civil Munucipal de Pirassununga</p>
       </a>
-
     </section>
+
   </main>
 
-  <!-- Scripts -->
   <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-auth-compat.js"></script>
   <script src="../../firebase-init.js"></script>

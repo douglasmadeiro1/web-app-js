@@ -1,14 +1,20 @@
 // Toggle Dark Mode
-const themeToggle = document.getElementById("themeToggle");
-themeToggle.addEventListener("click", () => {
+const toggleBtn = document.getElementById("toggle-theme");
+if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark");
+toggleBtn.innerHTML = document.body.classList.contains("dark") ?
+  '<i class="fas fa-sun"></i>' :
+  '<i class="fas fa-moon"></i>';
+toggleBtn.addEventListener("click", () => {
   document.body.classList.toggle("dark");
-  localStorage.setItem("darkMode", document.body.classList.contains("dark"));
+  toggleBtn.innerHTML = document.body.classList.contains("dark") ?
+    '<i class="fas fa-sun"></i>' :
+    '<i class="fas fa-moon"></i>';
+  localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
 });
-
-// Persistir tema
-if (localStorage.getItem("darkMode") === "true") {
-  document.body.classList.add("dark");
+function updateThemeIcon() {
+  toggleBtn.innerHTML = document.body.classList.contains("dark") ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
 }
+
 
 // Logout
 function logout() {
