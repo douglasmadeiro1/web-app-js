@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Veículos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="vehicles.css">
+</head>
+<body>
+
+<div class="topbar">
+    <button id="backBtn"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+    <h2>Veículos</h2>
+    <div class="topbar-right">
+        <div class="notification-wrapper">
+            <button id="notificationBtn"><i class="fa-solid fa-bell"></i><span id="notificationCount" class="badge">0</span></button>
+            <div id="notificationDropdown" class="notification-dropdown">
+                <ul id="notificationList"></ul>
+                <button id="markAsReadBtn">CIENTE</button>
+            </div>
+        </div>
+        <input type="text" id="buscaInput" placeholder="Buscar veículo...">
+        <select id="filtroLocal">
+            <option value="">Todos os locais</option>
+        </select>
+        <button id="addVehicleBtn">Adicionar Veículo</button>
+    </div>
+</div>
+
+<table id="vehicleTable">
+    <thead>
+        <tr>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Ano</th>
+            <th>Cor</th>
+            <th>Placa</th>
+            <th>Local</th>
+            <th>Prazo (dias)</th>
+            <th>Data limite</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<!-- Modal -->
+<div class="modal" id="vehicleModal">
+    <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h3 id="modalTitle">Adicionar Veículo</h3>
+        <form id="vehicleForm">
+            <div class="form-group">
+                <label>Marca</label>
+                <input type="text" id="marca" required>
+            </div>
+            <div class="form-group">
+                <label>Modelo</label>
+                <input type="text" id="modelo" required>
+            </div>
+            <div class="form-group">
+                <label>Ano</label>
+                <input type="number" id="ano" required>
+            </div>
+            <div class="form-group">
+                <label>Cor</label>
+                <input type="text" id="cor" required>
+            </div>
+            <div class="form-group">
+                <label>Placa</label>
+                <input type="text" id="placa" required>
+            </div>
+            <div class="form-group">
+                <label>Local</label>
+                <input type="text" id="local" required>
+            </div>
+            <div class="form-group">
+                <label>Prazo para retirada (dias)</label>
+                <input type="number" id="prazo" required>
+            </div>
+            <div class="form-group">
+                <label>Data limite</label>
+                <input type="date" id="dataLimite" required>
+            </div>
+            <button type="submit" id="saveBtn">Salvar</button>
+        </form>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="../../../../firebase-init.js"></script>
+<script src="../../../../auth-guard.js"></script>
+<script src="vehicles.js"></script>
+</body>
+</html>
