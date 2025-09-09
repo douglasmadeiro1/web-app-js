@@ -1,3 +1,6 @@
+// ========================
+// Variáveis principais
+// ========================
 const formAgente = document.getElementById("formAgente");
 const listaAgentes = document.getElementById("listaAgentes");
 const msgAgente = document.getElementById("msgAgente");
@@ -9,12 +12,14 @@ const tituloModalAgente = document.getElementById("tituloModalAgente");
 
 let idAgenteEdicao = null;
 
-// Abrir modal
+// ========================
+// Abrir/fechar modal Agente
+// ========================
 btnAbrirAgente.onclick = () => {
   idAgenteEdicao = null;
   tituloModalAgente.textContent = "Novo Agente";
   formAgente.querySelector("button[type='submit']").textContent = "Salvar Agente";
-  formAgente.reset(); // Limpa o formulário ao abrir
+  formAgente.reset();
   modalAgente.style.display = "block";
 };
 
@@ -28,12 +33,16 @@ window.onclick = (event) => {
   }
 };
 
-// Validar CPF
+// ========================
+// Validação de CPF
+// ========================
 function validarCPF(cpf) {
   return /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/.test(cpf);
 }
 
+// ========================
 // Salvar ou atualizar agente
+// ========================
 formAgente.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -65,7 +74,7 @@ formAgente.addEventListener("submit", async (e) => {
 
     modalAgente.style.display = "none";
     formAgente.reset();
-    carregarAgentes(); // Recarrega os agentes após salvar
+    carregarAgentes();
     idAgenteEdicao = null;
   } catch (error) {
     console.error("Erro ao salvar agente:", error);
@@ -73,7 +82,9 @@ formAgente.addEventListener("submit", async (e) => {
   }
 });
 
+// ========================
 // Editar agente
+// ========================
 window.editarAgente = async (id) => {
   try {
     const docSnap = await db.collection("agentes").doc(id).get();
@@ -99,13 +110,15 @@ window.editarAgente = async (id) => {
   }
 };
 
+// ========================
 // Excluir agente
+// ========================
 window.excluirAgente = async (id) => {
   if (confirm("Tem certeza que deseja excluir este agente?")) {
     try {
       await db.collection("agentes").doc(id).delete();
       msgAgente.textContent = "✅ Agente excluído!";
-      carregarAgentes(); // Recarrega os agentes após excluir
+      carregarAgentes();
     } catch (error) {
       console.error("Erro ao excluir agente:", error);
       msgAgente.textContent = "❌ Erro ao excluir!";
@@ -113,7 +126,9 @@ window.excluirAgente = async (id) => {
   }
 };
 
+// ========================
 // Carregar lista de agentes e gerar alertas
+// ========================
 async function carregarAgentes() {
   listaAgentes.innerHTML = "";
   const snapshot = await db.collection("agentes").get();
@@ -150,27 +165,28 @@ async function carregarAgentes() {
 
     // Verificar alertas próximos ou vencidos
     const dataAlerta = new Date();
-    dataAlerta.setDate(hoje.getDate() + 30); // 30 dias de antecedência
+    dataAlerta.setDate(hoje.getDate() + 30);
 
     if (agente.psicoValidade) {
-      const psicoDate = new Date(agente.psicoValidade + 'T00:00:00'); // Garante que a comparação é no mesmo horário
+      const psicoDate = new Date(agente.psicoValidade + 'T00:00:00');
       if (psicoDate <= dataAlerta) {
         alertas.push({ tipo: 'psico', mensagem: `⚠️ Agente ${agente.nomeCompleto} - Exame psicológico próximo ou vencido!` });
       }
     }
     if (agente.porteValidade) {
-      const porteDate = new Date(agente.porteValidade + 'T00:00:00'); // Garante que a comparação é no mesmo horário
+      const porteDate = new Date(agente.porteValidade + 'T00:00:00');
       if (porteDate <= dataAlerta) {
         alertas.push({ tipo: 'porte', mensagem: `⚠️ Agente ${agente.nomeCompleto} - Porte de arma próximo ou vencido!` });
       }
     }
   });
 
-  // Atualizar badge de notificações
   updateNotifications(alertas);
 }
 
+// ========================
 // Filtros
+// ========================
 document.getElementById("buscaAgente").addEventListener("input", carregarAgentes);
 document.getElementById("filtroGraduacao").addEventListener("change", carregarAgentes);
 
@@ -182,49 +198,89 @@ function back() {
   window.location.href = "../../../../dashboard/dashboard.html";
 }
 
-// Variável global para armazenar as notificações
+// ========================
+// Notificações
+// ========================
 let globalNotifications = [];
 
-// Função para renderizar as notificações na topbar
 function renderNotifications() {
-    const countElem = document.getElementById('notification-count');
-    const dropdown = document.getElementById('notification-dropdown');
-    const noNotif = document.getElementById('no-notifications');
+  const notificationDropdown = document.getElementById('notification-dropdown');
+  const notificationCountElement = document.getElementById('notification-count');
 
-    if (!countElem || !dropdown || !noNotif) return;
+  if (!notificationDropdown || !notificationCountElement) {
+    console.error("Elementos de notificação não encontrados.");
+    return;
+  }
 
-    dropdown.innerHTML = '';
-    
-    if (globalNotifications.length === 0) {
-        noNotif.style.display = 'block';
-        countElem.textContent = '0';
-    } else {
-        noNotif.style.display = 'none';
-        countElem.textContent = globalNotifications.length;
+  notificationDropdown.innerHTML = '';
 
-        globalNotifications.forEach((notif, index) => {
-            const div = document.createElement('div');
-            div.className = 'notification-item';
-            div.innerHTML = `
-                <p>${notif.mensagem}</p>
-                <button class="mark-as-read-btn" data-index="${index}">✔️ Lida</button>
-            `;
-            dropdown.appendChild(div);
-        });
+  const titleDiv = document.createElement('div');
+  titleDiv.className = 'notification-title';
+  titleDiv.innerHTML = '<h4>Notificações</h4>';
+  notificationDropdown.appendChild(titleDiv);
 
-        // Adiciona o evento de click para os botões 'Lida'
-        dropdown.querySelectorAll('.mark-as-read-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                const index = parseInt(button.dataset.index);
-                globalNotifications.splice(index, 1);
-                renderNotifications(); // Rerenderiza a lista
-            });
-        });
-    }
+  if (globalNotifications.length === 0) {
+    notificationDropdown.innerHTML += '<p class="no-notifications">Nenhuma notificação</p>';
+    notificationCountElement.style.display = 'none';
+    return;
+  }
+
+  globalNotifications.forEach((notif, index) => {
+    const div = document.createElement('div');
+    div.className = 'notification-item';
+    div.innerHTML = `
+      <span>${notif.mensagem}</span>
+      <button class="mark-as-read-btn" data-index="${index}">Lido</button>
+    `;
+
+    div.querySelector('.mark-as-read-btn').onclick = (event) => {
+      event.stopPropagation();
+      markAsRead(index);
+    };
+
+    div.onclick = () => {
+      if (notif.estabelecimentoId) {
+        abrirSecao('estabelecimentos', notif.estabelecimentoId);
+      }
+      notificationDropdown.classList.remove('active');
+    };
+
+    notificationDropdown.appendChild(div);
+  });
+
+  notificationCountElement.textContent = globalNotifications.length;
+  notificationCountElement.style.display = 'flex';
 }
 
-// Função para atualizar as notificações (chamada pela função de carregar agentes)
-function updateNotifications(newAlerts) {
-    globalNotifications = newAlerts;
+// Botão sino + clique fora
+const bellBtn = document.querySelector('#notification-icon-container i');
+const dropdown = document.getElementById('notification-dropdown');
+const container = document.getElementById('notification-icon-container');
+
+// Abre/fecha no clique do sino
+bellBtn.addEventListener('click', (e) => {
+  e.stopPropagation(); // impede de fechar imediatamente
+  dropdown.classList.toggle('active');
+});
+
+// Fecha ao clicar fora
+document.addEventListener('click', (e) => {
+  if (!dropdown.contains(e.target) && !container.contains(e.target)) {
+    dropdown.classList.remove('active');
+  }
+});
+
+// Marcar como lida
+function markAsRead(index) {
+  if (index > -1) {
+    globalNotifications.splice(index, 1);
     renderNotifications();
+  }
 }
+
+// Atualizar notificações
+function updateNotifications(newAlerts) {
+  globalNotifications = newAlerts;
+  renderNotifications();
+}
+
