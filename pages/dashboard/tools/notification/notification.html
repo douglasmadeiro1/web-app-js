@@ -2,114 +2,114 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Cadastro de Notificação</title>
+  <title>Notificações</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <link rel="stylesheet" href="notification.css">
 </head>
 <body>
-  <div class="header">
-        <button class="btn" onclick="back()">Voltar</button>
+
+
+
+  
+  <!-- Topbar -->
+  <div class="top-bar">
+    <button id="backBtn"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+    <h1 class="top-bar-title">Notificações</h1>
+      <div class="notification-icon" id="notification-icon-container">
+    <i class="bx bxs-bell"></i>
+    <span class="notification-count" id="notification-count">0</span>
+    <div class="notification-dropdown" id="notification-dropdown">
+        <p class="no-notifications" id="no-notifications">Nenhuma notificação</p>
+        <button id="markAsReadBtn" class="btn success">CIENTE</button>
+    </div>
+</div>
+
   </div>
-  <h2>Lista de Notificações</h2>
-
-  <div id="filtrosNotificacoes" style="margin-bottom: 15px;">
-  <!-- Busca -->
-  <input type="text" id="buscaInput" placeholder="🔎 Buscar por nome ou CPF..." />
-
-  <!-- Filtro de Status -->
-  <select id="filtroStatus">
-    <option value="">Todos os Status</option>
-    <option value="pendente">Pendente</option>
-    <option value="vencida">Vencida</option>
-    <option value="cumprida">Cumprida</option>
-  </select>
-
-  <!-- Filtro de Natureza -->
-  <select id="filtroNatureza">
-    <option value="">Todas as Naturezas</option>
-    <option value="ambiental">Ambiental</option>
-    <option value="trânsito">Trânsito</option>
-    <option value="outros">Outros</option>
-  </select>
-</div>
-
-<!-- Contadores -->
-<div id="contadores" style="margin: 10px 0; font-weight: bold;">
-  🟡 Pendentes: <span id="contadorPendentes">0</span> |
-  🔴 Vencidas: <span id="contadorVencidas">0</span> |
-  🟢 Cumpridas: <span id="contadorCumpridas">0</span>
-</div>
-<button id="abrirModal">➕ Nova Notificação</button>
-
-<table border="1" id="tabelaNotificacoes">
-  <thead>
-    <tr>
-      <th>Data</th>
-      <th>Agente</th>
-      <th>Notificado</th>
-      <th>CPF</th>
-      <th>Endereço</th>
-      <th>Natureza</th>
-      <th>Prazo</th>
-      <th>Atendente</th>
-      <th>Status</th>
-      <th>Ações</th>
-    </tr>
-  </thead>
-  <tbody id="listaNotificacoes"></tbody>
-</table>
-
-<p id="msg"></p>
-
-<!-- 🔽 Modal do formulário -->
-<div id="modalForm" class="modal">
-  <div class="modal-content">
-    <span class="fechar">&times;</span>
-    <h2 id="tituloModal">Nova Notificação</h2>
-    <form id="formNotificacao">
-      <label>Data da Notificação:</label>
-      <input type="date" id="dataNotificacao" required><br><br>
-
-      <label>Agente Fiscalizador:</label>
-      <input type="text" id="agente"><br><br>
-
-      <label>Nome do Notificado:</label>
-      <input type="text" id="notificado" required><br><br>
-
-      <label>CPF do Notificado:</label>
-      <input type="text" id="cpf" placeholder="000.000.000-00"><br><br>
-
-      <label>Endereço do Notificado:</label>
-      <input type="text" id="endereco"><br><br>
-
-      <label>Natureza da Notificação:</label>
-      <select id="natureza">
-        <option value=""></option>
-        <option value="Fogo em terreno">Fogo em terreno</option>
-        <option value="Descarte irregular de resíduos">Descarte irregular de resíduos</option>
-        <option value="Perturbação de sossego">Perturbação de sossego</option>
-        <option value="Falta de alvará de funcionamento">Falta de alvará de funcionamento</option>
-      </select><br><br>
-
-      <label>Prazo para Regularização (dias):</label>
-      <input type="number" id="prazoDias" required><br><br>
-
-      <label>Atendente Responsável:</label>
-      <input type="text" id="atendente"><br><br>
-
-      <label>Link do Google Maps (opcional):</label>
-      <input type="url" id="mapsLink" placeholder="https://maps.google.com/..."><br><br>
-
-      <button type="submit">Salvar Notificação</button>
-    </form>
+  
+  <!-- Filtros -->
+  <div class="filters">
+    <input type="text" id="buscaInput" placeholder="🔎 Buscar notificação...">
+    <select id="filtroStatus">
+      <option value="">Todos os Status</option>
+      <option value="pendente">Pendente</option>
+      <option value="vencida">Vencida</option>
+      <option value="cumprida">Cumprida</option>
+    </select>
+    <select id="filtroNatureza">
+      <option value="">Todas as Naturezas</option>
+    </select>
+    <button id="addNotificationBtn" class="btn-green">Adicionar Notificação</button>
   </div>
-</div>
 
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-<script src="../../../../firebase-init.js"></script>
-<script src="../../../../auth-guard.js"></script>
-<script src="notification.js"></script>
+  <main class="main-content">
+    <table id="notificationTable">
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Agente</th>
+          <th>Notificado</th>
+          <th>CPF</th>
+          <th>Endereço</th>
+          <th>Natureza</th>
+          <th>Prazo</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </main>
 
+  <!-- Modal -->
+  <div id="notificationModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeModal">&times;</span>
+      <h3 id="modalTitle">Adicionar Notificação</h3>
+      <form id="notificationForm">
+        <div class="form-group">
+          <label>Data da Notificação</label>
+          <input type="date" id="dataNotificacao" required>
+        </div>
+        <div class="form-group">
+          <label>Agente Responsável</label>
+          <input type="text" id="agente" required>
+        </div>
+        <div class="form-group">
+          <label>Notificado</label>
+          <input type="text" id="notificado" required>
+        </div>
+        <div class="form-group">
+          <label>CPF do Notificado</label>
+          <input type="text" id="cpf" required>
+        </div>
+        <div class="form-group">
+          <label>Endereço</label>
+          <input type="text" id="endereco" required>
+        </div>
+        <div class="form-group">
+          <label>Natureza</label>
+          <select id="natureza" required>
+            <option value="Fogo em terreno">Fogo em terreno</option>
+            <option value="Descarte irregular de resíduos">Descarte irregular de resíduos</option>
+            <option value="Perturbação de sossego">Perturbação de sossego</option>
+            <option value="Falta de alvará de funcionamento">Falta de alvará de funcionamento</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Prazo (dias)</label>
+          <input type="number" id="prazoDias" required>
+        </div>
+        <button type="submit" id="saveBtn" class="btn success">Salvar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="../../../../firebase-init.js"></script>
+    <script src="../../../../auth-guard.js"></script>
+  <script src="notification.js"></script>
 </body>
 </html>

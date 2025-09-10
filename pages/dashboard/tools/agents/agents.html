@@ -1,102 +1,28 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-  <meta charset="UTF-8">
-  <title>Cadastro de Agentes</title>
-  <link rel="stylesheet" href="agents.css">
-  <!-- Boxicons para o ícone de campainha -->
-  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-  <style>
-    /* Estilo básico das notificações */
-    .notification-icon {
-      position: relative;
-      display: inline-block;
-      margin-left: 20px;
-      cursor: pointer;
-    }
-
-    .notification-icon i {
-      font-size: 24px;
-    }
-
-    .notification-count {
-      position: absolute;
-      top: -8px;
-      right: -8px;
-      background: red;
-      color: white;
-      border-radius: 50%;
-      padding: 2px 6px;
-      font-size: 12px;
-      font-weight: bold;
-    }
-
-    .notification-dropdown {
-      display: none;
-      position: absolute;
-      right: 0;
-      top: 32px;
-      background: white;
-      border: 1px solid #ccc;
-      width: 280px;
-      max-height: 300px;
-      overflow-y: auto;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-      z-index: 100;
-    }
-
-    .notification-dropdown.active {
-      display: block;
-    }
-
-    .notification-item {
-      padding: 8px 12px;
-      border-bottom: 1px solid #eee;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .notification-item p {
-      margin: 0;
-      font-size: 14px;
-    }
-
-    .mark-as-read-btn {
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      color: green;
-      font-weight: bold;
-    }
-
-    .no-notifications {
-      text-align: center;
-      padding: 12px;
-      font-size: 14px;
-      color: #666;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Cadastro de Agentes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="agents.css">
 </head>
 
 <body>
   <!-- Topbar -->
-  <div class="top-bar">
-    <button id="menu-toggle" class="menu-toggle">☰</button>
-    <h1 class="top-bar-title">Cadastro de Agentes</h1>
-    <div class="notification-icon" id="notification-icon-container">
-      <i class='bx bxs-bell'></i>
-      <span class="notification-count" id="notification-count">0</span>
-      <div class="notification-dropdown" id="notification-dropdown">
-        <p class="no-notifications" id="no-notifications">Nenhuma notificação</p>
-      </div>
+    <div class="top-bar">
+        <button id="backBtn"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+          <h1 class="top-bar-title">Cadastro de Agentes</h1>
+          <div class="notification-icon" id="notification-icon-container">
+            <i class='bx bxs-bell'></i>
+            <span class="notification-count" id="notification-count">0</span>
+            <div class="notification-dropdown" id="notification-dropdown">
+                <p class="no-notifications" id="no-notifications">Nenhuma notificação</p>
+          </div>
     </div>
   </div>
 
-  <h2>Lista de Agentes</h2>
-
-  <div id="filtrosAgentes" style="margin-bottom: 15px;">
+  <div id="filtrosAgentes" class="filters">
     <input type="text" id="buscaAgente" placeholder="🔎 Buscar por nome ou matrícula..." />
     <select id="filtroGraduacao">
       <option value="">Todas as Graduações</option>
@@ -110,11 +36,12 @@
       <option value="Sub comandante">Sub comandante</option>
       <option value="Comandante">Comandante</option>
     </select>
+    <button id="abrirModalAgente">Novo Agente</button>
   </div>
 
-  <button id="abrirModalAgente">➕ Novo Agente</button>
-
-  <table border="1" id="tabelaAgentes">
+  
+<main class="main-content">
+    <table border="1" id="agentTable">
     <thead>
       <tr>
         <th>Nome Completo</th>
@@ -178,6 +105,8 @@
       </form>
     </div>
   </div>
+</main>
+  
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>

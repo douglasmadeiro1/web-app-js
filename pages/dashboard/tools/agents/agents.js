@@ -157,8 +157,8 @@ async function carregarAgentes() {
       <td>${agente.psicoValidade}</td>
       <td>${agente.porteValidade}</td>
       <td>
-        <button onclick="editarAgente('${id}')">✏️ Editar</button>
-        <button onclick="excluirAgente('${id}')">🗑️ Excluir</button>
+        <button class="icon-btn" onclick="editarAgente('${id}')"><i class="fa-solid fa-pen-to-square"></i></button>
+        <button class="icon-btn" onclick="excluirAgente('${id}')"><i class="fa-solid fa-trash-can"></i></button>
       </td>
     `;
     listaAgentes.appendChild(tr);
@@ -194,9 +194,7 @@ document.getElementById("filtroGraduacao").addEventListener("change", carregarAg
 carregarAgentes();
 
 // Botão voltar
-function back() {
-  window.location.href = "../../../../dashboard/dashboard.html";
-}
+backBtn.addEventListener("click", () => window.history.back());
 
 // ========================
 // Notificações

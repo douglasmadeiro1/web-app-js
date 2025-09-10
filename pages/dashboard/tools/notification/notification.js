@@ -1,95 +1,144 @@
-const form = document.getElementById("formNotificacao");
-const msg = document.getElementById("msg");
-const lista = document.getElementById("listaNotificacoes");
+// ========================
+// Variáveis principais
+// ========================
+const notificationForm = document.getElementById("notificationForm");
+const notificationTableBody = document.querySelector("#notificationTable tbody");
+const notificationModal = document.getElementById("notificationModal");
+const addNotificationBtn = document.getElementById("addNotificationBtn");
+const closeModal = document.getElementById("closeModal");
+const modalTitle = document.getElementById("modalTitle");
 
-function validarCPF(cpf) {
-  return /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/.test(cpf);
-}
-// Salvar notificação
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
+const buscaInput = document.getElementById("buscaInput");
+const filtroStatus = document.getElementById("filtroStatus");
+const filtroNatureza = document.getElementById("filtroNatureza");
 
-  const cpf = document.getElementById("cpf").value;
-if (cpf && !validarCPF(cpf)) {
-  msg.textContent = "⚠️ CPF inválido. Use o formato 000.000.000-00";
-  return;
-}
-  const data = {
-    dataNotificacao: document.getElementById("dataNotificacao").value,
-    agente: document.getElementById("agente").value,
-    notificado: document.getElementById("notificado").value,
-    cpf: document.getElementById("cpf").value,
-    endereco: document.getElementById("endereco").value,
-    natureza: document.getElementById("natureza").value,
-    prazoDias: parseInt(document.getElementById("prazoDias").value),
-    atendente: document.getElementById("atendente").value,
-    mapsLink: document.getElementById("mapsLink").value,
-  };
+const notificationIconContainer = document.getElementById("notification-icon-container");
+const notificationDropdown = document.getElementById("notification-dropdown");
+const notificationCountElement = document.getElementById("notification-count");
+const noNotificationsMsg = document.getElementById("no-notifications");
+const markAsReadBtn = document.getElementById("markAsReadBtn");
+const backBtn = document.getElementById("backBtn");
 
-  try {
-    if (idEmEdicao) {
-      // Atualiza notificação existente
-      await db.collection("notificacoes").doc(idEmEdicao).update(data);
-      msg.textContent = "✅ Notificação salva com sucesso!";
-      modal.style.display = "none";
-      idEmEdicao = null;
-      form.querySelector("button[type='submit']").textContent = "Salvar Notificação";
-    } else {
-      // Cria nova notificação
-      await db.collection("notificacoes").add({
-        ...data,
-        status: "pendente"
-      });
-      msg.textContent = "✅ Notificação salva com sucesso!";
-      modal.style.display = "none";
-    }
+let globalNotifications = [];
+let currentNotificationId = null;
 
-    form.reset();
-    carregarNotificacoes();
+// ========================
+// Voltar
+// ========================
+backBtn.addEventListener("click", () => window.history.back());
 
-  } catch (error) {
-    console.error("Erro ao salvar/atualizar notificação:", error);
-    msg.textContent = "❌ Erro ao salvar/atualizar notificação!";
-  }
+// ========================
+// Modal
+// ========================
+addNotificationBtn.addEventListener("click", () => {
+    notificationForm.reset();
+    modalTitle.textContent = "Adicionar Notificação";
+    currentNotificationId = null;
+    notificationModal.style.display = "flex";
 });
 
-const modal = document.getElementById("modalForm");
-const btnAbrir = document.getElementById("abrirModal");
-const spanFechar = document.querySelector(".fechar");
-const tituloModal = document.getElementById("tituloModal");
+closeModal.addEventListener("click", () => notificationModal.style.display = "none");
+window.addEventListener("click", e => {
+    if (e.target === notificationModal) notificationModal.style.display = "none";
+});
 
-// Abrir modal
-btnAbrir.onclick = () => {
-  idEmEdicao = null; // garante que não vem nada da edição
-  tituloModal.textContent = "Nova Notificação";
-  form.querySelector("button[type='submit']").textContent = "Salvar Notificação";
-  modal.style.display = "block";
-  document.body.classList.add("modal-aberto");
+// ========================
+// Salvar notificação
+// ========================
+notificationForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const notificacao = {
+        dataNotificacao: document.getElementById("dataNotificacao").value,
+        agente: document.getElementById("agente").value,
+        notificado: document.getElementById("notificado").value,
+        cpf: document.getElementById("cpf").value,
+        endereco: document.getElementById("endereco").value,
+        natureza: document.getElementById("natureza").value,
+        prazoDias: parseInt(document.getElementById("prazoDias").value),
+        status: "pendente"
+    };
+
+    try {
+        if (currentNotificationId) {
+            await db.collection("notificacoes").doc(currentNotificationId).update(notificacao);
+        } else {
+            await db.collection("notificacoes").add(notificacao);
+        }
+        notificationModal.style.display = "none";
+        carregarNotificacoes();
+    } catch (error) {
+        console.error("Erro ao salvar a notificação: ", error);
+    }
+});
+
+// ========================
+// Carregar notificações do Firestore
+// ========================
+async function carregarNotificacoes() {
+    notificationTableBody.innerHTML = "";
+    const snapshot = await db.collection("notificacoes").get();
+    
+    let notificacoes = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+    // Filtros e busca
+    const busca = buscaInput.value.toLowerCase();
+    const filtroStatusValue = filtroStatus.value;
+    const filtroNaturezaValue = filtroNatureza.value;
+
+    if (busca) {
+        notificacoes = notificacoes.filter(notif =>
+            notif.notificado.toLowerCase().includes(busca) || notif.cpf.includes(busca)
+        );
+    }
+
+    if (filtroStatusValue) {
+        notificacoes = notificacoes.filter(notif => notif.status === filtroStatusValue);
+    }
+
+    if (filtroNaturezaValue) {
+        notificacoes = notificacoes.filter(notif => notif.natureza === filtroNaturezaValue);
+    }
+
+    // Preencher tabela
+    notificationTableBody.innerHTML = "";
+    notificacoes.forEach(notif => {
+        const tr = document.createElement("tr");
+        const statusText = notif.status === 'pendente' ? 'Pendente' : (notif.status === 'vencida' ? 'Vencida' : 'Cumprida');
+        tr.innerHTML = `
+            <td>${notif.dataNotificacao}</td>
+            <td>${notif.agente}</td>
+            <td>${notif.notificado}</td>
+            <td>${notif.cpf}</td>
+            <td>${notif.endereco}</td>
+            <td>${notif.natureza}</td>
+            <td>${notif.prazoDias} dias</td>
+            <td>${statusText}</td>
+            <td>
+                <button class="icon-btn" onclick="marcarCumprida('${notif.id}')" class="icon-btn">✅</button>
+                <button class="icon-btn" onclick="editarNotificacao('${notif.id}')"><i class="fa-solid fa-pen-to-square"></i></button>
+                <button class="icon-btn" onclick="excluirNotificacao('${notif.id}')"><i class="fa-solid fa-trash-can"></i></button>
+            </td>
+        `;
+        notificationTableBody.appendChild(tr);
+    });
+
+    atualizarNotificacoes(notificacoes);
+}
+
+// ========================
+// Funções CRUD
+// ========================
+window.marcarCumprida = async (id) => {
+    if (confirm("Tem certeza que deseja marcar esta notificação como cumprida?")) {
+        await db.collection("notificacoes").doc(id).update({ status: "cumprida" });
+        carregarNotificacoes();
+    }
 };
-
-spanFechar.onclick = () => {
-  modal.style.display = "none";
-  document.body.classList.remove("modal-aberto");
-};
-
-window.onclick = (event) => {
-  if (event.target == modal) {
-    modal.style.display = "none";
-    document.body.classList.remove("modal-aberto");
-  }
-};
-
-
-let idEmEdicao = null; // variável global para controlar edição
 
 window.editarNotificacao = async (id) => {
-  try {
-    const docSnap = await db.collection("notificacoes").doc(id).get();
-    if (!docSnap.exists) return alert("Notificação não encontrada!");
-
-    const notif = docSnap.data();
-    idEmEdicao = id;
-
+    const doc = await db.collection("notificacoes").doc(id).get();
+    const notif = doc.data();
+    
     document.getElementById("dataNotificacao").value = notif.dataNotificacao;
     document.getElementById("agente").value = notif.agente;
     document.getElementById("notificado").value = notif.notificado;
@@ -97,117 +146,73 @@ window.editarNotificacao = async (id) => {
     document.getElementById("endereco").value = notif.endereco;
     document.getElementById("natureza").value = notif.natureza;
     document.getElementById("prazoDias").value = notif.prazoDias;
-    document.getElementById("atendente").value = notif.atendente;
-    document.getElementById("mapsLink").value = notif.mapsLink;
 
-    form.querySelector("button[type='submit']").textContent = "Atualizar Notificação";
-    tituloModal.textContent = "Editar Notificação";
-
-    modal.style.display = "block"; // abre modal
-  } catch (error) {
-    console.error("Erro ao carregar notificação:", error);
-  }
+    modalTitle.textContent = "Editar Notificação";
+    currentNotificationId = id;
+    notificationModal.style.display = "flex";
 };
 
 window.excluirNotificacao = async (id) => {
-  if (confirm("Tem certeza que deseja excluir esta notificação?")) {
-    try {
-      await db.collection("notificacoes").doc(id).delete();
-      carregarNotificacoes();
-      msg.textContent = "✅ Notificação excluída com sucesso!";
-    } catch (error) {
-      console.error("Erro ao excluir:", error);
-      msg.textContent = "❌ Erro ao excluir notificação!";
+    if (confirm("Tem certeza que deseja excluir esta notificação?")) {
+        await db.collection("notificacoes").doc(id).delete();
+        carregarNotificacoes();
     }
-  }
 };
 
-// Carregar notificações
-async function carregarNotificacoes() {
-  lista.innerHTML = "";
-  const snapshot = await db.collection("notificacoes").get();
-  const hoje = new Date();
+// ========================
+// Notificações (Dropdown)
+// ========================
+function renderNotifications() {
+    notificationDropdown.innerHTML = '';
+    if (globalNotifications.length === 0) {
+        notificationDropdown.innerHTML = `<p class="no-notifications" id="no-notifications">Nenhuma notificação</p>`;
+        notificationCountElement.textContent = '0';
+        notificationCountElement.style.display = 'none';
+    } else {
+        globalNotifications.forEach(notif => {
+            const div = document.createElement('div');
+            div.className = 'notification-item';
+            div.innerHTML = `
+                <p><strong>${notif.natureza}</strong></p>
+                <p>${notif.notificado} - Prazo: ${notif.prazoDias} dias</p>
+            `;
+            notificationDropdown.appendChild(div);
+        });
 
-  // 🔢 contadores
-  let pendentes = 0, vencidas = 0, cumpridas = 0;
-
-  // pega filtros
-  const busca = document.getElementById("buscaInput").value.toLowerCase();
-  const filtroStatus = document.getElementById("filtroStatus").value;
-  const filtroNatureza = document.getElementById("filtroNatureza").value;
-
-  snapshot.forEach((docSnap) => {
-    const notif = docSnap.data();
-    const id = docSnap.id;
-
-    const dataNotif = new Date(notif.dataNotificacao);
-    const prazoLimite = new Date(dataNotif);
-    prazoLimite.setDate(prazoLimite.getDate() + notif.prazoDias);
-
-    let status = notif.status;
-    if (notif.status === "pendente" && hoje > prazoLimite) {
-  status = "vencida";
-  db.collection("notificacoes").doc(id).update({ status: "vencida" });
-}
-
-    // 🔎 aplica busca (nome ou CPF)
-    if (busca && !notif.notificado.toLowerCase().includes(busca) && !notif.cpf.includes(busca)) {
-      return; // não exibe se não bater
+        notificationCountElement.textContent = globalNotifications.length;
+        notificationCountElement.style.display = 'flex';
     }
-
-    // 🎛️ aplica filtros
-    if (filtroStatus && status !== filtroStatus) return;
-    if (filtroNatureza && notif.natureza !== filtroNatureza) return;
-
-    // Atualiza contadores
-    if (status === "pendente") pendentes++;
-    if (status === "vencida") vencidas++;
-    if (status === "cumprida") cumpridas++;
-
-    // Renderiza a linha
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${notif.dataNotificacao}</td>
-      <td>${notif.agente}</td>
-      <td>${notif.notificado}</td>
-      <td>${notif.cpf}</td>
-      <td>${notif.endereco}</td>
-      <td>${notif.natureza}</td>
-      <td>${notif.prazoDias} dias</td>
-      <td>${notif.atendente}</td>
-      <td>
-        ${status === "cumprida" ? "🟢 Cumprida" : ""}
-        ${status === "pendente" ? "🟡 Pendente" : ""}
-        ${status === "vencida" ? "🔴 Vencida" : ""}
-      </td>
-      <td>
-        ${status !== "cumprida" ? `<button onclick="marcarCumprida('${id}')">✅ Cumprida</button>` : ""}
-        <button onclick="editarNotificacao('${id}')">✏️ Editar</button>
-        <button onclick="excluirNotificacao('${id}')">🗑️ Excluir</button>
-      </td>
-    `;
-    lista.appendChild(tr);
-  });
-
-  // Atualiza contadores
-  document.getElementById("contadorPendentes").textContent = pendentes;
-  document.getElementById("contadorVencidas").textContent = vencidas;
-  document.getElementById("contadorCumpridas").textContent = cumpridas;
 }
 
-// dispara recarga ao usar filtros ou busca
-document.getElementById("buscaInput").addEventListener("input", carregarNotificacoes);
-document.getElementById("filtroStatus").addEventListener("change", carregarNotificacoes);
-document.getElementById("filtroNatureza").addEventListener("change", carregarNotificacoes);
-
-// Marcar como cumprida
-window.marcarCumprida = async (id) => {
-  await db.collection("notificacoes").doc(id).update({ status: "cumprida" });
-  carregarNotificacoes();
-};
-
-carregarNotificacoes();
-
-function back() {
-    window.location.href = "../../../dashboard/dashboard.html";
+function atualizarNotificacoes(notificacoes) {
+    globalNotifications = notificacoes.filter(n => n.status === "pendente");
+    renderNotifications();
 }
+
+// ========================
+// Botão sino + clique fora
+// ========================
+notificationIconContainer.addEventListener('click', (e) => {
+    e.stopPropagation();
+    notificationDropdown.classList.toggle('active');
+});
+
+markAsReadBtn.addEventListener("click", () => {
+    globalNotifications = [];
+    renderNotifications();
+    notificationDropdown.classList.remove('active');
+});
+
+document.addEventListener('click', (e) => {
+    if (!notificationDropdown.contains(e.target) && !notificationIconContainer.contains(e.target)) {
+        notificationDropdown.classList.remove('active');
+    }
+});
+
+// ========================
+// Inicialização
+// ========================
+document.addEventListener("DOMContentLoaded", carregarNotificacoes);
+buscaInput.addEventListener("input", carregarNotificacoes);
+filtroStatus.addEventListener("change", carregarNotificacoes);
+filtroNatureza.addEventListener("change", carregarNotificacoes);
