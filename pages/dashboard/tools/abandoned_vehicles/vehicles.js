@@ -98,7 +98,7 @@ async function carregarVeiculos() {
         // Cores da linha
         if (v.status === "pendente") tr.style.backgroundColor = "#fff3cd"; // amarelo
         else if (v.status === "vencida") tr.style.backgroundColor = "#f8d7da"; // vermelho
-        else if (v.status === "cumprida") tr.style.backgroundColor = "white"; // verde
+        else if (v.status === "cumprida") tr.style.backgroundColor = "#d4edda"; // verde
 
         tr.innerHTML = `
             <td>${v.dataNotificacao}</td>
