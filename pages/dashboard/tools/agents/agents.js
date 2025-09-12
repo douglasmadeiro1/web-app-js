@@ -20,7 +20,7 @@ btnAbrirAgente.onclick = () => {
   tituloModalAgente.textContent = "Novo Agente";
   formAgente.querySelector("button[type='submit']").textContent = "Salvar Agente";
   formAgente.reset();
-  modalAgente.style.display = "block";
+  modalAgente.style.display = "flex"; // 🔹 usar flex em vez de block
 };
 
 spanFecharAgente.onclick = () => {
@@ -90,29 +90,35 @@ formAgente.addEventListener("submit", async (e) => {
 window.editarAgente = async (id) => {
   try {
     const docSnap = await db.collection("agentes").doc(id).get();
-    if (!docSnap.exists) return alert("Agente não encontrado!");
+    if (!docSnap.exists) {
+      alert("Agente não encontrado!");
+      return;
+    }
 
     const agente = docSnap.data();
     idAgenteEdicao = id;
 
-    document.getElementById("nomeCompleto").value = agente.nomeCompleto;
-    document.getElementById("nomeFuncional").value = agente.nomeFuncional;
-    document.getElementById("cpfAgente").value = agente.cpf;
-    document.getElementById("matriculaAgente").value = agente.matricula;
-    document.getElementById("nascimentoAgente").value = agente.nascimento;
-    document.getElementById("graduacaoAgente").value = agente.graduacao;
+    document.getElementById("nomeCompleto").value   = agente.nomeCompleto || "";
+    document.getElementById("nomeFuncional").value  = agente.nomeFuncional || "";
+    document.getElementById("cpfAgente").value      = agente.cpf || "";
+    document.getElementById("matriculaAgente").value= agente.matricula || "";
+    document.getElementById("nascimentoAgente").value= agente.nascimento || "";
+    document.getElementById("graduacaoAgente").value= agente.graduacao || "";
     document.getElementById("telefoneAgente").value = agente.telefone || "";
     document.getElementById("enderecoAgente").value = agente.endereco || "";
-    document.getElementById("psicoValidade").value = agente.psicoValidade;
-    document.getElementById("porteValidade").value = agente.porteValidade;
+    document.getElementById("psicoValidade").value  = agente.psicoValidade || "";
+    document.getElementById("porteValidade").value  = agente.porteValidade || "";
 
     tituloModalAgente.textContent = "Editar Agente";
     formAgente.querySelector("button[type='submit']").textContent = "Atualizar Agente";
-    modalAgente.style.display = "block";
+
+    modalAgente.style.display = "flex"; // 🔹 garante centralização
   } catch (error) {
     console.error("Erro ao editar agente:", error);
+    msgAgente.textContent = "❌ Erro ao carregar agente!";
   }
 };
+
 
 // ========================
 // Excluir agente
