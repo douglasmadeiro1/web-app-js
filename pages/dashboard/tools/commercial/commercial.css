@@ -413,3 +413,56 @@ button:hover,
 .tabela-armamentos tr:hover {
     background-color: #f1f1f1;
 }
+
+.tabela-estabelecimentos {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.tabela-estabelecimentos th,
+.tabela-estabelecimentos td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.tabela-estabelecimentos th {
+  background-color: #34495e;
+  color: white;
+}
+
+.tabela-estabelecimentos tr:hover {
+  cursor: pointer;
+  filter: brightness(0.95);
+}
+
+/* Cores de status */
+.status-irregular {
+  background-color: #f8d7da !important; /* vermelho claro */
+}
+
+.status-proximo {
+  background-color: #fff3cd !important; /* amarelo claro */
+}
+
+.status-regular {
+  background-color: #d4edda !important; /* verde claro */
+}
+
+/* Botões extras */
+.btn-blue {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-blue:hover {
+  background-color: #0056b3;
+}

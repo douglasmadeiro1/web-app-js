@@ -129,7 +129,7 @@ window.excluirAgente = async (id) => {
 // ========================
 // Carregar lista de agentes e gerar alertas
 // ========================
-async function carregarAgentes() {
+async function carregarAgentes(ordenar = false, ordemReversa = false) {
   listaAgentes.innerHTML = "";
   const snapshot = await db.collection("agentes").get();
 
@@ -137,7 +137,10 @@ async function carregarAgentes() {
   const filtroGraduacao = document.getElementById("filtroGraduacao").value;
 
   const hoje = new Date();
-  const alertas = [];
+  const prazoAlerta = new Date();
+  prazoAlerta.setDate(hoje.getDate() + 30);
+
+  let agentesArray = [];
 
   snapshot.forEach((docSnap) => {
     const agente = docSnap.data();
@@ -146,7 +149,45 @@ async function carregarAgentes() {
     if (busca && !agente.nomeCompleto.toLowerCase().includes(busca) && !agente.matricula.includes(busca)) return;
     if (filtroGraduacao && agente.graduacao !== filtroGraduacao) return;
 
+    // calcula status
+    function getStatus(dataValidade) {
+      if (!dataValidade) return "ok";
+      const dt = new Date(dataValidade + "T00:00:00");
+      if (dt < hoje) return "vencido";
+      if (dt <= prazoAlerta) return "proximo";
+      return "ok";
+    }
+
+    const statusPsico = getStatus(agente.psicoValidade);
+    const statusPorte = getStatus(agente.porteValidade);
+
+    let status = "ok";
+    if (statusPsico === "vencido" || statusPorte === "vencido") status = "vencido";
+    else if (statusPsico === "proximo" || statusPorte === "proximo") status = "proximo";
+
+    agentesArray.push({ id, ...agente, status });
+  });
+
+  // ordenação
+  if (ordenar) {
+    const ordem = { vencido: 0, proximo: 1, ok: 2 };
+    agentesArray.sort((a, b) => {
+      return ordem[a.status] - ordem[b.status];
+    });
+    if (ordemReversa) {
+      agentesArray.reverse();
+    }
+  }
+
+  // renderização
+  agentesArray.forEach((agente) => {
     const tr = document.createElement("tr");
+
+    let cor = "#dff0d8";
+    if (agente.status === "vencido") cor = "#f8d7da";
+    else if (agente.status === "proximo") cor = "#fff3cd";
+
+    tr.style.backgroundColor = cor;
     tr.innerHTML = `
       <td>${agente.nomeCompleto}</td>
       <td>${agente.nomeFuncional}</td>
@@ -157,32 +198,30 @@ async function carregarAgentes() {
       <td>${agente.psicoValidade}</td>
       <td>${agente.porteValidade}</td>
       <td>
-        <button class="icon-btn" onclick="editarAgente('${id}')"><i class="fa-solid fa-pen-to-square"></i></button>
-        <button class="icon-btn" onclick="excluirAgente('${id}')"><i class="fa-solid fa-trash-can"></i></button>
+        <button class="icon-btn" onclick="editarAgente('${agente.id}')"><i class="fa-solid fa-pen-to-square"></i></button>
+        <button class="icon-btn delete" onclick="excluirAgente('${agente.id}')"><i class="fa-solid fa-trash-can"></i></button>
       </td>
     `;
     listaAgentes.appendChild(tr);
-
-    // Verificar alertas próximos ou vencidos
-    const dataAlerta = new Date();
-    dataAlerta.setDate(hoje.getDate() + 30);
-
-    if (agente.psicoValidade) {
-      const psicoDate = new Date(agente.psicoValidade + 'T00:00:00');
-      if (psicoDate <= dataAlerta) {
-        alertas.push({ tipo: 'psico', mensagem: `⚠️ Agente ${agente.nomeCompleto} - Exame psicológico próximo ou vencido!` });
-      }
-    }
-    if (agente.porteValidade) {
-      const porteDate = new Date(agente.porteValidade + 'T00:00:00');
-      if (porteDate <= dataAlerta) {
-        alertas.push({ tipo: 'porte', mensagem: `⚠️ Agente ${agente.nomeCompleto} - Porte de arma próximo ou vencido!` });
-      }
-    }
   });
-
-  updateNotifications(alertas);
 }
+
+let ordenacaoAtiva = false;
+let ordemReversa = false;
+
+document.getElementById("ordenarStatusBtn").addEventListener("click", () => {
+  if (!ordenacaoAtiva) {
+    ordenacaoAtiva = true;
+    ordemReversa = false;
+  } else if (!ordemReversa) {
+    ordemReversa = true;
+  } else {
+    ordenacaoAtiva = false;
+    ordemReversa = false;
+  }
+  carregarAgentes(ordenacaoAtiva, ordemReversa);
+});
+
 
 // ========================
 // Filtros
