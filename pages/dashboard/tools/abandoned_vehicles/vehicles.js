@@ -54,7 +54,6 @@ vehicleForm.addEventListener("submit", async (e) => {
         dataNotificacao: dataNotificacao,
         marca: document.getElementById("marca").value,
         modelo: document.getElementById("modelo").value,
-        ano: parseInt(document.getElementById("ano").value),
         cor: document.getElementById("cor").value,
         placa: document.getElementById("placa").value,
         local: document.getElementById("local").value,
@@ -99,13 +98,12 @@ async function carregarVeiculos() {
         // Cores da linha
         if (v.status === "pendente") tr.style.backgroundColor = "#fff3cd"; // amarelo
         else if (v.status === "vencida") tr.style.backgroundColor = "#f8d7da"; // vermelho
-        else if (v.status === "cumprida") tr.style.backgroundColor = "#d4edda"; // verde
+        else if (v.status === "cumprida") tr.style.backgroundColor = "white"; // verde
 
         tr.innerHTML = `
             <td>${v.dataNotificacao}</td>
             <td>${v.marca}</td>
             <td>${v.modelo}</td>
-            <td>${v.ano}</td>
             <td>${v.cor}</td>
             <td>${v.placa}</td>
             <td>${v.local}</td>
@@ -125,12 +123,36 @@ async function carregarVeiculos() {
 // CRUD
 // ========================
 window.marcarCumprida = async (id) => {
-    const doc = await db.collection("veiculos").doc(id).get();
-    const currentStatus = doc.data().status;
-    const newStatus = currentStatus === "cumprida" ? "pendente" : "cumprida";
-    await db.collection("veiculos").doc(id).update({ status: newStatus });
-    carregarVeiculos();
+  const ref = db.collection("veiculos").doc(id);
+  const doc = await ref.get();
+
+  if (!doc.exists) return;
+
+  const data = doc.data();
+  const currentStatus = data.status;
+
+  if (currentStatus === "cumprida") {
+    // Recalcular status real a partir da data limite
+    const hoje = new Date();
+    const dataLimite = new Date(data.dataLimite);
+    let statusReal = "pendente";
+    if (hoje > dataLimite) statusReal = "vencida";
+
+    await ref.update({
+      status: statusReal,
+      statusAnterior: firebase.firestore.FieldValue.delete()
+    });
+  } else {
+    // Salvar status atual e marcar como cumprida
+    await ref.update({
+      statusAnterior: currentStatus,
+      status: "cumprida"
+    });
+  }
+
+  carregarVeiculos();
 };
+
 
 window.editarVeiculo = async (id) => {
     const doc = await db.collection("veiculos").doc(id).get();
@@ -139,7 +161,6 @@ window.editarVeiculo = async (id) => {
     document.getElementById("dataNotificacao").value = v.dataNotificacao;
     document.getElementById("marca").value = v.marca;
     document.getElementById("modelo").value = v.modelo;
-    document.getElementById("ano").value = v.ano;
     document.getElementById("cor").value = v.cor;
     document.getElementById("placa").value = v.placa;
     document.getElementById("local").value = v.local;

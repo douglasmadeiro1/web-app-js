@@ -59,6 +59,8 @@ formAgente.addEventListener("submit", async (e) => {
     matricula: document.getElementById("matriculaAgente").value,
     nascimento: document.getElementById("nascimentoAgente").value,
     graduacao: document.getElementById("graduacaoAgente").value,
+    telefone: document.getElementById("telefoneAgente").value,
+    endereco: document.getElementById("enderecoAgente").value,
     psicoValidade: document.getElementById("psicoValidade").value,
     porteValidade: document.getElementById("porteValidade").value,
   };
@@ -99,6 +101,8 @@ window.editarAgente = async (id) => {
     document.getElementById("matriculaAgente").value = agente.matricula;
     document.getElementById("nascimentoAgente").value = agente.nascimento;
     document.getElementById("graduacaoAgente").value = agente.graduacao;
+    document.getElementById("telefoneAgente").value = agente.telefone || "";
+    document.getElementById("enderecoAgente").value = agente.endereco || "";
     document.getElementById("psicoValidade").value = agente.psicoValidade;
     document.getElementById("porteValidade").value = agente.porteValidade;
 
@@ -195,6 +199,8 @@ async function carregarAgentes(ordenar = false, ordemReversa = false) {
       <td>${agente.matricula}</td>
       <td>${agente.nascimento}</td>
       <td>${agente.graduacao}</td>
+      <td>${agente.telefone || ""}</td>
+      <td>${agente.endereco || ""}</td>
       <td>${agente.psicoValidade}</td>
       <td>${agente.porteValidade}</td>
       <td>
@@ -210,17 +216,10 @@ let ordenacaoAtiva = false;
 let ordemReversa = false;
 
 document.getElementById("ordenarStatusBtn").addEventListener("click", () => {
-  if (!ordenacaoAtiva) {
-    ordenacaoAtiva = true;
-    ordemReversa = false;
-  } else if (!ordemReversa) {
-    ordemReversa = true;
-  } else {
-    ordenacaoAtiva = false;
-    ordemReversa = false;
-  }
-  carregarAgentes(ordenacaoAtiva, ordemReversa);
+  ordemReversa = !ordemReversa; // alterna true/false a cada clique
+  carregarAgentes(true, ordemReversa);
 });
+
 
 
 // ========================

@@ -267,7 +267,7 @@ button:hover,
 .modal {
     display: none;
     position: fixed;
-    z-index: 1000;
+    z-index: 1;
     left:0;
     top:0;
     width: 100%;
@@ -289,7 +289,7 @@ button:hover,
     animation: fadeIn 0.3s;
 }
 
-.modal-content h2 {
+.modal-content h3 {
     margin-top: 0;
     border-bottom: 2px solid #ccc;
     padding-bottom: 10px;
