@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Cadastro de Agentes</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="agents.css">
+  <meta charset="UTF-8">
+  <title>Cadastro de Agentes</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="agents.css">
 </head>
 
 <body>
   <!-- Topbar -->
-    <div class="top-bar">
-        <button id="backBtn"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-          <h1 class="top-bar-title">Cadastro de Agentes</h1>
-          <!-- <div class="notification-icon" id="notification-icon-container">
+  <div class="top-bar">
+    <button id="backBtn"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+    <h1 class="top-bar-title">Cadastro de Agentes</h1>
+    <!-- <div class="notification-icon" id="notification-icon-container">
             <i class='bx bxs-bell'></i>
             <span class="notification-count" id="notification-count">0</span>
             <div class="notification-dropdown" id="notification-dropdown">
                 <p class="no-notifications" id="no-notifications">Nenhuma notificação</p>
           </div> -->
-    </div>
+  </div>
   </div>
 
   <div id="filtrosAgentes" class="filters">
@@ -40,97 +41,90 @@
     <button id="abrirModalAgente">Novo Agente</button>
   </div>
 
-  
-<main class="main-content">
+
+  <main class="main-content">
     <table border="1" id="agentTable">
-    <thead>
-      <tr>
-        <th>Nome Completo</th>
-        <th>Nome Funcional</th>
-        <th>CPF</th>
-        <th>Matrícula</th>
-        <th>Nascimento</th>
-        <th>Graduação</th>
-        <th>Telefone</th>
-        <th>Endereço</th>
-        <th>Exame Psicológico</th>
-        <th>Porte de Arma</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody id="listaAgentes"></tbody>
-  </table>
+      <thead>
+        <tr>
+          <th>Nome Completo</th>
+          <th>Nome Funcional</th>
+          <th>CPF</th>
+          <th>Matrícula</th>
+          <th>Nascimento</th>
+          <th>Graduação</th>
+          <th>Telefone</th>
+          <th>Endereço</th>
+          <th>Exame Psicológico</th>
+          <th>Porte de Arma</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="listaAgentes"></tbody>
+    </table>
 
-  <p id="msgAgente"></p>
+    <p id="msgAgente"></p>
 
-  <!-- Modal -->
-  <div id="modalAgente" class="modal">
-    <div class="modal-content">
-      <span class="fechar">&times;</span>
-      <h2 id="tituloModalAgente">Novo Agente</h2>
-      <form id="formAgente">
-        <label>Nome Completo:</label>
-        <input type="text" id="nomeCompleto" required><br><br>
+    <!-- Modal -->
+    <div id="modalAgente" class="modal">
+      <div class="modal-content">
+        <span class="fechar">&times;</span>
+        <h2 id="tituloModalAgente">Novo Agente</h2>
+        <form id="formAgente">
+          <label>Nome Completo:</label>
+          <input type="text" id="nomeCompleto" required><br><br>
 
-        <label>Nome Funcional:</label>
-        <input type="text" id="nomeFuncional"><br><br>
+          <label>Nome Funcional:</label>
+          <input type="text" id="nomeFuncional"><br><br>
 
-        <label>CPF:</label>
-        <input type="text" id="cpfAgente" placeholder="000.000.000-00"><br><br>
+          <label>CPF:</label>
+          <input type="text" id="cpfAgente" placeholder="000.000.000-00"><br><br>
 
-        <label>Matrícula:</label>
-        <input type="text" id="matriculaAgente" required><br><br>
+          <label>Matrícula:</label>
+          <input type="text" id="matriculaAgente" required><br><br>
 
-        <label>Data de Nascimento:</label>
-        <input type="date" id="nascimentoAgente"><br><br>
+          <label>Data de Nascimento:</label>
+          <input type="date" id="nascimentoAgente"><br><br>
 
-        <label>Graduação:</label>
-        <select id="graduacaoAgente">
-          <option value=""></option>
-          <option value="GCM">GCM</option>
-          <option value="3ª classe">3ª classe</option>
-          <option value="2ª classe">2ª classe</option>
-          <option value="1ª classe">1ª classe</option>
-          <option value="Classe distinta">Classe distinta</option>
-          <option value="Sub inspetor">Sub inspetor</option>
-          <option value="Inspetor">Inspetor</option>
-          <option value="Sub comandante">Sub comandante</option>
-          <option value="Comandante">Comandante</option>
-        </select><br><br>
+          <label>Graduação:</label>
+          <select id="graduacaoAgente">
+            <option value=""></option>
+            <option value="GCM">GCM</option>
+            <option value="3ª classe">3ª classe</option>
+            <option value="2ª classe">2ª classe</option>
+            <option value="1ª classe">1ª classe</option>
+            <option value="Classe distinta">Classe distinta</option>
+            <option value="Sub inspetor">Sub inspetor</option>
+            <option value="Inspetor">Inspetor</option>
+            <option value="Sub comandante">Sub comandante</option>
+            <option value="Comandante">Comandante</option>
+          </select><br><br>
 
-        <label>Telefone:</label>
-        <input type="text" id="telefoneAgente" placeholder="(11) 99999-9999"><br><br>
+          <label>Telefone:</label>
+          <input type="text" id="telefoneAgente" placeholder="(11) 99999-9999"><br><br>
 
-        <label>Endereço:</label>
-        <input type="text" id="enderecoAgente" placeholder="Rua, nº - Bairro"><br><br>
+          <label>Endereço:</label>
+          <input type="text" id="enderecoAgente" placeholder="Rua, nº - Bairro"><br><br>
 
-        <label>Validade Exame Psicológico:</label>
-        <input type="date" id="psicoValidade"><br><br>
+          <label>Validade Exame Psicológico:</label>
+          <input type="date" id="psicoValidade"><br><br>
 
-        <label>Validade Porte de Arma:</label>
-        <input type="date" id="porteValidade"><br><br>
+          <label>Validade Porte de Arma:</label>
+          <input type="date" id="porteValidade"><br><br>
 
-        <button type="submit">Salvar Agente</button>
-      </form>
+          <button type="submit">Salvar Agente</button>
+        </form>
+      </div>
     </div>
-  </div>
-</main>
-  
+  </main>
+
 
   <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script src="../../../../../firebase-init.js"></script>
-  <script src="../../../../../auth-guard.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="../../../../firebase-init.js"></script>
+  <script src="../../../../auth-guard.js"></script>
   <script src="agents.js"></script>
 
-  <script>
-    // Toggle dropdown ao clicar no ícone
-    document.getElementById('notification-icon-container').onclick = () => {
-      document.getElementById('notification-dropdown').classList.toggle('active');
-    };
-  </script>
 </body>
 
 </html>

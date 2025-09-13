@@ -9,10 +9,8 @@ const closeModal = document.getElementById("closeModal");
 const modalTitle = document.getElementById("modalTitle");
 const backBtn = document.getElementById("backBtn");
 
-
 let currentVehicleId = null;
 let sortStatusAsc = true;
-
 
 backBtn.addEventListener("click", () => window.history.back());
 
@@ -79,11 +77,25 @@ vehicleForm.addEventListener("submit", async (e) => {
 // Carregar veículos
 // ========================
 async function carregarVeiculos() {
-    vehicleTableBody.innerHTML = "";
+    // ... (toda a lógica de carregamento e ordenação de dados do seu código)
+
     const snapshot = await db.collection("veiculos").get();
     let veiculos = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-    // Ordenar por status
+    const hoje = new Date();
+    for (let v of veiculos) {
+        if (v.status !== "cumprida" && v.dataLimite) {
+            const dataLimite = new Date(v.dataLimite + "T00:00:00");
+            const statusReal = (hoje > dataLimite) ? "vencida" : "pendente";
+            if (statusReal !== v.status) {
+                try { await db.collection("veiculos").doc(v.id).update({ status: statusReal }); }
+                catch (err) { console.warn("Não foi possível atualizar status automático:", err); }
+                v.status = statusReal;
+            }
+        }
+    }
+
+    // Ordenar por status (mantendo seu comportamento anterior)
     veiculos.sort((a, b) => {
         if (sortStatusAsc) {
             return a.status.localeCompare(b.status);
@@ -92,14 +104,13 @@ async function carregarVeiculos() {
         }
     });
 
+    // Preencher a tabela (sua lógica existente)
+    // ...
     veiculos.forEach(v => {
         const tr = document.createElement("tr");
-
-        // Cores da linha
-        if (v.status === "pendente") tr.style.backgroundColor = "#fff3cd"; // amarelo
-        else if (v.status === "vencida") tr.style.backgroundColor = "#f8d7da"; // vermelho
-        else if (v.status === "cumprida") tr.style.backgroundColor = "#d4edda"; // verde
-
+        if (v.status === "pendente") tr.style.backgroundColor = "#fff3cd";
+        else if (v.status === "vencida") tr.style.backgroundColor = "#f8d7da";
+        else if (v.status === "cumprida") tr.style.backgroundColor = "#d4edda";
         tr.innerHTML = `
             <td>${v.dataNotificacao}</td>
             <td>${v.marca}</td>
@@ -117,40 +128,53 @@ async function carregarVeiculos() {
         `;
         vehicleTableBody.appendChild(tr);
     });
+
+    // === Integração com a dashboard: montar pendências e enviar ===
+    const pendingNotifications = veiculos
+        .filter(v => v.status === "pendente" || v.status === "vencida")
+        .map(v => ({
+            message: `Veículo ${v.placa || ""} — ${v.marca || ""} ${v.modelo || ""} (${v.status})`,
+            link: `tools/abandoned_vehicles/vehicles.html?id=${v.id}`
+        }));
+
+    // Agora, em vez de manipular o objeto global diretamente, chame a função da dashboard
+    if (window.addModuleNotifications) {
+        window.addModuleNotifications("veiculos", pendingNotifications);
+    }
 }
 
 // ========================
 // CRUD
 // ========================
 window.marcarCumprida = async (id) => {
-  const ref = db.collection("veiculos").doc(id);
-  const doc = await ref.get();
+    const ref = db.collection("veiculos").doc(id);
+    const doc = await ref.get();
 
-  if (!doc.exists) return;
+    if (!doc.exists) return;
 
-  const data = doc.data();
-  const currentStatus = data.status;
+    const data = doc.data();
+    const currentStatus = data.status;
 
-  if (currentStatus === "cumprida") {
-    // Recalcular status real a partir da data limite
-    const hoje = new Date();
-    const dataLimite = new Date(data.dataLimite);
-    let statusReal = "pendente";
-    if (hoje > dataLimite) statusReal = "vencida";
+    if (currentStatus === "cumprida") {
+        // Recalcular status real a partir da data limite
+        const hoje = new Date();
+        const dataLimite = new Date(data.dataLimite);
+        let statusReal = "pendente";
+        if (hoje > dataLimite) statusReal = "vencida";
 
-    await ref.update({
-      status: statusReal,
-      statusAnterior: firebase.firestore.FieldValue.delete()
-    });
-  } else {
-    // Salvar status atual e marcar como cumprida
-    await ref.update({
-      statusAnterior: currentStatus,
-      status: "cumprida"
-    });
-  }
+        await ref.update({
+            status: statusReal,
+            statusAnterior: firebase.firestore.FieldValue.delete()
+        });
+    } else {
+        // Salvar status atual e marcar como cumprida
+        await ref.update({
+            statusAnterior: currentStatus,
+            status: "cumprida"
+        });
+    }
 
-  carregarVeiculos();
+    carregarVeiculos();
 };
 
 
@@ -182,10 +206,12 @@ window.excluirVeiculo = async (id) => {
 // Ordenar por status
 // ========================
 const ordenarStatusBtn = document.getElementById("ordenarStatusBtn");
-ordenarStatusBtn.addEventListener("click", () => {
-    sortStatusAsc = !sortStatusAsc;
-    carregarVeiculos();
-});
+if (ordenarStatusBtn) {
+    ordenarStatusBtn.addEventListener("click", () => {
+        sortStatusAsc = !sortStatusAsc;
+        carregarVeiculos();
+    });
+}
 
 // ========================
 // Inicialização

@@ -1,328 +1,250 @@
 // ========================
 // Variáveis principais
 // ========================
-const formAgente = document.getElementById("formAgente");
-const listaAgentes = document.getElementById("listaAgentes");
-const msgAgente = document.getElementById("msgAgente");
-
-const modalAgente = document.getElementById("modalAgente");
-const btnAbrirAgente = document.getElementById("abrirModalAgente");
-const spanFecharAgente = modalAgente.querySelector(".fechar");
-const tituloModalAgente = document.getElementById("tituloModalAgente");
-
 let idAgenteEdicao = null;
-
-// ========================
-// Abrir/fechar modal Agente
-// ========================
-btnAbrirAgente.onclick = () => {
-  idAgenteEdicao = null;
-  tituloModalAgente.textContent = "Novo Agente";
-  formAgente.querySelector("button[type='submit']").textContent = "Salvar Agente";
-  formAgente.reset();
-  modalAgente.style.display = "flex"; // 🔹 usar flex em vez de block
-};
-
-spanFecharAgente.onclick = () => {
-  modalAgente.style.display = "none";
-};
-
-window.onclick = (event) => {
-  if (event.target === modalAgente) {
-    modalAgente.style.display = "none";
-  }
-};
-
-// ========================
-// Validação de CPF
-// ========================
-function validarCPF(cpf) {
-  return /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/.test(cpf);
-}
-
-// ========================
-// Salvar ou atualizar agente
-// ========================
-formAgente.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const cpf = document.getElementById("cpfAgente").value;
-  if (cpf && !validarCPF(cpf)) {
-    msgAgente.textContent = "⚠️ CPF inválido. Use o formato 000.000.000-00";
-    return;
-  }
-
-  const data = {
-    nomeCompleto: document.getElementById("nomeCompleto").value,
-    nomeFuncional: document.getElementById("nomeFuncional").value,
-    cpf: cpf,
-    matricula: document.getElementById("matriculaAgente").value,
-    nascimento: document.getElementById("nascimentoAgente").value,
-    graduacao: document.getElementById("graduacaoAgente").value,
-    telefone: document.getElementById("telefoneAgente").value,
-    endereco: document.getElementById("enderecoAgente").value,
-    psicoValidade: document.getElementById("psicoValidade").value,
-    porteValidade: document.getElementById("porteValidade").value,
-  };
-
-  try {
-    if (idAgenteEdicao) {
-      await db.collection("agentes").doc(idAgenteEdicao).update(data);
-      msgAgente.textContent = "✅ Agente atualizado com sucesso!";
-    } else {
-      await db.collection("agentes").add(data);
-      msgAgente.textContent = "✅ Agente cadastrado com sucesso!";
-    }
-
-    modalAgente.style.display = "none";
-    formAgente.reset();
-    carregarAgentes();
-    idAgenteEdicao = null;
-  } catch (error) {
-    console.error("Erro ao salvar agente:", error);
-    msgAgente.textContent = "❌ Erro ao salvar agente!";
-  }
-});
-
-// ========================
-// Editar agente
-// ========================
-window.editarAgente = async (id) => {
-  try {
-    const docSnap = await db.collection("agentes").doc(id).get();
-    if (!docSnap.exists) {
-      alert("Agente não encontrado!");
-      return;
-    }
-
-    const agente = docSnap.data();
-    idAgenteEdicao = id;
-
-    document.getElementById("nomeCompleto").value   = agente.nomeCompleto || "";
-    document.getElementById("nomeFuncional").value  = agente.nomeFuncional || "";
-    document.getElementById("cpfAgente").value      = agente.cpf || "";
-    document.getElementById("matriculaAgente").value= agente.matricula || "";
-    document.getElementById("nascimentoAgente").value= agente.nascimento || "";
-    document.getElementById("graduacaoAgente").value= agente.graduacao || "";
-    document.getElementById("telefoneAgente").value = agente.telefone || "";
-    document.getElementById("enderecoAgente").value = agente.endereco || "";
-    document.getElementById("psicoValidade").value  = agente.psicoValidade || "";
-    document.getElementById("porteValidade").value  = agente.porteValidade || "";
-
-    tituloModalAgente.textContent = "Editar Agente";
-    formAgente.querySelector("button[type='submit']").textContent = "Atualizar Agente";
-
-    modalAgente.style.display = "flex"; // 🔹 garante centralização
-  } catch (error) {
-    console.error("Erro ao editar agente:", error);
-    msgAgente.textContent = "❌ Erro ao carregar agente!";
-  }
-};
-
-
-// ========================
-// Excluir agente
-// ========================
-window.excluirAgente = async (id) => {
-  if (confirm("Tem certeza que deseja excluir este agente?")) {
-    try {
-      await db.collection("agentes").doc(id).delete();
-      msgAgente.textContent = "✅ Agente excluído!";
-      carregarAgentes();
-    } catch (error) {
-      console.error("Erro ao excluir agente:", error);
-      msgAgente.textContent = "❌ Erro ao excluir!";
-    }
-  }
-};
-
-// ========================
-// Carregar lista de agentes e gerar alertas
-// ========================
-async function carregarAgentes(ordenar = false, ordemReversa = false) {
-  listaAgentes.innerHTML = "";
-  const snapshot = await db.collection("agentes").get();
-
-  const busca = document.getElementById("buscaAgente").value.toLowerCase();
-  const filtroGraduacao = document.getElementById("filtroGraduacao").value;
-
-  const hoje = new Date();
-  const prazoAlerta = new Date();
-  prazoAlerta.setDate(hoje.getDate() + 30);
-
-  let agentesArray = [];
-
-  snapshot.forEach((docSnap) => {
-    const agente = docSnap.data();
-    const id = docSnap.id;
-
-    if (busca && !agente.nomeCompleto.toLowerCase().includes(busca) && !agente.matricula.includes(busca)) return;
-    if (filtroGraduacao && agente.graduacao !== filtroGraduacao) return;
-
-    // calcula status
-    function getStatus(dataValidade) {
-      if (!dataValidade) return "ok";
-      const dt = new Date(dataValidade + "T00:00:00");
-      if (dt < hoje) return "vencido";
-      if (dt <= prazoAlerta) return "proximo";
-      return "ok";
-    }
-
-    const statusPsico = getStatus(agente.psicoValidade);
-    const statusPorte = getStatus(agente.porteValidade);
-
-    let status = "ok";
-    if (statusPsico === "vencido" || statusPorte === "vencido") status = "vencido";
-    else if (statusPsico === "proximo" || statusPorte === "proximo") status = "proximo";
-
-    agentesArray.push({ id, ...agente, status });
-  });
-
-  // ordenação
-  if (ordenar) {
-    const ordem = { vencido: 0, proximo: 1, ok: 2 };
-    agentesArray.sort((a, b) => {
-      return ordem[a.status] - ordem[b.status];
-    });
-    if (ordemReversa) {
-      agentesArray.reverse();
-    }
-  }
-
-  // renderização
-  agentesArray.forEach((agente) => {
-    const tr = document.createElement("tr");
-
-    let cor = "#dff0d8";
-    if (agente.status === "vencido") cor = "#f8d7da";
-    else if (agente.status === "proximo") cor = "#fff3cd";
-
-    tr.style.backgroundColor = cor;
-    tr.innerHTML = `
-      <td>${agente.nomeCompleto}</td>
-      <td>${agente.nomeFuncional}</td>
-      <td>${agente.cpf}</td>
-      <td>${agente.matricula}</td>
-      <td>${agente.nascimento}</td>
-      <td>${agente.graduacao}</td>
-      <td>${agente.telefone || ""}</td>
-      <td>${agente.endereco || ""}</td>
-      <td>${agente.psicoValidade}</td>
-      <td>${agente.porteValidade}</td>
-      <td>
-        <button class="icon-btn" onclick="editarAgente('${agente.id}')"><i class="fa-solid fa-pen-to-square"></i></button>
-        <button class="icon-btn delete" onclick="excluirAgente('${agente.id}')"><i class="fa-solid fa-trash-can"></i></button>
-      </td>
-    `;
-    listaAgentes.appendChild(tr);
-  });
-}
-
-let ordenacaoAtiva = false;
 let ordemReversa = false;
 
-document.getElementById("ordenarStatusBtn").addEventListener("click", () => {
-  ordemReversa = !ordemReversa; // alterna true/false a cada clique
-  carregarAgentes(true, ordemReversa);
-});
+document.addEventListener("DOMContentLoaded", () => {
+  const formAgente = document.getElementById("formAgente");
+  const listaAgentes = document.getElementById("listaAgentes");
+  const msgAgente = document.getElementById("msgAgente");
+  const modalAgente = document.getElementById("modalAgente");
+  const btnAbrirAgente = document.getElementById("abrirModalAgente");
+  const spanFecharAgente = modalAgente ? modalAgente.querySelector(".fechar") : null;
+  const tituloModalAgente = document.getElementById("tituloModalAgente");
 
-
-
-// ========================
-// Filtros
-// ========================
-document.getElementById("buscaAgente").addEventListener("input", carregarAgentes);
-document.getElementById("filtroGraduacao").addEventListener("change", carregarAgentes);
-
-// Inicializa
-carregarAgentes();
-
-// Botão voltar
-backBtn.addEventListener("click", () => window.history.back());
-
-// ========================
-// Notificações
-// ========================
-let globalNotifications = [];
-
-function renderNotifications() {
-  const notificationDropdown = document.getElementById('notification-dropdown');
-  const notificationCountElement = document.getElementById('notification-count');
-
-  if (!notificationDropdown || !notificationCountElement) {
-    console.error("Elementos de notificação não encontrados.");
-    return;
-  }
-
-  notificationDropdown.innerHTML = '';
-
-  const titleDiv = document.createElement('div');
-  titleDiv.className = 'notification-title';
-  titleDiv.innerHTML = '<h4>Notificações</h4>';
-  notificationDropdown.appendChild(titleDiv);
-
-  if (globalNotifications.length === 0) {
-    notificationDropdown.innerHTML += '<p class="no-notifications">Nenhuma notificação</p>';
-    notificationCountElement.style.display = 'none';
-    return;
-  }
-
-  globalNotifications.forEach((notif, index) => {
-    const div = document.createElement('div');
-    div.className = 'notification-item';
-    div.innerHTML = `
-      <span>${notif.mensagem}</span>
-      <button class="mark-as-read-btn" data-index="${index}">Lido</button>
-    `;
-
-    div.querySelector('.mark-as-read-btn').onclick = (event) => {
-      event.stopPropagation();
-      markAsRead(index);
+  // ========================
+  // Abrir/fechar modal Agente
+  // ========================
+  if (btnAbrirAgente) {
+    btnAbrirAgente.onclick = () => {
+      idAgenteEdicao = null;
+      tituloModalAgente.textContent = "Novo Agente";
+      formAgente.querySelector("button[type='submit']").textContent = "Salvar Agente";
+      formAgente.reset();
+      modalAgente.style.display = "flex";
     };
+  }
 
-    div.onclick = () => {
-      if (notif.estabelecimentoId) {
-        abrirSecao('estabelecimentos', notif.estabelecimentoId);
+  if (spanFecharAgente) {
+    spanFecharAgente.onclick = () => {
+      modalAgente.style.display = "none";
+    };
+  }
+
+  window.onclick = (event) => {
+    if (event.target === modalAgente) {
+      modalAgente.style.display = "none";
+    }
+  };
+
+  // ========================
+  // Validação de CPF
+  // ========================
+  function validarCPF(cpf) {
+    return /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/.test(cpf);
+  }
+
+  // ========================
+  // Salvar ou atualizar agente
+  // ========================
+  if (formAgente) {
+    formAgente.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const cpf = document.getElementById("cpfAgente").value;
+      if (cpf && !validarCPF(cpf)) {
+        msgAgente.textContent = "⚠️ CPF inválido. Use o formato 000.000.000-00";
+        return;
       }
-      notificationDropdown.classList.remove('active');
-    };
 
-    notificationDropdown.appendChild(div);
-  });
+      const data = {
+        nomeCompleto: document.getElementById("nomeCompleto").value,
+        nomeFuncional: document.getElementById("nomeFuncional").value,
+        cpf: cpf,
+        matricula: document.getElementById("matriculaAgente").value,
+        nascimento: document.getElementById("nascimentoAgente").value,
+        graduacao: document.getElementById("graduacaoAgente").value,
+        telefone: document.getElementById("telefoneAgente").value,
+        endereco: document.getElementById("enderecoAgente").value,
+        psicoValidade: document.getElementById("psicoValidade").value,
+        porteValidade: document.getElementById("porteValidade").value,
+      };
 
-  notificationCountElement.textContent = globalNotifications.length;
-  notificationCountElement.style.display = 'flex';
-}
+      try {
+        if (idAgenteEdicao) {
+          await db.collection("agentes").doc(idAgenteEdicao).update(data);
+          msgAgente.textContent = "✅ Agente atualizado com sucesso!";
+        } else {
+          await db.collection("agentes").add(data);
+          msgAgente.textContent = "✅ Agente cadastrado com sucesso!";
+        }
 
-// Botão sino + clique fora
-const bellBtn = document.querySelector('#notification-icon-container i');
-const dropdown = document.getElementById('notification-dropdown');
-const container = document.getElementById('notification-icon-container');
-
-// Abre/fecha no clique do sino
-bellBtn.addEventListener('click', (e) => {
-  e.stopPropagation(); // impede de fechar imediatamente
-  dropdown.classList.toggle('active');
-});
-
-// Fecha ao clicar fora
-document.addEventListener('click', (e) => {
-  if (!dropdown.contains(e.target) && !container.contains(e.target)) {
-    dropdown.classList.remove('active');
+        modalAgente.style.display = "none";
+        formAgente.reset();
+        carregarAgentes();
+        idAgenteEdicao = null;
+      } catch (error) {
+        console.error("Erro ao salvar agente:", error);
+        msgAgente.textContent = "❌ Erro ao salvar agente!";
+      }
+    });
   }
-});
 
-// Marcar como lida
-function markAsRead(index) {
-  if (index > -1) {
-    globalNotifications.splice(index, 1);
-    renderNotifications();
+  // ========================
+  // Funções de CRUD globais
+  // ========================
+  window.editarAgente = async (id) => {
+    try {
+      const docSnap = await db.collection("agentes").doc(id).get();
+      if (!docSnap.exists) {
+        alert("Agente não encontrado!");
+        return;
+      }
+      const agente = docSnap.data();
+      idAgenteEdicao = id;
+      document.getElementById("nomeCompleto").value = agente.nomeCompleto || "";
+      document.getElementById("nomeFuncional").value = agente.nomeFuncional || "";
+      document.getElementById("cpfAgente").value = agente.cpf || "";
+      document.getElementById("matriculaAgente").value = agente.matricula || "";
+      document.getElementById("nascimentoAgente").value = agente.nascimento || "";
+      document.getElementById("graduacaoAgente").value = agente.graduacao || "";
+      document.getElementById("telefoneAgente").value = agente.telefone || "";
+      document.getElementById("enderecoAgente").value = agente.endereco || "";
+      document.getElementById("psicoValidade").value = agente.psicoValidade || "";
+      document.getElementById("porteValidade").value = agente.porteValidade || "";
+      tituloModalAgente.textContent = "Editar Agente";
+      formAgente.querySelector("button[type='submit']").textContent = "Atualizar Agente";
+      modalAgente.style.display = "flex";
+    } catch (error) {
+      console.error("Erro ao editar agente:", error);
+      msgAgente.textContent = "❌ Erro ao carregar agente!";
+    }
+  };
+
+  window.excluirAgente = async (id) => {
+    if (confirm("Tem certeza que deseja excluir este agente?")) {
+      try {
+        await db.collection("agentes").doc(id).delete();
+        msgAgente.textContent = "✅ Agente excluído!";
+        carregarAgentes();
+      } catch (error) {
+        console.error("Erro ao excluir agente:", error);
+        msgAgente.textContent = "❌ Erro ao excluir!";
+      }
+    }
+  };
+
+  // ========================
+  // Carregar lista de agentes
+  // ========================
+  async function carregarAgentes(ordenar = false, ordemReversa = false) {
+    if (!listaAgentes) {
+      console.error("Elemento 'listaAgentes' não encontrado.");
+      return;
+    }
+    listaAgentes.innerHTML = "";
+    const snapshot = await db.collection("agentes").get();
+    const busca = document.getElementById("buscaAgente")?.value.toLowerCase() || "";
+    const filtroGraduacao = document.getElementById("filtroGraduacao")?.value || "";
+    const hoje = new Date();
+    const prazoAlerta = new Date();
+    prazoAlerta.setDate(hoje.getDate() + 30);
+    let agentesArray = [];
+
+    snapshot.forEach((docSnap) => {
+      const agente = docSnap.data();
+      const id = docSnap.id;
+      if (busca && !agente.nomeCompleto.toLowerCase().includes(busca) && !agente.matricula.includes(busca)) return;
+      if (filtroGraduacao && agente.graduacao !== filtroGraduacao) return;
+
+      function getStatus(dataValidade) {
+        if (!dataValidade) return "ok";
+        const dt = new Date(dataValidade + "T00:00:00");
+        if (dt < hoje) return "vencido";
+        if (dt <= prazoAlerta) return "proximo";
+        return "ok";
+      }
+
+      const statusPsico = getStatus(agente.psicoValidade);
+      const statusPorte = getStatus(agente.porteValidade);
+      let status = "ok";
+      if (statusPsico === "vencido" || statusPorte === "vencido") status = "vencido";
+      else if (statusPsico === "proximo" || statusPorte === "proximo") status = "proximo";
+      agentesArray.push({ id, ...agente, status });
+    });
+
+    if (ordenar) {
+      const ordem = { vencido: 0, proximo: 1, ok: 2 };
+      agentesArray.sort((a, b) => ordem[a.status] - ordem[b.status]);
+      if (ordemReversa) {
+        agentesArray.reverse();
+      }
+    }
+
+    agentesArray.forEach((agente) => {
+      const tr = document.createElement("tr");
+      let cor = "#dff0d8";
+      if (agente.status === "vencido") cor = "#f8d7da";
+      else if (agente.status === "proximo") cor = "#fff3cd";
+      tr.style.backgroundColor = cor;
+      tr.innerHTML = `
+                <td>${agente.nomeCompleto}</td>
+                <td>${agente.nomeFuncional}</td>
+                <td>${agente.cpf}</td>
+                <td>${agente.matricula}</td>
+                <td>${agente.nascimento}</td>
+                <td>${agente.graduacao}</td>
+                <td>${agente.telefone || ""}</td>
+                <td>${agente.endereco || ""}</td>
+                <td>${agente.psicoValidade}</td>
+                <td>${agente.porteValidade}</td>
+                <td>
+                    <button class="icon-btn" onclick="editarAgente('${agente.id}')"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <button class="icon-btn delete" onclick="excluirAgente('${agente.id}')"><i class="fa-solid fa-trash-can"></i></button>
+                </td>
+            `;
+      listaAgentes.appendChild(tr);
+    });
+
+    const pendingNotifications = agentesArray
+      .filter(a => a.status === "vencido" || a.status === "proximo")
+      .map(a => ({
+        message: `Agente ${a.nomeCompleto} — ${a.status}`,
+        link: `tools/agents/agents.html?id=${a.id}`
+      }));
+
+    if (window.addModuleNotifications) {
+      window.addModuleNotifications("agentes", pendingNotifications);
+    }
   }
-}
 
-// Atualizar notificações
-function updateNotifications(newAlerts) {
-  globalNotifications = newAlerts;
-  renderNotifications();
-}
+  // ========================
+  // Filtros e Botões
+  // ========================
+  const ordenarStatusBtn = document.getElementById("ordenarStatusBtn");
+  if (ordenarStatusBtn) {
+    ordenarStatusBtn.addEventListener("click", () => {
+      ordemReversa = !ordemReversa;
+      carregarAgentes(true, ordemReversa);
+    });
+  }
 
+  const buscaAgente = document.getElementById("buscaAgente");
+  if (buscaAgente) {
+    buscaAgente.addEventListener("input", carregarAgentes);
+  }
+
+  const filtroGraduacao = document.getElementById("filtroGraduacao");
+  if (filtroGraduacao) {
+    filtroGraduacao.addEventListener("change", carregarAgentes);
+  }
+
+  const backBtn = document.getElementById("backBtn");
+  if (backBtn) {
+    backBtn.addEventListener("click", () => window.history.back());
+  }
+
+  // Inicialização
+  carregarAgentes();
+});

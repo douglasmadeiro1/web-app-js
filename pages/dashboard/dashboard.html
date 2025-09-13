@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,6 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="dashboard.css" />
 </head>
+
 <body>
   <main class="main-content">
 
@@ -16,7 +18,7 @@
         <div class="notifications">
           <div class="notification-container" id="container-notif-postura">
             <button class="icon-btn" title="Notificações de postura">
-              <i class="fas fa-bell"></i>
+              <i class="far fa-clipboard"></i>
               <span class="badge" id="notif-postura">0</span>
             </button>
             <div class="notifications-dropdown" id="dropdown-postura">
@@ -24,10 +26,10 @@
               <div class="notification-list"></div>
             </div>
           </div>
-          
+
           <div class="notification-container" id="container-notif-veiculos">
             <button class="icon-btn" title="Veículos em abandono">
-              <i class="fas fa-car-crash"></i>
+              <i class="fas fas fa-car"></i>
               <span class="badge" id="notif-veiculos">0</span>
             </button>
             <div class="notifications-dropdown" id="dropdown-veiculos">
@@ -92,36 +94,49 @@
       <a href='tools/abandoned_vehicles/vehicles.html' class="card">
         <img src="../../assets/image/veiculo2.png" alt="Veículos">
         <h3>Veículos em Abandono</h3>
-        <p>Cadastro das notificações de veículos em estado de abandono para acompanhamento e consulta da situação (removido / pendente)</p>
+        <p>Cadastro das notificações de veículos em estado de abandono para acompanhamento e consulta da situação
+          (removido / pendente)</p>
       </a>
       <a href='tools/commercial/commercial.html' class="card">
         <img src="../../assets/image/comercio.png" alt="Comércios">
         <h3>Estabelecimentos</h3>
-        <p>Cadastro de informações sobre estabelecimentos comerciais localizados na cidade, consulta de situação e validade de alvarás</p>
+        <p>Cadastro de informações sobre estabelecimentos comerciais localizados na cidade, consulta de situação e
+          validade de alvarás</p>
       </a>
       <a href='tools/notification/notification.html' class="card">
         <img src="../../assets/image/notificacao.png" alt="Notificações">
         <h3>Notificações</h3>
-        <p>Gerenciamento das notificações de postura aplicadas pelas equipes e visualização da situação e prazo fornecido pelo agente para regularização</p>
+        <p>Gerenciamento das notificações de postura aplicadas pelas equipes e visualização da situação e prazo
+          fornecido pelo agente para regularização</p>
       </a>
       <a href='tools/infringement/infringement.html' class="card">
         <img src="../../assets/image/autuacao.png" alt="Autuações">
         <h3>Autuações</h3>
         <p>Gerenciamento dos autos de infração aplicados pelas equipes</p>
       </a>
-      <a href='tools//agents/agents.html' class="card">
+      <a href='tools/agents/agents.html' class="card">
         <img src="../../assets/image/equipe.png" alt="Agentes">
         <h3>Gerenciamento da equipe</h3>
-        <p>Gerenciamento das informações e registro de dados referentes aos agentes da Gurda Civil Munucipal de Pirassununga</p>
+        <p>Gerenciamento das informações e registro de dados referentes aos agentes da Gurda Civil Munucipal de
+          Pirassununga</p>
       </a>
     </section>
 
   </main>
 
+  </main>
+
+  </main>
+
   <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore-compat.js"></script>
+
   <script src="../../firebase-init.js"></script>
   <script src="../../auth-guard.js"></script>
+
   <script src="dashboard.js"></script>
+
 </body>
+
 </html>

@@ -25,7 +25,7 @@ let sortStatusAsc = true;
 // ========================
 // Voltar
 // ========================
-backBtn.addEventListener("click", () => window.history.back());
+if (backBtn) backBtn.addEventListener("click", () => window.history.back());
 
 // ========================
 // Modal
@@ -98,7 +98,7 @@ async function carregarNotificacoes() {
         dataLimite.setDate(dataLimite.getDate() + notif.prazoDias);
         if (notif.status !== "cumprida") {
             notif.status = (hoje > dataLimite) ? "vencida" : "pendente";
-            db.collection("notificacoes").doc(notif.id).update({ status: notif.status });
+            db.collection("notificacoes").doc(notif.id).update({ status: notif.status }).catch(() => {/*silenciar*/ });
         }
     });
 
@@ -122,7 +122,7 @@ async function carregarNotificacoes() {
     }
 
     // ========================
-    // Ordenar por status igual vehicles.js
+    // Ordenar por status (mantendo seu comportamento)
     // ========================
     notificacoes.sort((a, b) => {
         if (sortStatusAsc) {
@@ -160,7 +160,16 @@ async function carregarNotificacoes() {
         notificationTableBody.appendChild(tr);
     });
 
-    atualizarNotificacoes(notificacoes);
+    const pendingNotifications = notificacoes
+        .filter(n => n.status === "pendente" || n.status === "vencida")
+        .map(n => ({
+            message: `Notificação ${n.notificado} — ${n.status}`,
+            link: `tools/notification/notification.html?id=${n.id}`
+        }));
+
+    if (window.addModuleNotifications) {
+        window.addModuleNotifications("postura", pendingNotifications);
+    }
 }
 
 // ========================
@@ -198,53 +207,28 @@ window.excluirNotificacao = async (id) => {
     }
 };
 
-// ========================
-// Notificações dropdown
-// ========================
-function renderNotifications() {
-    notificationDropdown.innerHTML = '';
-    if (globalNotifications.length === 0) {
-        notificationDropdown.innerHTML = `<p class="no-notifications" id="no-notifications">Nenhuma notificação</p>`;
-        notificationCountElement.textContent = '0';
-        notificationCountElement.style.display = 'none';
-    } else {
-        globalNotifications.forEach(notif => {
-            const div = document.createElement('div');
-            div.className = 'notification-item';
-            div.innerHTML = `
-                <p><strong>${notif.natureza}</strong></p>
-                <p>${notif.notificado} - Prazo: ${notif.prazoDias} dias</p>
-            `;
-            notificationDropdown.appendChild(div);
-        });
-
-        notificationCountElement.textContent = globalNotifications.length;
-        notificationCountElement.style.display = 'flex';
-    }
-}
-
-function atualizarNotificacoes(notificacoes) {
-    globalNotifications = notificacoes.filter(n => n.status === "pendente");
-    renderNotifications();
-}
 
 // ========================
 // Botão sino + clique fora
 // ========================
-notificationIconContainer.addEventListener('click', (e) => {
-    e.stopPropagation();
-    notificationDropdown.classList.toggle('active');
-});
+if (notificationIconContainer) {
+    notificationIconContainer.addEventListener('click', (e) => {
+        e.stopPropagation();
+        notificationDropdown.classList.toggle('active');
+    });
+}
 
-markAsReadBtn.addEventListener("click", async () => {
-    const pendentes = globalNotifications.map(n => n.id);
-    for (let id of pendentes) {
-        await db.collection("notificacoes").doc(id).update({ status: "cumprida" });
-    }
-    globalNotifications = [];
-    renderNotifications();
-    notificationDropdown.classList.remove('active');
-});
+if (markAsReadBtn) {
+    markAsReadBtn.addEventListener("click", async () => {
+        const pendentes = globalNotifications.map(n => n.id);
+        for (let id of pendentes) {
+            await db.collection("notificacoes").doc(id).update({ status: "cumprida" });
+        }
+        globalNotifications = [];
+        renderNotifications();
+        notificationDropdown.classList.remove('active');
+    });
+}
 
 document.addEventListener('click', (e) => {
     if (!notificationDropdown.contains(e.target) && !notificationIconContainer.contains(e.target)) {
@@ -256,15 +240,17 @@ document.addEventListener('click', (e) => {
 // Ordenar por status
 // ========================
 const ordenarStatusBtn = document.getElementById("ordenarStatusBtn");
-ordenarStatusBtn.addEventListener("click", () => {
-    sortStatusAsc = !sortStatusAsc;
-    carregarNotificacoes();
-});
+if (ordenarStatusBtn) {
+    ordenarStatusBtn.addEventListener("click", () => {
+        sortStatusAsc = !sortStatusAsc;
+        carregarNotificacoes();
+    });
+}
 
 // ========================
 // Inicialização
 // ========================
 document.addEventListener("DOMContentLoaded", carregarNotificacoes);
-buscaInput.addEventListener("input", carregarNotificacoes);
-filtroStatus.addEventListener("change", carregarNotificacoes);
-filtroNatureza.addEventListener("change", carregarNotificacoes);
+if (buscaInput) buscaInput.addEventListener("input", carregarNotificacoes);
+if (filtroStatus) filtroStatus.addEventListener("change", carregarNotificacoes);
+if (filtroNatureza) filtroNatureza.addEventListener("change", carregarNotificacoes);

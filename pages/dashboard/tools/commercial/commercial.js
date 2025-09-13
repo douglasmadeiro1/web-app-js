@@ -22,6 +22,19 @@ async function carregarEstabelecimentos() {
     });
 
     renderizarTabela();
+
+    // === Integração com dashboard: pegar todas as pendências e enviar ===
+    const pendingNotifications = estabelecimentos
+      .filter(est => est.status === "irregular" || est.status === "proximo")
+      .map(est => ({
+        message: `Estabelecimento ${est.nomeEstabelecimento || ''} — ${est.status}`,
+        link: `tools/commercial/commercial.html?id=${est.id}`
+      }));
+
+    if (window.addModuleNotifications) {
+      window.addModuleNotifications("estabelecimentos", pendingNotifications);
+    }
+
   } catch (error) {
     console.error("Erro ao carregar estabelecimentos:", error);
   }
@@ -43,7 +56,7 @@ function renderizarTabela() {
   // filtrar
   lista = lista.filter(est => {
     const matchBusca = est.nomeEstabelecimento.toLowerCase().includes(busca) ||
-      est.nomeResponsavel.toLowerCase().includes(busca);
+      (est.nomeResponsavel && est.nomeResponsavel.toLowerCase().includes(busca));
     const matchStatus = filtroStatus ? est.status === filtroStatus : true;
     return matchBusca && matchStatus;
   });
@@ -58,10 +71,10 @@ function renderizarTabela() {
   lista.forEach(est => {
     const row = document.createElement("tr");
 
-// adiciona classe de cor conforme status
-row.classList.add(`status-${est.status}`);
+    // adiciona classe de cor conforme status
+    row.classList.add(`status-${est.status}`);
 
-row.innerHTML = `
+    row.innerHTML = `
   <td>${est.nomeEstabelecimento}</td>
   <td>${est.enderecoEstabelecimento}</td>
   <td>${est.nomeResponsavel}</td>
@@ -74,9 +87,21 @@ row.innerHTML = `
   </td>
 `;
 
-tabelaBody.appendChild(row);
+    tabelaBody.appendChild(row);
 
   });
+
+  // Também atualizar dashboard com as pendências (caso queira refletir filtros ou atualizações)
+  const pendingNotifications = estabelecimentos
+    .filter(est => est.status === "irregular" || est.status === "proximo")
+    .map(est => ({
+      message: `Estabelecimento ${est.nomeEstabelecimento || ''} — ${est.status}`,
+      link: `tools/commercial/commercial.html?id=${est.id}`
+    }));
+
+  if (window.addModuleNotifications) {
+    window.addModuleNotifications("estabelecimentos", pendingNotifications);
+  }
 }
 
 // Modal
@@ -120,12 +145,16 @@ document.getElementById("form-edicao-estabelecimento").addEventListener("submit"
 });
 
 // Botões extras
-document.getElementById("backBtn").addEventListener("click", () => window.history.back());
+const backBtn = document.getElementById("backBtn");
+if (backBtn) backBtn.addEventListener("click", () => window.history.back());
 
-document.getElementById("btn-novo-estabelecimento").addEventListener("click", () => {
-  document.getElementById("form-cadastro-estabelecimento").reset();
-  document.getElementById("modal-cadastro-estabelecimento").style.display = "flex";
-});
+const btnNovo = document.getElementById("btn-novo-estabelecimento");
+if (btnNovo) {
+  btnNovo.addEventListener("click", () => {
+    document.getElementById("form-cadastro-estabelecimento").reset();
+    document.getElementById("modal-cadastro-estabelecimento").style.display = "flex";
+  });
+}
 
 function fecharModalCadastro() {
   document.getElementById("modal-cadastro-estabelecimento").style.display = "none";
@@ -155,14 +184,19 @@ document.getElementById("form-cadastro-estabelecimento").addEventListener("submi
 });
 
 
-document.getElementById("ordenar-status").addEventListener("click", () => {
-  ordemAscendente = !ordemAscendente;
-  renderizarTabela();
-});
+const ordenarStatusBtn = document.getElementById("ordenar-status");
+if (ordenarStatusBtn) {
+  ordenarStatusBtn.addEventListener("click", () => {
+    ordemAscendente = !ordemAscendente;
+    renderizarTabela();
+  });
+}
 
 // Filtros
-document.getElementById("busca-estabelecimento").addEventListener("input", renderizarTabela);
-document.getElementById("filtro-status").addEventListener("change", renderizarTabela);
+const buscaEst = document.getElementById("busca-estabelecimento");
+if (buscaEst) buscaEst.addEventListener("input", renderizarTabela);
+const filtroStatus = document.getElementById("filtro-status");
+if (filtroStatus) filtroStatus.addEventListener("change", renderizarTabela);
 
 // Início
 window.onload = carregarEstabelecimentos;
@@ -179,4 +213,3 @@ async function excluirEstabelecimentoDireto(id) {
     alert("Erro ao excluir, tente novamente.");
   }
 }
-
