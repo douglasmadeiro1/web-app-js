@@ -84,6 +84,9 @@ notificationForm.addEventListener("submit", async (e) => {
 // ========================
 // Carregar notificações
 // ========================
+// ========================
+// Carregar notificações
+// ========================
 async function carregarNotificacoes() {
     notificationTableBody.innerHTML = "";
     const snapshot = await db.collection("notificacoes").get();
@@ -92,17 +95,21 @@ async function carregarNotificacoes() {
 
     // Atualiza status automaticamente
     const hoje = new Date();
-    notificacoes.forEach(notif => {
+    for (let notif of notificacoes) {
         const dataNot = new Date(notif.dataNotificacao);
         const dataLimite = new Date(dataNot);
         dataLimite.setDate(dataLimite.getDate() + notif.prazoDias);
-        if (notif.status !== "cumprida") {
-            notif.status = (hoje > dataLimite) ? "vencida" : "pendente";
-            db.collection("notificacoes").doc(notif.id).update({ status: notif.status }).catch(() => {/*silenciar*/ });
-        }
-    });
 
-    // Filtros e busca
+        if (notif.status !== "cumprida") {
+            const statusReal = (hoje > dataLimite) ? "vencida" : "pendente";
+            if (notif.status !== statusReal) {
+                notif.status = statusReal;
+                db.collection("notificacoes").doc(notif.id).update({ status: statusReal }).catch(() => {/*silenciar*/ });
+            }
+        }
+    }
+
+    // 🔹 Filtros e busca
     const busca = buscaInput.value.toLowerCase();
     const filtroStatusValue = filtroStatus.value;
     const filtroNaturezaValue = filtroNatureza.value;
@@ -112,34 +119,30 @@ async function carregarNotificacoes() {
             notif.notificado.toLowerCase().includes(busca) || notif.cpf.includes(busca)
         );
     }
-
     if (filtroStatusValue) {
         notificacoes = notificacoes.filter(notif => notif.status === filtroStatusValue);
     }
-
     if (filtroNaturezaValue) {
         notificacoes = notificacoes.filter(notif => notif.natureza === filtroNaturezaValue);
     }
 
-    // ========================
-    // Ordenar por status (mantendo seu comportamento)
-    // ========================
+    // 🔹 Ordenar por status: vermelha > amarela > verde
     notificacoes.sort((a, b) => {
-        if (sortStatusAsc) {
-            return a.status.localeCompare(b.status);
-        } else {
-            return b.status.localeCompare(a.status);
-        }
+        const ordem = { vencida: 1, pendente: 2, cumprida: 3 };
+        return ordem[a.status] - ordem[b.status];
     });
 
-    // Preencher tabela
+    // Se o usuário clicou no botão ordenar, inverte
+    if (!sortStatusAsc) notificacoes.reverse();
+
+    // 🔹 Preencher tabela
     notificationTableBody.innerHTML = "";
     notificacoes.forEach(notif => {
         const tr = document.createElement("tr");
 
-        if (notif.status === "pendente") tr.style.backgroundColor = "#fff3cd";
-        else if (notif.status === "vencida") tr.style.backgroundColor = "#f8d7da";
-        else if (notif.status === "cumprida") tr.style.backgroundColor = "#d4edda";
+        if (notif.status === "pendente") tr.style.backgroundColor = "#fff3cd";   // amarelo
+        else if (notif.status === "vencida") tr.style.backgroundColor = "#f8d7da"; // vermelho
+        else if (notif.status === "cumprida") tr.style.backgroundColor = "#d4edda"; // verde
 
         const statusText = notif.status.charAt(0).toUpperCase() + notif.status.slice(1);
         tr.innerHTML = `
@@ -154,12 +157,13 @@ async function carregarNotificacoes() {
             <td>
                 <button class="icon-btn" onclick="marcarCumprida('${notif.id}')">✅</button>
                 <button class="icon-btn" onclick="editarNotificacao('${notif.id}')"><i class="fa-solid fa-pen-to-square"></i></button>
-                <button class="icon-btn" onclick="excluirNotificacao('${notif.id}')"><i class="fa-solid fa-trash-can"></i></button>
+                <button class="icon-btn delete" onclick="excluirNotificacao('${notif.id}')"><i class="fa-solid fa-trash-can"></i></button>
             </td>
         `;
         notificationTableBody.appendChild(tr);
     });
 
+    // 🔹 Enviar notificações pendentes/vencidas para a dashboard
     const pendingNotifications = notificacoes
         .filter(n => n.status === "pendente" || n.status === "vencida")
         .map(n => ({

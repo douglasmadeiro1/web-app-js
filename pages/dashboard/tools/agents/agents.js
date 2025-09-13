@@ -138,7 +138,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // ========================
   // Carregar lista de agentes
   // ========================
-  async function carregarAgentes(ordenar = false, ordemReversa = false) {
+  // ========================
+  // Carregar lista de agentes
+  // ========================
+  async function carregarAgentes(ordenar = true, ordemReversa = false) {
     if (!listaAgentes) {
       console.error("Elemento 'listaAgentes' não encontrado.");
       return;
@@ -174,36 +177,36 @@ document.addEventListener("DOMContentLoaded", () => {
       agentesArray.push({ id, ...agente, status });
     });
 
-    if (ordenar) {
-      const ordem = { vencido: 0, proximo: 1, ok: 2 };
-      agentesArray.sort((a, b) => ordem[a.status] - ordem[b.status]);
-      if (ordemReversa) {
-        agentesArray.reverse();
-      }
+    // 🔴🟡🟢 Sempre ordenar: vencido > proximo > ok
+    const ordem = { vencido: 0, proximo: 1, ok: 2 };
+    agentesArray.sort((a, b) => ordem[a.status] - ordem[b.status]);
+
+    if (ordemReversa) {
+      agentesArray.reverse();
     }
 
     agentesArray.forEach((agente) => {
       const tr = document.createElement("tr");
-      let cor = "#dff0d8";
-      if (agente.status === "vencido") cor = "#f8d7da";
-      else if (agente.status === "proximo") cor = "#fff3cd";
+      let cor = "#dff0d8"; // verde
+      if (agente.status === "vencido") cor = "#f8d7da"; // vermelho
+      else if (agente.status === "proximo") cor = "#fff3cd"; // amarelo
       tr.style.backgroundColor = cor;
       tr.innerHTML = `
-                <td>${agente.nomeCompleto}</td>
-                <td>${agente.nomeFuncional}</td>
-                <td>${agente.cpf}</td>
-                <td>${agente.matricula}</td>
-                <td>${agente.nascimento}</td>
-                <td>${agente.graduacao}</td>
-                <td>${agente.telefone || ""}</td>
-                <td>${agente.endereco || ""}</td>
-                <td>${agente.psicoValidade}</td>
-                <td>${agente.porteValidade}</td>
-                <td>
-                    <button class="icon-btn" onclick="editarAgente('${agente.id}')"><i class="fa-solid fa-pen-to-square"></i></button>
-                    <button class="icon-btn delete" onclick="excluirAgente('${agente.id}')"><i class="fa-solid fa-trash-can"></i></button>
-                </td>
-            `;
+              <td>${agente.nomeCompleto}</td>
+              <td>${agente.nomeFuncional}</td>
+              <td>${agente.cpf}</td>
+              <td>${agente.matricula}</td>
+              <td>${agente.nascimento}</td>
+              <td>${agente.graduacao}</td>
+              <td>${agente.telefone || ""}</td>
+              <td>${agente.endereco || ""}</td>
+              <td>${agente.psicoValidade}</td>
+              <td>${agente.porteValidade}</td>
+              <td>
+                  <button class="icon-btn" onclick="editarAgente('${agente.id}')"><i class="fa-solid fa-pen-to-square"></i></button>
+                  <button class="icon-btn delete" onclick="excluirAgente('${agente.id}')"><i class="fa-solid fa-trash-can"></i></button>
+              </td>
+          `;
       listaAgentes.appendChild(tr);
     });
 
@@ -218,6 +221,7 @@ document.addEventListener("DOMContentLoaded", () => {
       window.addModuleNotifications("agentes", pendingNotifications);
     }
   }
+
 
   // ========================
   // Filtros e Botões

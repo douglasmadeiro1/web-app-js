@@ -77,8 +77,6 @@ vehicleForm.addEventListener("submit", async (e) => {
 // Carregar veículos
 // ========================
 async function carregarVeiculos() {
-    // ... (toda a lógica de carregamento e ordenação de dados do seu código)
-
     const snapshot = await db.collection("veiculos").get();
     let veiculos = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
@@ -88,29 +86,35 @@ async function carregarVeiculos() {
             const dataLimite = new Date(v.dataLimite + "T00:00:00");
             const statusReal = (hoje > dataLimite) ? "vencida" : "pendente";
             if (statusReal !== v.status) {
-                try { await db.collection("veiculos").doc(v.id).update({ status: statusReal }); }
-                catch (err) { console.warn("Não foi possível atualizar status automático:", err); }
+                try {
+                    await db.collection("veiculos").doc(v.id).update({ status: statusReal });
+                } catch (err) {
+                    console.warn("Não foi possível atualizar status automático:", err);
+                }
                 v.status = statusReal;
             }
         }
     }
 
-    // Ordenar por status (mantendo seu comportamento anterior)
+    // 🔹 Antes de preencher, limpamos a tabela para não duplicar
+    vehicleTableBody.innerHTML = "";
+
+    // 🔹 Ordenação inicial: vencida > pendente > cumprida
     veiculos.sort((a, b) => {
-        if (sortStatusAsc) {
-            return a.status.localeCompare(b.status);
-        } else {
-            return b.status.localeCompare(a.status);
-        }
+        const ordem = { vencida: 1, pendente: 2, cumprida: 3 };
+        return ordem[a.status] - ordem[b.status];
     });
 
-    // Preencher a tabela (sua lógica existente)
-    // ...
+    // 🔹 Se o usuário clicou para inverter a ordem, aplicamos aqui
+    if (!sortStatusAsc) veiculos.reverse();
+
+    // Preencher a tabela
     veiculos.forEach(v => {
         const tr = document.createElement("tr");
         if (v.status === "pendente") tr.style.backgroundColor = "#fff3cd";
         else if (v.status === "vencida") tr.style.backgroundColor = "#f8d7da";
         else if (v.status === "cumprida") tr.style.backgroundColor = "#d4edda";
+
         tr.innerHTML = `
             <td>${v.dataNotificacao}</td>
             <td>${v.marca}</td>
@@ -129,7 +133,7 @@ async function carregarVeiculos() {
         vehicleTableBody.appendChild(tr);
     });
 
-    // === Integração com a dashboard: montar pendências e enviar ===
+    // === Integração com a dashboard ===
     const pendingNotifications = veiculos
         .filter(v => v.status === "pendente" || v.status === "vencida")
         .map(v => ({
@@ -137,7 +141,6 @@ async function carregarVeiculos() {
             link: `tools/abandoned_vehicles/vehicles.html?id=${v.id}`
         }));
 
-    // Agora, em vez de manipular o objeto global diretamente, chame a função da dashboard
     if (window.addModuleNotifications) {
         window.addModuleNotifications("veiculos", pendingNotifications);
     }
