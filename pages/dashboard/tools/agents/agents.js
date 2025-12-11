@@ -196,12 +196,12 @@ document.addEventListener("DOMContentLoaded", () => {
               <td>${agente.nomeFuncional}</td>
               <td>${agente.cpf}</td>
               <td>${agente.matricula}</td>
-              <td>${agente.nascimento}</td>
+              <td>${formatarData(agente.nascimento)}</td>
               <td>${agente.graduacao}</td>
               <td>${agente.telefone || ""}</td>
               <td>${agente.endereco || ""}</td>
-              <td>${agente.psicoValidade}</td>
-              <td>${agente.porteValidade}</td>
+              <td>${formatarData(agente.psicoValidade)}</td>
+              <td>${formatarData(agente.porteValidade)}</td>
               <td>
                   <button class="icon-btn" onclick="editarAgente('${agente.id}')"><i class="fa-solid fa-pen-to-square"></i></button>
                   <button class="icon-btn delete" onclick="excluirAgente('${agente.id}')"><i class="fa-solid fa-trash-can"></i></button>
@@ -252,3 +252,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Inicialização
   carregarAgentes();
 });
+
+function formatarData(dataISO) {
+  if (!dataISO) return "";
+  const partes = dataISO.split("-"); // [aaaa, mm, dd]
+  return `${partes[2]}/${partes[1]}/${partes[0]}`;
+}
