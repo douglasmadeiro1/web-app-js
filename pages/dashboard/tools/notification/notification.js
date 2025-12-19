@@ -118,7 +118,7 @@ async function carregarNotificacoes() {
 
     if (busca) {
         notificacoes = notificacoes.filter(notif =>
-            notif.notificado.toLowerCase().includes(busca) || notif.cpf.includes(busca) || notif.endereco.includes(busca)
+            notif.notificado.toLowerCase().includes(busca) || notif.cpf.includes(busca) || notif.endereco.toLowerCase().includes(busca)
         );
     }
     if (filtroStatusValue) {
