@@ -58,12 +58,14 @@ notificationForm.addEventListener("submit", async (e) => {
     if (hoje > dataLimite) status = "vencida";
 
     const notificacao = {
+        numeroNotificacao: document.getElementById("numeroNotificacao").value,
         dataNotificacao: document.getElementById("dataNotificacao").value,
         agente: document.getElementById("agente").value,
         notificado: document.getElementById("notificado").value,
         cpf: document.getElementById("cpf").value,
         endereco: document.getElementById("endereco").value,
         natureza: document.getElementById("natureza").value,
+        atendente: document.getElementById("atendente").value,
         prazoDias: prazoDias,
         status: status
     };
@@ -146,13 +148,15 @@ async function carregarNotificacoes() {
 
         const statusText = notif.status.charAt(0).toUpperCase() + notif.status.slice(1);
         tr.innerHTML = `
-            <td>${notif.dataNotificacao}</td>
+            <td>${notif.numeroNotificacao}</td>
+            <td>${formatarData(notif.dataNotificacao)}</td>
             <td>${notif.agente}</td>
             <td>${notif.notificado}</td>
             <td>${notif.cpf}</td>
             <td>${notif.endereco}</td>
             <td>${notif.natureza}</td>
             <td>${notif.prazoDias} dias</td>
+            <td>${notif.atendente}</td>
             <td>${statusText}</td>
             <td>
                 <button class="icon-btn" onclick="marcarCumprida('${notif.id}')">✅</button>
@@ -191,6 +195,7 @@ window.editarNotificacao = async (id) => {
     const doc = await db.collection("notificacoes").doc(id).get();
     const notif = doc.data();
 
+    document.getElementById("numeroNotificacao").value = notif.numeroNotificacao;
     document.getElementById("dataNotificacao").value = notif.dataNotificacao;
     document.getElementById("agente").value = notif.agente;
     document.getElementById("notificado").value = notif.notificado;
@@ -198,6 +203,7 @@ window.editarNotificacao = async (id) => {
     document.getElementById("endereco").value = notif.endereco;
     document.getElementById("natureza").value = notif.natureza;
     document.getElementById("prazoDias").value = notif.prazoDias;
+    document.getElementById("atendente").value = notif.atendente;
 
     modalTitle.textContent = "Editar Notificação";
     currentNotificationId = id;
@@ -258,3 +264,9 @@ document.addEventListener("DOMContentLoaded", carregarNotificacoes);
 if (buscaInput) buscaInput.addEventListener("input", carregarNotificacoes);
 if (filtroStatus) filtroStatus.addEventListener("change", carregarNotificacoes);
 if (filtroNatureza) filtroNatureza.addEventListener("change", carregarNotificacoes);
+
+function formatarData(dataISO) {
+  if (!dataISO) return "";
+  const partes = dataISO.split("-"); // [aaaa, mm, dd]
+  return `${partes[2]}/${partes[1]}/${partes[0]}`;
+}

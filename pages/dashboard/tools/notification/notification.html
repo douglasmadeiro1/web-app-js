@@ -46,6 +46,7 @@
     <table id="notificationTable">
       <thead>
         <tr>
+          <th>Número</th>
           <th>Data</th>
           <th>Agente</th>
           <th>Notificado</th>
@@ -53,6 +54,7 @@
           <th>Endereço</th>
           <th>Natureza</th>
           <th>Prazo</th>
+          <th>Atendente</th>
           <th>Status</th>
           <th>Ações</th>
         </tr>
@@ -67,6 +69,10 @@
     <span class="close" id="closeModal">&times;</span>
     <h3 id="modalTitle">Adicionar Notificação</h3>
     <form id="notificationForm">
+      <div class="form-group">
+        <label>Numero da Notificação</label>
+        <input type="text" id="numeroNotificacao" required>
+      </div>
       <div class="form-group">
         <label>Data da Notificação</label>
         <input type="date" id="dataNotificacao" required>
@@ -99,6 +105,10 @@
       <div class="form-group">
         <label>Prazo (dias)</label>
         <input type="number" id="prazoDias" required>
+      </div>
+      <div class="form-group">
+          <label>Atendente Responsável</label>
+          <input type="text" id="atendente" required>
       </div>
       <button type="submit" id="saveBtn" class="btn success">Salvar</button>
     </form>

@@ -47,6 +47,7 @@ infringementForm.addEventListener("submit", async (e) => {
     // }
 
     const autuacao = {
+        numeroAutuacao: document.getElementById("numeroAutuacao").value,
         dataAutuacao: document.getElementById("dataAutuacao").value,
         agente: document.getElementById("agente").value,
         autuado: document.getElementById("autuado").value,
@@ -97,7 +98,8 @@ async function carregarAutuacoes() {
     autuacoes.forEach(aut => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
-            <td>${aut.dataAutuacao}</td>
+            <td>${aut.numeroAutuacao}</td>
+            <td>${formatarData(aut.dataAutuacao)}</td>
             <td>${aut.agente}</td>
             <td>${aut.autuado}</td>
             <td>${aut.cpf}</td>
@@ -121,6 +123,7 @@ window.editarAutuacao = async (id) => {
     const doc = await db.collection("autuacoes").doc(id).get();
     const aut = doc.data();
     
+    document.getElementById("numeroAutuacao").value = aut.numeroAutuacao;
     document.getElementById("dataAutuacao").value = aut.dataAutuacao;
     document.getElementById("agente").value = aut.agente;
     document.getElementById("autuado").value = aut.autuado;
@@ -149,3 +152,9 @@ window.excluirAutuacao = async (id) => {
 document.addEventListener("DOMContentLoaded", carregarAutuacoes);
 buscaInput.addEventListener("input", carregarAutuacoes);
 filtroNatureza.addEventListener("change", carregarAutuacoes);
+
+function formatarData(dataISO) {
+  if (!dataISO) return "";
+  const partes = dataISO.split("-"); // [aaaa, mm, dd]
+  return `${partes[2]}/${partes[1]}/${partes[0]}`;
+}

@@ -36,6 +36,7 @@
     <table id="infringementTable">
       <thead>
         <tr>
+          <th>Numero</th>
           <th>Data</th>
           <th>Agente</th>
           <th>Autuado</th>
@@ -56,6 +57,10 @@
       <span class="close" id="closeModal">&times;</span>
       <h3 id="modalTitle">Nova Autuação</h3>
       <form id="infringementForm">
+        <div class="form-group">
+          <label>Número da Autuação</label>
+          <input type="text" id="numeroAutuacao" required>
+        </div>
         <div class="form-group">
           <label>Data da Autuação</label>
           <input type="date" id="dataAutuacao" required>
