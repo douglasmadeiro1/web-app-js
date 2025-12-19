@@ -285,6 +285,10 @@ button:hover,
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     width: 90%;
     max-width: 500px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;  /* Permite scroll dentro do modal */
     position: relative;
     animation: fadeIn 0.3s;
 }
