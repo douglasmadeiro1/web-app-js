@@ -94,6 +94,11 @@ async function carregarAutuacoes() {
         autuacoes = autuacoes.filter(aut => aut.natureza === filtroNaturezaValue);
     }
 
+    // 🔹 ORDENAÇÃO DECRESCENTE PELO NÚMERO DA AUTUAÇÃO
+    autuacoes.sort((a, b) => {
+        return parseInt(b.numeroAutuacao) - parseInt(a.numeroAutuacao);
+    });
+
     infringementTableBody.innerHTML = "";
     autuacoes.forEach(aut => {
         const tr = document.createElement("tr");
@@ -108,8 +113,12 @@ async function carregarAutuacoes() {
             <td>${aut.prazoDias} dias</td>
             <td>${aut.atendente}</td>
             <td>
-                <button class="icon-btn" onclick="editarAutuacao('${aut.id}')"><i class="fa-solid fa-pen-to-square"></i></button>
-                <button class="icon-btn delete" onclick="excluirAutuacao('${aut.id}')"><i class="fa-solid fa-trash-can"></i></button>
+                <button class="icon-btn" onclick="editarAutuacao('${aut.id}')">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                <button class="icon-btn delete" onclick="excluirAutuacao('${aut.id}')">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
             </td>
         `;
         infringementTableBody.appendChild(tr);

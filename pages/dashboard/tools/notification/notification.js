@@ -128,14 +128,20 @@ async function carregarNotificacoes() {
         notificacoes = notificacoes.filter(notif => notif.natureza === filtroNaturezaValue);
     }
 
-    // 🔹 Ordenar por status: vermelha > amarela > verde
+    // 🔹 Ordenar por status: vencida > pendente > cumprida
+    const ordemStatus = { vencida: 1, pendente: 2, cumprida: 3 };
+    
     notificacoes.sort((a, b) => {
-        const ordem = { vencida: 1, pendente: 2, cumprida: 3 };
-        return ordem[a.status] - ordem[b.status];
+        // Primeiro ordena pelo status (vencida > pendente > cumprida)
+        const statusCompare = ordemStatus[a.status] - ordemStatus[b.status];
+        
+        // Se os status forem iguais, ordena pelo número da notificação
+        if (statusCompare === 0) {
+            return parseInt(b.numeroNotificacao) - parseInt(a.numeroNotificacao);
+        }
+        
+        return statusCompare;
     });
-
-    // Se o usuário clicou no botão ordenar, inverte
-    if (!sortStatusAsc) notificacoes.reverse();
 
     // 🔹 Preencher tabela
     notificationTableBody.innerHTML = "";
