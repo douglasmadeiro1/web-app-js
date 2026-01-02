@@ -10,12 +10,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const msg = document.getElementById("msgViatura");
   const titulo = document.getElementById("tituloModalViatura");
 
+  // INPUTS
+  const prefixo = document.getElementById("prefixo");
+  const placa = document.getElementById("placa");
+  const modelo = document.getElementById("modelo");
+  const combustivel = document.getElementById("combustivel");
+  const status = document.getElementById("status");
+
+  const buscaViatura = document.getElementById("buscaViatura");
+  const filtroStatus = document.getElementById("filtroStatus");
+  const backBtn = document.getElementById("backBtn");
+
   // =====================
   // MODAL
   // =====================
   btnAbrir.onclick = () => {
     idViaturaEdicao = null;
     titulo.textContent = "Nova Viatura";
+    msg.textContent = "";
     form.reset();
     modal.style.display = "flex";
   };
@@ -41,12 +53,19 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
-      if (idViaturaEdicao) {
-        await db.collection("viaturas").doc(idViaturaEdicao).update(data);
+      if (idViaturaEdicao !== null) {
+        // EDITAR
+        await db
+          .collection("viaturas")
+          .doc(idViaturaEdicao)
+          .set(data, { merge: true });
+
         msg.textContent = "✅ Viatura atualizada!";
       } else {
+        // NOVA
 
-        const snap = await db.collection("viaturas")
+        const snap = await db
+          .collection("viaturas")
           .where("prefixo", "==", data.prefixo)
           .get();
 
@@ -61,11 +80,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       modal.style.display = "none";
       form.reset();
-      carregarViaturas();
       idViaturaEdicao = null;
+      carregarViaturas();
 
     } catch (err) {
-      console.error(err);
+      console.error("Erro ao salvar viatura:", err.message);
       msg.textContent = "❌ Erro ao salvar viatura!";
     }
   });
@@ -87,6 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
     status.value = v.status || "Ativa";
 
     titulo.textContent = "Editar Viatura";
+    msg.textContent = "";
     modal.style.display = "flex";
   };
 
@@ -114,9 +134,11 @@ document.addEventListener("DOMContentLoaded", () => {
     snapshot.forEach(doc => {
       const v = doc.data();
 
-      if (busca &&
+      if (
+        busca &&
         !v.prefixo.toLowerCase().includes(busca) &&
-        !v.placa.toLowerCase().includes(busca)) return;
+        !v.placa.toLowerCase().includes(busca)
+      ) return;
 
       if (filtro && v.status !== filtro) return;
 
