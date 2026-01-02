@@ -1,0 +1,68 @@
+@import url("../agents/agents.css");
+
+#abastecimentoTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#abastecimentoTable th {
+  background-color: #34495e;
+  color: white;
+}
+
+#abastecimentoTable td {
+  text-align: center;
+}
+
+#infoConsumo {
+  margin: 10px 0;
+  font-size: 0.9rem;
+  color: #34495e;
+}
+
+/* ========================================
+   MODAL – ABASTECIMENTOS (PADRÃO AGENTES)
+======================================== */
+
+#formAbastecimento label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: block;
+    color: #34495e;
+}
+
+#formAbastecimento input,
+#formAbastecimento select {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+#formAbastecimento input:focus,
+#formAbastecimento select:focus {
+    border-color: #1abc9c;
+    box-shadow: 0 0 5px rgba(26, 188, 156, 0.5);
+    outline: none;
+}
+
+#formAbastecimento button[type="submit"] {
+    width: 100%;
+    background-color: #1abc9c;
+    color: white;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+}
+
+#formAbastecimento button[type="submit"]:hover {
+    background-color: #16a085;
+}
+
+
+

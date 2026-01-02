@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro de Viaturas</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="viaturas.css">
+</head>
+
+<body>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <button id="backBtn">
+      <i class="fa-solid fa-arrow-left"></i> Voltar
+    </button>
+    <h1 class="top-bar-title">Cadastro de Viaturas</h1>
+  </div>
+
+  <!-- FILTROS -->
+  <div class="filters">
+    <input type="text" id="buscaViatura" placeholder="🔎 Buscar por prefixo ou placa">
+    <select id="filtroStatus">
+      <option value="">Todos os Status</option>
+      <option value="Ativa">Ativa</option>
+      <option value="Manutenção">Manutenção</option>
+      <option value="Baixada">Baixada</option>
+    </select>
+    <button id="abrirModalViatura">Nova Viatura</button>
+  </div>
+
+  <!-- CONTEÚDO -->
+  <main class="main-content">
+    <table id="viaturaTable">
+      <thead>
+        <tr>
+          <th>Prefixo</th>
+          <th>Placa</th>
+          <th>Modelo</th>
+          <th>Combustível</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="listaViaturas"></tbody>
+    </table>
+
+    <p id="msgViatura"></p>
+  </main>
+
+  <!-- MODAL -->
+  <div id="modalViatura" class="modal">
+    <div class="modal-content">
+      <span class="fechar">&times;</span>
+      <h2 id="tituloModalViatura">Nova Viatura</h2>
+
+      <form id="formViatura">
+        <label>Prefixo</label>
+        <input type="text" id="prefixo" required>
+
+        <label>Placa</label>
+        <input type="text" id="placa" required>
+
+        <label>Modelo</label>
+        <input type="text" id="modelo">
+
+        <label>Tipo de Combustível</label>
+        <select id="combustivel">
+          <option value="Gasolina">Gasolina</option>
+          <option value="Etanol">Etanol</option>
+          <option value="Diesel">Diesel</option>
+        </select>
+
+        <label>Status</label>
+        <select id="status">
+          <option value="Ativa">Ativa</option>
+          <option value="Manutenção">Manutenção</option>
+          <option value="Baixada">Baixada</option>
+        </select>
+
+        <button type="submit">Salvar Viatura</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- FIREBASE -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="../../../../firebase-init.js"></script>
+  <script src="../../../../auth-guard.js"></script>
+
+  <script src="viaturas.js"></script>
+
+</body>
+</html>

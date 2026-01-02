@@ -1,0 +1,111 @@
+  <!DOCTYPE html>
+  <html lang="pt-BR">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Lançamento de Abastecimentos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="abastecimentos.css">
+  </head>
+
+  <body>
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+      <button id="backBtn">
+        <i class="fa-solid fa-arrow-left"></i> Voltar
+      </button>
+      <h1 class="top-bar-title">Abastecimentos</h1>
+    </div>
+
+    <!-- CONTEÚDO -->
+    <main class="main-content">
+
+      <div class="acoes-topo">
+        <button id="abrirModalAbastecimento">Novo Abastecimento</button>
+        <button id="exportarPdf">Exportar PDF</button>
+
+        <label for="filtroViatura" style="align-self:center;margin-left:8px;">Filtrar por viatura:</label>
+        <select id="filtroViatura">
+          <option value="">Todas as viaturas</option>
+        </select>
+      </div>
+
+      <label>Período:</label>
+
+      <input type="date" id="dataInicio">
+      <span>até</span>
+      <input type="date" id="dataFim">
+
+      <button id="aplicarFiltro">Filtrar</button>
+      <button id="limparFiltros">Limpar filtros</button>
+
+      <table id="abastecimentoTable">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Viatura</th>
+            <th>Agente</th>
+            <th>KM Atual</th>
+            <th>KM Rodados</th>
+            <th>Litros</th>
+            <th>Consumo (km/l)</th>
+            <th>Valor</th>
+            <th>Ação</th>
+          </tr>
+        </thead>
+        <tbody id="listaAbastecimentos"></tbody>
+      </table>
+      <div id="resumoConsumo" class="resumo-consumo"></div>
+    </main>
+
+    <!-- MODAL -->
+    <div id="modalAbastecimento" class="modal">
+      <div class="modal-content">
+        <span class="fechar">&times;</span>
+        <h2>Novo Abastecimento</h2>
+
+        <form id="formAbastecimento">
+
+          <label>Viatura</label>
+          <select id="viaturaSelect" required></select>
+
+          <label>Agente Responsável</label>
+          <select id="agenteSelect" required></select>
+
+          <label>Data</label>
+          <input type="date" id="dataAbastecimento" required>
+
+          <label>KM Atual</label>
+          <input type="number" id="kmAtual" required>
+
+          <label>Quantidade de Litros</label>
+          <input type="number" step="0.01" id="litros" required>
+
+          <label>Valor Total (R$)</label>
+          <input type="number" step="0.01" id="valor" required>
+
+          <div id="infoConsumo"></div>
+
+          <button type="submit">Salvar Abastecimento</button>
+
+        </form>
+      </div>
+    </div>
+
+    <!-- FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="../../../../firebase-init.js"></script>
+    <script src="../../../../auth-guard.js"></script>
+    <!-- jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script src="abastecimentos.js"></script>
+
+  </body>
+
+  </html>
+  

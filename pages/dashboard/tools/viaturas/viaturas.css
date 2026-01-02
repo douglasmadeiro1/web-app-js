@@ -1,0 +1,60 @@
+@import url("../agents/agents.css");
+
+/* Caso queira customizações específicas de viaturas */
+#viaturaTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#viaturaTable th {
+  background-color: #34495e;
+  color: #fff;
+}
+
+#viaturaTable td {
+  text-align: center;
+}
+
+
+/* ========================================
+   MODAL – PADRÃO AGENTES (VIATURAS)
+======================================== */
+
+/* Inputs e selects do formulário de viaturas */
+#formViatura input,
+#formViatura select {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Foco */
+#formViatura input:focus,
+#formViatura select:focus {
+    border-color: #1abc9c;
+    box-shadow: 0 0 5px rgba(26, 188, 156, 0.5);
+    outline: none;
+}
+
+/* Botão do formulário */
+#formViatura button[type="submit"] {
+    background-color: #1abc9c;
+    color: #fff;
+    font-weight: 600;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+/* Hover do botão */
+#formViatura button[type="submit"]:hover {
+    background-color: #16a085;
+}
