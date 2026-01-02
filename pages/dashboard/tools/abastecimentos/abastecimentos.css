@@ -2,16 +2,54 @@
 
 #abastecimentoTable {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 10px;
+  font-size: 0.95rem;
 }
 
-#abastecimentoTable th {
+#abastecimentoTable thead th {
   background-color: #34495e;
   color: white;
+  padding: 10px 12px;
+  text-align: center;
+  white-space: nowrap;
 }
 
-#abastecimentoTable td {
+#abastecimentoTable tbody td {
+  padding: 10px 12px;
   text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+#abastecimentoTable tbody tr:hover {
+  background-color: #f5f7fa;
+}
+
+#abastecimentoTable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 10px;
+  font-size: 0.95rem;
+}
+
+#abastecimentoTable thead th {
+  background-color: #34495e;
+  color: white;
+  padding: 10px 12px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+#abastecimentoTable tbody td {
+  padding: 10px 12px;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+#abastecimentoTable tbody tr:hover {
+  background-color: #f5f7fa;
 }
 
 #infoConsumo {
@@ -64,5 +102,14 @@
     background-color: #16a085;
 }
 
-
-
+/* =========================
+   RESUMO DE CONSUMO
+========================= */
+.resumo-consumo {
+  margin-top: 15px;
+  padding: 12px 16px;
+  background-color: #ecf0f1;
+  border-radius: 10px;
+  font-weight: 600;
+  color: #2c3e50;
+}
