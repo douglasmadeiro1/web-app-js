@@ -147,39 +147,31 @@ async function carregarAbastecimentos() {
 
   let query = db.collection("abastecimentos");
 
-// FILTRO POR VIATURA
-if (filtroViatura.value !== "todas") {
-  query = query.where("viaturaId", "==", filtroViatura.value);
-}
+  // FILTRO POR VIATURA
+  if (filtroViatura.value !== "todas") {
+    query = query.where("viaturaId", "==", filtroViatura.value);
+  }
 
-// FILTRO POR PERÍODO
-if (dataInicioInput.value && dataFimInput.value) {
-  query = query
-    .where("data", ">=", dataInicioInput.value)
-    .where("data", "<=", dataFimInput.value)
-    .orderBy("data", "asc");
-} else {
-  // SEM FILTRO DE DATA
-  query = query.orderBy("createdAt", "asc");
-}
+  // FILTRO POR PERÍODO
+  if (dataInicioInput.value && dataFimInput.value) {
+    query = query
+      .where("data", ">=", dataInicioInput.value)
+      .where("data", "<=", dataFimInput.value)
+      .orderBy("data", "asc");  // Ordena pela data em ordem crescente
+  } else {
+    // SEM FILTRO DE DATA, ordena pela data de criação
+    query = query.orderBy("data", "asc");  // Ordena pela data em ordem crescente
+  }
 
-const limparFiltrosBtn = document.getElementById("limparFiltros");
+  const limparFiltrosBtn = document.getElementById("limparFiltros");
 
-limparFiltrosBtn.onclick = () => {
-  filtroViatura.value = "todas";
-  dataInicioInput.value = "";
-  dataFimInput.value = "";
+  limparFiltrosBtn.onclick = () => {
+    filtroViatura.value = "todas";
+    dataInicioInput.value = "";
+    dataFimInput.value = "";
 
-  carregarAbastecimentos();
-};
-
-document.getElementById("limparFiltros").onclick = () => {
-  filtroViatura.value = "todas";
-  document.getElementById("dataInicio").value = "";
-  document.getElementById("dataFim").value = "";
-
-  carregarAbastecimentos();
-};
+    carregarAbastecimentos();
+  };
 
   const snap = await query.get();
 
